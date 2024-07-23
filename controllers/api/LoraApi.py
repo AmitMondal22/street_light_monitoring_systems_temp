@@ -4,6 +4,7 @@ import json
 import base64
 from typing import Any
 from fastapi.encoders import jsonable_encoder
+import time
 
 
 api_key = 'NNSXS.SKSGTTX6IIDKM7THS3RATJBRL5ZHMKO4A6ZBGXY.WVF3AVQVGOAVWK3E7CIGPVLXPHREIL5D5FXJCK5E2BCKZWL6PAVA'
@@ -80,7 +81,7 @@ def webhooks_send_downlink():
     # except requests.exceptions.RequestException as e:
     #     # Handle network errors or bad responses
     #     raise HTTPException(status_code=500, detail=f"Request failed: {str(e)}")
-    
+    time.sleep(1)
     url = "https://eu1.cloud.thethings.network/api/v3/as/applications/streetlighttechavo/webhooks/test/devices/eui-0080e115002b5637/down/replace"
 
     payload = json.dumps({
