@@ -17,8 +17,21 @@ async def testing(request: Request):
         frm_payload_bytes = base64.b64decode(frm_payload_base64)
         data_str = frm_payload_bytes.decode('utf-8')
         data_list = data_str.split(',')
+        device_id = data_list[0]
+        date = data_list[1]
+        time = data_list[2]
+        VOLTAGE = float(data_list[3])
+        CURRENT = float(data_list[4])
+        REALPOWER = float(data_list[5])
+        PF = float(data_list[6])
+        KWH = float(data_list[7])
+        RUNHR = float(data_list[8])
+        UPLOADFLAG = int(data_list[9])
+        DOMODE = int(data_list[10])
         print("Decoded frm_payload:")
         print(data_list)
+        
+        
         
         
         abc = await LoraApi.webhooks_send_downlink()

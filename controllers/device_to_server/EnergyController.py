@@ -79,51 +79,20 @@ async def send_last_energy_data(client_id, device_id, device):
                                 td.client_id, 
                                 td.device_id, 
                                 td.device, 
-                                td.do_channel, 
                                 td.tw, 
-                                td.e1, 
-                                td.e2, 
-                                td.e3, 
-                                td.r, 
-                                td.y, 
-                                td.b, 
-                                td.r_y, 
-                                td.y_b, 
-                                td.b_r, 
-                                td.curr1, 
-                                td.curr2, 
-                                td.curr3, 
-                                td.activep1, 
-                                td.activep2, 
-                                td.activep3, 
-                                td.apparentp1, 
-                                td.apparentp2, 
-                                td.apparentp3, 
-                                td.pf1, 
-                                td.pf2, 
-                                td.pf3, 
-                                td.freq, 
-                                td.reactvp1, 
-                                td.reactvp2, 
-                                td.reactvp3, 
-                                td.avaragevln, 
-                                td.avaragevll, 
-                                td.avaragecurrent, 
-                                td.totkw, 
-                                td.totkva, 
-                                td.totkvar, 
-                                td.runhr, 
+                                td.voltage,
+                                td.current,
+                                td.realpower,
+                                td.pf,
+                                td.kwh,
+                                td.runhr,
+                                td.frequency,
+                                td.domode,
+                                td.sensor_flag,
+                                td.upload_flag
                                 td.date, 
                                 td.time, 
-                                COALESCE((SELECT MAX(e1) FROM td_energy_data WHERE DATE(date) = DATE_SUB(CURDATE(), INTERVAL 1 DAY) AND device_id = td.device_id AND client_id = td.client_id AND device = td.device ORDER BY date DESC LIMIT 1), 0.0) AS e1_yesterday,
-    COALESCE((SELECT MAX(e2) FROM td_energy_data WHERE DATE(date) = DATE_SUB(CURDATE(), INTERVAL 1 DAY) AND device_id = td.device_id AND client_id = td.client_id AND device = td.device ORDER BY date DESC LIMIT 1), 0.0) AS e2_yesterday,
-    COALESCE((SELECT MAX(e3) FROM td_energy_data WHERE DATE(date) = DATE_SUB(CURDATE(), INTERVAL 1 DAY) AND device_id = td.device_id AND client_id = td.client_id AND device = td.device ORDER BY date DESC LIMIT 1), 0.0) AS e3_yesterday,
-    COALESCE((SELECT MAX(e1) FROM td_energy_data WHERE DATE(date) >= DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND device_id = td.device_id AND client_id = td.client_id AND device = td.device ORDER BY date DESC LIMIT 1), 0.0) AS e1_past_month,
-    COALESCE((SELECT MAX(e2) FROM td_energy_data WHERE DATE(date) >= DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND device_id = td.device_id AND client_id = td.client_id AND device = td.device ORDER BY date DESC LIMIT 1), 0.0) AS e2_past_month,
-    COALESCE((SELECT MAX(e3) FROM td_energy_data WHERE DATE(date) >= DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND device_id = td.device_id AND client_id = td.client_id AND device = td.device ORDER BY date DESC LIMIT 1), 0.0) AS e3_past_month,
-    COALESCE((SELECT MAX(e1) FROM td_energy_data WHERE YEAR(date) = YEAR(CURDATE())-1 AND device_id = td.device_id AND client_id = td.client_id AND device = td.device), 0.0) AS e1_past_year,
-    COALESCE((SELECT MAX(e2) FROM td_energy_data WHERE YEAR(date) = YEAR(CURDATE())-1 AND device_id = td.device_id AND client_id = td.client_id AND device = td.device), 0.0) AS e2_past_year,
-    COALESCE((SELECT MAX(e3) FROM td_energy_data WHERE YEAR(date) = YEAR(CURDATE())-1 AND device_id = td.device_id AND client_id = td.client_id AND device = td.device), 0.0) AS e3_past_year
+                               
                             FROM 
                                 td_energy_data td
                             WHERE 
@@ -134,53 +103,62 @@ async def send_last_energy_data(client_id, device_id, device):
                                 td.energy_data_id DESC LIMIT 1"""
             lastdata=custom_select_sql_query(custom_sql,None)
             
-            
+    #          COALESCE((SELECT MAX(kwh) FROM td_energy_data WHERE DATE(date) = DATE_SUB(CURDATE(), INTERVAL 1 DAY) AND device_id = td.device_id AND client_id = td.client_id AND device = td.device ORDER BY date DESC LIMIT 1), 0.0) AS e1_yesterday,
+    # COALESCE((SELECT MAX(e2) FROM td_energy_data WHERE DATE(date) = DATE_SUB(CURDATE(), INTERVAL 1 DAY) AND device_id = td.device_id AND client_id = td.client_id AND device = td.device ORDER BY date DESC LIMIT 1), 0.0) AS e2_yesterday,
+    # COALESCE((SELECT MAX(e3) FROM td_energy_data WHERE DATE(date) = DATE_SUB(CURDATE(), INTERVAL 1 DAY) AND device_id = td.device_id AND client_id = td.client_id AND device = td.device ORDER BY date DESC LIMIT 1), 0.0) AS e3_yesterday,
+    # COALESCE((SELECT MAX(kwh) FROM td_energy_data WHERE DATE(date) >= DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND device_id = td.device_id AND client_id = td.client_id AND device = td.device ORDER BY date DESC LIMIT 1), 0.0) AS e1_past_month,
+    # COALESCE((SELECT MAX(e2) FROM td_energy_data WHERE DATE(date) >= DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND device_id = td.device_id AND client_id = td.client_id AND device = td.device ORDER BY date DESC LIMIT 1), 0.0) AS e2_past_month,
+    # COALESCE((SELECT MAX(e3) FROM td_energy_data WHERE DATE(date) >= DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND device_id = td.device_id AND client_id = td.client_id AND device = td.device ORDER BY date DESC LIMIT 1), 0.0) AS e3_past_month,
+    # COALESCE((SELECT MAX(kwh) FROM td_energy_data WHERE YEAR(date) = YEAR(CURDATE())-1 AND device_id = td.device_id AND client_id = td.client_id AND device = td.device), 0.0) AS e1_past_year,
+    # COALESCE((SELECT MAX(e2) FROM td_energy_data WHERE YEAR(date) = YEAR(CURDATE())-1 AND device_id = td.device_id AND client_id = td.client_id AND device = td.device), 0.0) AS e2_past_year,
+    # COALESCE((SELECT MAX(e3) FROM td_energy_data WHERE YEAR(date) = YEAR(CURDATE())-1 AND device_id = td.device_id AND client_id = td.client_id AND device = td.device), 0.0) AS e3_past_year
             # week_date=weekdays_date()
             
             
-            custom_sql2=f""" SELECT 
-                                curr.energy_data_id,
-                                curr.client_id,
-                                curr.device_id,
-                                curr.device,
-                                curr.do_channel,
-                                curr.tw,
-                                curr.e1 - COALESCE(curr.prev_e1, 0) AS e1_diff,
-                                curr.e2 - COALESCE(curr.prev_e2, 0) AS e2_diff,
-                                curr.e3 - COALESCE(curr.prev_e3, 0) AS e3_diff,
-                                curr.date,
-                                curr.time
-                            FROM 
-                                (
-                                    SELECT 
-                                        *,
-                                        LAG(e1) OVER (ORDER BY date, time) AS prev_e1,
-                                        LAG(e2) OVER (ORDER BY date, time) AS prev_e2,
-                                        LAG(e3) OVER (ORDER BY date, time) AS prev_e3,
-                                        ROW_NUMBER() OVER (PARTITION BY date ORDER BY time DESC) AS rn
-                                    FROM 
-                                        td_energy_data
-                                    WHERE 
-                                        client_id = {client_id} 
-                                        AND device_id = {device_id}
-                                        AND device = '{device}'
-                                        AND date BETWEEN DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE()) + 2) DAY) 
-                                                    AND DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE()) - 6) DAY)
-                                ) AS curr
-                            WHERE 
-                                curr.rn = 1
-                            ORDER BY 
-                                curr.date DESC; """
+            # custom_sql2=f""" SELECT 
+            #                     curr.energy_data_id,
+            #                     curr.client_id,
+            #                     curr.device_id,
+            #                     curr.device,
+            #                     curr.do_channel,
+            #                     curr.tw,
+            #                     curr.e1 - COALESCE(curr.prev_e1, 0) AS e1_diff,
+            #                     curr.e2 - COALESCE(curr.prev_e2, 0) AS e2_diff,
+            #                     curr.e3 - COALESCE(curr.prev_e3, 0) AS e3_diff,
+            #                     curr.date,
+            #                     curr.time
+            #                 FROM 
+            #                     (
+            #                         SELECT 
+            #                             *,
+            #                             LAG(e1) OVER (ORDER BY date, time) AS prev_e1,
+            #                             LAG(e2) OVER (ORDER BY date, time) AS prev_e2,
+            #                             LAG(e3) OVER (ORDER BY date, time) AS prev_e3,
+            #                             ROW_NUMBER() OVER (PARTITION BY date ORDER BY time DESC) AS rn
+            #                         FROM 
+            #                             td_energy_data
+            #                         WHERE 
+            #                             client_id = {client_id} 
+            #                             AND device_id = {device_id}
+            #                             AND device = '{device}'
+            #                             AND date BETWEEN DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE()) + 2) DAY) 
+            #                                         AND DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE()) - 6) DAY)
+            #                     ) AS curr
+            #                 WHERE 
+            #                     curr.rn = 1
+            #                 ORDER BY 
+            #                     curr.date DESC; """
             
-            lastdata_weekdata=custom_select_sql_query(custom_sql2,1)
-            print("Last data",lastdata_weekdata)
+            # lastdata_weekdata=custom_select_sql_query(custom_sql2,1)
+            # print("Last data",lastdata_weekdata)
             background_tasks.add_task(AlertLibrary.send_alert, client_id, device_id, device, json.dumps(lastdata, cls=DecimalEncoder))
             
             # await AlertLibrary.send_alert(client_id, device_id, device, json.dumps(lastdata, cls=DecimalEncoder))
             print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
             
             # await manager.send_personal_message("SLMS",client_id, device_id, device, json.dumps(lastdata, cls=DecimalEncoder))
-            twodata={"lastdata_weekdata":lastdata_weekdata,"lastdata":lastdata}
+            # twodata={"lastdata_weekdata":lastdata_weekdata,"lastdata":lastdata}
+            twodata={"lastdata":lastdata}
             print(twodata)
             await sennd_ws_message("SLMS",client_id, device_id, device, json.dumps(twodata, cls=DecimalEncoder))
             return json.dumps(lastdata, cls=DecimalEncoder)

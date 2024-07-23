@@ -96,7 +96,7 @@ class SendEnergySocket:
             # from Library import WsConnectionManager
             # manager = WsConnectionManager.WsConnectionManager()
             
-            select="energy_data_id, client_id, device_id, e1, e2, e3, r, y, b, r_y, y_b, b_r, curr1, curr2, curr3, activep1, activep2, activep3, apparentp1, apparentp2, apparentp3, pf1, pf2, pf3, freq, reactvp1, reactvp2, reactvp3, avaragevln, avaragevll, avaragecurrent, totkw, totkva, totkvar, runhr, date, time, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') AS created_at"
+            select="energy_data_id, client_id, device_id, voltage, current, realpower, pf, kwh, runhr, frequency, domode, sensor_flag, upload_flag, date, time, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') AS created_at"
             condition = f"device_id = '{device_id}' AND device ='{device}' AND client_id = '{client_id}'"
             order_by="energy_data_id DESC"
                 
