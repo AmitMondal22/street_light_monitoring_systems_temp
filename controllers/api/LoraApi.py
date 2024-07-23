@@ -51,10 +51,12 @@ async def webhooks_send_downlink():
     time.sleep(1)
     url = "https://eu1.cloud.thethings.network/api/v3/as/applications/streetlighttechavo/webhooks/test/devices/eui-0080e115002b5637/down/replace"
 
+    print(base64.b64encode(frm_payload.encode('utf-8')))
+    print("///////////////////////")
     payload = json.dumps({
     "downlinks": [
         {
-        "frm_payload": frm_payload.encode('utf-8'),
+        "frm_payload": base64.b64encode(frm_payload.encode('utf-8')),
         "f_port": 15,
         "priority": "NORMAL"
         }
