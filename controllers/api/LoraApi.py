@@ -45,13 +45,14 @@ def send_downlink(user: Any, params: Any) -> dict:
     
 @staticmethod
 def webhooks_send_downlink():
-    try:
+    # try:
         payload = {
             'downlinks': [
                 {
                     'frm_payload': '*hello#',
                     'f_port': 15,
-                    'priority': 'NORMAL'
+                    'priority': 'HIGHEST'
+                    # 'priority': 'NORMAL'
                 }
             ]
         }
@@ -76,6 +77,6 @@ def webhooks_send_downlink():
         except ValueError:
             raise HTTPException(status_code=500, detail="Invalid JSON response from the server")
 
-    except requests.exceptions.RequestException as e:
-        # Handle network errors or bad responses
-        raise HTTPException(status_code=500, detail=f"Request failed: {str(e)}")
+    # except requests.exceptions.RequestException as e:
+    #     # Handle network errors or bad responses
+    #     raise HTTPException(status_code=500, detail=f"Request failed: {str(e)}")
