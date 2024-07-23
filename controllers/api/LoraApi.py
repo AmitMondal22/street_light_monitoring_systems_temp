@@ -68,7 +68,7 @@ def webhooks_send_downlink():
         response = requests.post(url, headers=headers, json=payload)
         
         # Check if the request was successful
-        response.raise_for_status()
+        # response.raise_for_status()
         print("///////////////")
         print(jsonable_encoder(response))
 
