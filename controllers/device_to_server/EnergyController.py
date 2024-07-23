@@ -11,7 +11,7 @@ from datetime import datetime
 
 
 @staticmethod
-async def get_energy_data(data:device_data_model.EnergyDeviceData,client_id,device):
+async def get_energy_data(data:device_data_model.StreetLightDeviceData,client_id,device):
     try:
         background_tasks = BackgroundTasks()
         device_data=select_one_data("md_device","device_id",f"client_id={client_id} AND device='{device}'")
@@ -68,7 +68,8 @@ async def get_energy_data(data:device_data_model.EnergyDeviceData,client_id,devi
 
 @staticmethod  
 async def send_last_energy_data(client_id, device_id, device):
-        try:
+        # try:
+            print("////////////////HHHHHH")
             # Lazy import inside the function
             from Library.WsConnectionManagerManyDeviceTypes import WsConnectionManagerManyDeviceTypes
             manager = WsConnectionManagerManyDeviceTypes()
@@ -89,9 +90,9 @@ async def send_last_energy_data(client_id, device_id, device):
                                 td.frequency,
                                 td.domode,
                                 td.sensor_flag,
-                                td.upload_flag
+                                td.upload_flag,
                                 td.date, 
-                                td.time, 
+                                td.time 
                                
                             FROM 
                                 td_energy_data td
@@ -102,6 +103,7 @@ async def send_last_energy_data(client_id, device_id, device):
                             ORDER BY 
                                 td.energy_data_id DESC LIMIT 1"""
             lastdata=custom_select_sql_query(custom_sql,None)
+            print(lastdata)
             
     #          COALESCE((SELECT MAX(kwh) FROM td_energy_data WHERE DATE(date) = DATE_SUB(CURDATE(), INTERVAL 1 DAY) AND device_id = td.device_id AND client_id = td.client_id AND device = td.device ORDER BY date DESC LIMIT 1), 0.0) AS e1_yesterday,
     # COALESCE((SELECT MAX(e2) FROM td_energy_data WHERE DATE(date) = DATE_SUB(CURDATE(), INTERVAL 1 DAY) AND device_id = td.device_id AND client_id = td.client_id AND device = td.device ORDER BY date DESC LIMIT 1), 0.0) AS e2_yesterday,
@@ -151,7 +153,8 @@ async def send_last_energy_data(client_id, device_id, device):
             
             # lastdata_weekdata=custom_select_sql_query(custom_sql2,1)
             # print("Last data",lastdata_weekdata)
-            background_tasks.add_task(AlertLibrary.send_alert, client_id, device_id, device, json.dumps(lastdata, cls=DecimalEncoder))
+            
+            # background_tasks.add_task(AlertLibrary.send_alert, client_id, device_id, device, json.dumps(lastdata, cls=DecimalEncoder))
             
             # await AlertLibrary.send_alert(client_id, device_id, device, json.dumps(lastdata, cls=DecimalEncoder))
             print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
@@ -162,7 +165,7 @@ async def send_last_energy_data(client_id, device_id, device):
             print(twodata)
             await sennd_ws_message("SLMS",client_id, device_id, device, json.dumps(twodata, cls=DecimalEncoder))
             return json.dumps(lastdata, cls=DecimalEncoder)
-        except Exception as e:
-            raise ValueError("Could not fetch data",e)
+        # except Exception as e:
+        #     raise ValueError("Could not fetch data",e)
     
     

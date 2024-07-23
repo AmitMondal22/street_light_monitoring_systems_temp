@@ -4,7 +4,7 @@ import re
 from typing import Optional,List
 
 
-class EnergyDeviceData(BaseModel):
+class StreetLightDeviceData(BaseModel):
     CLIENT_ID:  Optional[int] = 0
     UID: str
     DT: str
