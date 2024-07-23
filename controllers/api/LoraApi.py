@@ -47,7 +47,7 @@ def send_downlink(user: Any, params: Any) -> dict:
 @staticmethod
 async def webhooks_send_downlink():
    
-    frm_payload="hello world"
+    frm_payload="*R1, ,1,10,22,17,30,23,7,2034,16,07,33,ZZ#"
     time.sleep(1)
     url = "https://eu1.cloud.thethings.network/api/v3/as/applications/streetlighttechavo/webhooks/test/devices/eui-0080e115002b5637/down/replace"
 
