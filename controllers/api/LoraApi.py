@@ -47,7 +47,7 @@ def send_downlink(user: Any, params: Any) -> dict:
 @staticmethod
 async def webhooks_send_downlink():
    
-    frm_payload = "*R1, ,1,10,22,17,30,23,7,2034,16,07,33,ZZ#"
+    frm_payload = "R1, ,1,10,22,17,30,23,7,2034,16,07,33,ZZ"
 
     # Encode the string to bytes first
     frm_payload_bytes = frm_payload.encode('utf-8')
