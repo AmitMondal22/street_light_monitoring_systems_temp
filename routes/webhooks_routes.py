@@ -15,9 +15,9 @@ async def testing(request: Request):
         print(data)
         frm_payload_base64 = data["uplink_message"]["frm_payload"]
         frm_payload_bytes = base64.b64decode(frm_payload_base64)
-        frm_payload_str = frm_payload_bytes.decode("utf-8")
+        # frm_payload_str = frm_payload_bytes.decode("utf-8")
         print("Decoded frm_payload:")
-        print(frm_payload_str)
+        print(frm_payload_bytes)
         
         
         abc = await LoraApi.webhooks_send_downlink()
