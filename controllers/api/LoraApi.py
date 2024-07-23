@@ -73,7 +73,7 @@ def webhooks_send_downlink():
         print(jsonable_encoder(response))
 
         try:
-            return response.json()  # Return the JSON response
+            return {"status":"success"}  # Return the JSON response
         except ValueError:
             raise HTTPException(status_code=500, detail="Invalid JSON response from the server")
 
