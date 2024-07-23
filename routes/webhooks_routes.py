@@ -10,8 +10,8 @@ webhooks_routes = APIRouter()
 @webhooks_routes.get("/testing")
 async def testing(request: Request):
     # try:
-        # payload = await request.json()
-        # print(payload)
+        payload = await request.json()
+        print(payload)
         await LoraApi.webhooks_send_downlink()
         return {"status":"status"}
     # except Exception as e:
