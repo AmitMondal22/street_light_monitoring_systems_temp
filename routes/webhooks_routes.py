@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException,Request
 from controllers.api import LoraApi
 from typing import Dict, Any
+import base64
 
 
 webhooks_routes = APIRouter()
@@ -10,8 +11,15 @@ webhooks_routes = APIRouter()
 @webhooks_routes.get("/testing")
 async def testing(request: Request):
     # try:
-        payload = await request.json()
-        print(payload)
+        data = await request.json()
+        print(data)
+        frm_payload_base64 = data["uplink_message"]["frm_payload"]
+        frm_payload_bytes = base64.b64decode(frm_payload_base64)
+        frm_payload_str = frm_payload_bytes.decode("utf-8")
+        print("Decoded frm_payload:")
+        print(frm_payload_str)
+        
+        
         abc = await LoraApi.webhooks_send_downlink()
         return {"status":"success"}
     # except Exception as e:
