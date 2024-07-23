@@ -45,7 +45,7 @@ def send_downlink(user: Any, params: Any) -> dict:
         
     
 @staticmethod
-def webhooks_send_downlink():
+async def webhooks_send_downlink():
     # try:
         # payload = {
         #     'downlinks': [
