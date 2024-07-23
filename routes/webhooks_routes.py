@@ -13,7 +13,7 @@ async def testing(request: Request):
         payload = await request.json()
         print(payload)
         await LoraApi.webhooks_send_downlink()
-        return {"status":"status"}
+        return {"status":"success"}
     # except Exception as e:
     #     raise e
     
