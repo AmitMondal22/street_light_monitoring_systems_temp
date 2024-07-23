@@ -3,6 +3,7 @@ import requests
 import json
 import base64
 from typing import Any
+from fastapi.encoders import jsonable_encoder
 
 
 api_key = 'NNSXS.SKSGTTX6IIDKM7THS3RATJBRL5ZHMKO4A6ZBGXY.WVF3AVQVGOAVWK3E7CIGPVLXPHREIL5D5FXJCK5E2BCKZWL6PAVA'
@@ -67,7 +68,8 @@ def webhooks_send_downlink():
         
         # Check if the request was successful
         response.raise_for_status()
-        print(response.json())
+        print("///////////////")
+        print(jsonable_encoder(response))
 
         try:
             return response.json()  # Return the JSON response
