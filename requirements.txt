@@ -1,0 +1,13 @@
+fastapi[all]
+uvicorn[standard]
+pydantic
+mysql-connector-python
+passlib[bcrypt]
+python-multipart
+python-jose
+aiomqtt
+paho-mqtt
+requests
+
+# pip install --upgrade bcrypt==4.0.1 //linux 
+#module 'bcrypt' has no attribute '__about__'  error message fix
