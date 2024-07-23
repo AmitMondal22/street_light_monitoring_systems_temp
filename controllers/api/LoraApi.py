@@ -47,21 +47,30 @@ def send_downlink(user: Any, params: Any) -> dict:
 @staticmethod
 async def webhooks_send_downlink():
    
-    frm_payload="*R1, ,1,10,22,17,30,23,7,2034,16,07,33,ZZ#"
+    frm_payload = "*R1, ,1,10,22,17,30,23,7,2034,16,07,33,ZZ#"
+
+    # Encode the string to bytes first
+    frm_payload_bytes = frm_payload.encode('utf-8')
+
+    # Base64 encode the bytes
+    encoded_payload = base64.b64encode(frm_payload_bytes)
+    encoded_string = encoded_payload.decode('utf-8')
+    
     time.sleep(1)
     url = "https://eu1.cloud.thethings.network/api/v3/as/applications/streetlighttechavo/webhooks/test/devices/eui-0080e115002b5637/down/replace"
 
-    print(base64.b64encode(frm_payload.encode('utf-8')))
+    print(encoded_string)
     print("///////////////////////")
     payload = json.dumps({
     "downlinks": [
         {
-        "frm_payload": base64.b64encode(frm_payload.encode('utf-8')),
+        "frm_payload": encoded_string,
         "f_port": 15,
         "priority": "NORMAL"
         }
     ]
     })
+    print(payload)
     headers = {
     'Content-Type': 'application/json',
     'Authorization': 'Bearer NNSXS.SKSGTTX6IIDKM7THS3RATJBRL5ZHMKO4A6ZBGXY.WVF3AVQVGOAVWK3E7CIGPVLXPHREIL5D5FXJCK5E2BCKZWL6PAVA'
