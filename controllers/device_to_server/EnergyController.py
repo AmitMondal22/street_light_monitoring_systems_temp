@@ -12,7 +12,7 @@ from datetime import datetime
 
 @staticmethod
 async def get_energy_data(data:device_data_model.StreetLightDeviceData,client_id,device):
-    # try:
+    try:
         background_tasks = BackgroundTasks()
         device_data=select_one_data("md_device","device_id",f"client_id={client_id} AND device='{device}'")
         if device_data is None:
@@ -37,38 +37,20 @@ async def get_energy_data(data:device_data_model.StreetLightDeviceData,client_id
         energy_data_id = insert_data("td_energy_data", columns, value)
         
         
-        
-        # mqtt_client = MqttLibraryClass("techavoiot.co.in", 1883)
-        # # Connect to the MQTT broker
-        # mqtt_client.connect()
-        
-        # data=await update_topics()
-        # print("data",data)
-        # mqtt_client.subscribe(data)
-        
-        
-        
-        
         if energy_data_id is None:
             raise ValueError("energy data was not inserted")
         else:
-            # from routes.api_client_routes import SendEnergySocket
-            # lastdata=await SendEnergySocket.send_last_energy_data(data.client_id, device_id, data.device)
-            # lastdata=await send_last_energy_data(client_id, device_id,device)
             await send_last_energy_data(client_id, device_id,device)
-            # background_tasks.add_task(send_last_energy_data, client_id, device_id,device)
-            # if lastdata is None:
-            #     raise ValueError("Could not fetch data")
             user_data = {"energy_data_id":energy_data_id, "device_id": device_id, "device": device}
         return user_data
-    # except Exception as e:
-    #     raise ValueError("Could not fetch data",e)
+    except Exception as e:
+        raise ValueError("Could not fetch data",e)
     
     
 
 @staticmethod  
 async def send_last_energy_data(client_id, device_id, device):
-        # try:
+        try:
             print("////////////////HHHHHH")
             # Lazy import inside the function
             from Library.WsConnectionManagerManyDeviceTypes import WsConnectionManagerManyDeviceTypes
@@ -165,7 +147,7 @@ async def send_last_energy_data(client_id, device_id, device):
             print(twodata)
             await sennd_ws_message("SLMS",client_id, device_id, device, json.dumps(twodata, cls=DecimalEncoder))
             return json.dumps(lastdata, cls=DecimalEncoder)
-        # except Exception as e:
-        #     raise ValueError("Could not fetch data",e)
+        except Exception as e:
+            raise ValueError("Could not fetch data",e)
     
     
