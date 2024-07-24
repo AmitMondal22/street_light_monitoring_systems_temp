@@ -60,9 +60,7 @@ async def testing(request: Request):
         
         
         abc = await LoraApi.webhooks_send_downlink()
-        # reqdata=DotDictLibrary(json.loads(msg.payload.decode('utf-8')))
-        # asyncio.run(EnergyController.get_energy_data(reqdata,parts[1],parts[2]))
-        # EnergyController.get_energy_data(data:device_data_model.StreetLightDeviceData,client_id,device)
+        EnergyController.get_energy_data(request_data,1,data_list[0])
         return {"status":"success"}
     # except Exception as e:
     #     raise e
