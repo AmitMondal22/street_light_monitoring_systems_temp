@@ -60,7 +60,7 @@ async def testing(request: Request):
         
         
         abc = await LoraApi.webhooks_send_downlink()
-        zzz =  EnergyController.get_energy_data(request_data,1,data_list[0])
+        zzz = await EnergyController.get_energy_data(request_data,1,data_list[0])
         print("ws--------------------")
         print(zzz)
         return {"status":"success"}
