@@ -59,7 +59,7 @@ async def get_energy_data(data:device_data_model.StreetLightDeviceData,client_id
             # background_tasks.add_task(send_last_energy_data, client_id, device_id,device)
             # if lastdata is None:
             #     raise ValueError("Could not fetch data")
-            user_data = {"energy_data_id":energy_data_id, "device_id": device_id, "device": device, "do_channel": data.CH}
+            user_data = {"energy_data_id":energy_data_id, "device_id": device_id, "device": device}
         return user_data
     # except Exception as e:
     #     raise ValueError("Could not fetch data",e)
