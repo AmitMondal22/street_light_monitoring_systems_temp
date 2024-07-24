@@ -35,16 +35,16 @@ async def post_checked_devices(data: device_data_model.CheckedDevices):
 
 
 
-@devices_routes.post('/energy_data')
+@devices_routes.post('/street_light_data')
 async def post_energy_data(data: device_data_model.StreetLightDeviceData):
-    try:
+    # try:
         controllerRes =  await EnergyController.get_energy_data(data,data.CLIENT_ID,data.UID)
         resdata = successResponse(controllerRes, message="data stored successfully")
         return Response(content=json.dumps(resdata), media_type="application/json", status_code=200)
-    except ValueError as ve:
-        raise HTTPException(status_code=400, detail=str(ve))
-    except Exception as e:
-        raise HTTPException(status_code=500, detail="Internal server error")
+    # except ValueError as ve:
+    #     raise HTTPException(status_code=400, detail=str(ve))
+    # except Exception as e:
+    #     raise HTTPException(status_code=500, detail="Internal server error")
 
 @devices_routes.post("/ws_data_slms")
 async def post_ws_data(data: device_data_model.WsDeviceData):

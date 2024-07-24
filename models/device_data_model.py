@@ -5,83 +5,20 @@ from typing import Optional,List
 
 
 class StreetLightDeviceData(BaseModel):
+    # UID,VOLTAGE,CURRENT,REALPOWER,PF,KWH,RUNHR,frequencyUPLOADFLAG,DOMODE,sensorflag
     CLIENT_ID:  Optional[int] = 0
     UID: str
-    DT: str
-    TIME: str
-    TW: int
-    CH: int
-    KWH1: float
-    KWH2: Optional[float] = 0.0
-    KWH3: Optional[float] = 0.0
-    R: float
-    Y: Optional[float] = 0.0
-    B: Optional[float] = 0.0
-    R_Y: Optional[float] = 0.0
-    Y_B: Optional[float] = 0.0
-    B_R: Optional[float] = 0.0
-    # R_Y: Optional[float] = Field(0.0, alias="R-Y")
-    # Y_B: Optional[float] = Field(0.0, alias="R-Y")
-    # B_R: Optional[float] = Field(0.0, alias="R-Y")
-    AMP1: float
-    AMP2: Optional[float] = 0.0
-    AMP3: Optional[float] = 0.0
-    KW1: float
-    KW2: Optional[float] = 0.0
-    KW3: Optional[float] = 0.0
-    KVA1: float
-    KVA2: Optional[float] = 0.0
-    KVA3: Optional[float] = 0.0
-    KVAR1: float
-    KVAR2: Optional[float] = 0.0
-    KVAR3: Optional[float] = 0.0
-    PF1: float
-    PF2: Optional[float] = 0.0
-    PF3: Optional[float] = 0.0
-    AVGVLN: float
-    AVGVLL: float
-    AVGAMP: float
-    TOTKW: float
-    TOTKVA: float
-    TOTKVAR: float
-    FREQ: float
+    TW: float
+    VOLTAGE: float
+    CURRENT: float
+    REALPOWER: float
+    PF: float
+    KWH: float
     RUNHR: float
-#     client_id: int
-#     device_id: int
-#     device: str
-#     do_channel: int
-#     e1: float
-#     e2: Optional[float] = None
-#     e3: Optional[float] = None
-#     r: float
-#     y: Optional[float] = None
-#     b: Optional[float] = None
-#     r_y: Optional[float] = None
-#     y_b: Optional[float] = None
-#     b_r: Optional[float] = None
-#     curr1: float
-#     curr2: Optional[float] = None
-#     curr3: Optional[float] = None
-#     activep1: float
-#     activep2: Optional[float] = None
-#     activep3: Optional[float] = None
-#     apparentp1: float
-#     apparentp2: Optional[float] = None
-#     apparentp3: Optional[float] = None
-#     pf1: float
-#     pf2: Optional[float] = None
-#     pf3: Optional[float] = None
-#     freq: Optional[float] = None
-#     reactvp1: float
-#     reactvp2: Optional[float] = None
-#     reactvp3: Optional[float] = None
-#     avaragevln: Optional[float] = None
-#     avaragevll: Optional[float] = None
-#     avaragecurrent: Optional[float] = None
-#     totkw: Optional[float] = None
-#     totkva: Optional[float] = None
-#     totkvar: Optional[float] = None
-#     runhr: Optional[float] = None
+    FREQ: float
+    UPLOADFLAG: int
+    DOMODE: int
+    SENSORFLAG: int
     
    
 # $flow=(round((100*$r->rpm)/2800, 2) >100)?100:round((100*$r->rpm)/2800, 2);
