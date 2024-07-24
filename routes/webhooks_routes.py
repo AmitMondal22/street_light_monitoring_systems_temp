@@ -53,6 +53,7 @@ async def testing(request: Request):
         # UPLOADFLAG = int(data_list[9])
         # DOMODE = int(data_list[10])
         # print("Decoded frm_payload:")
+        print("ZZZZZZZZZZZZZZZZZZZZZZzz")
         print(request_data)
         
         
