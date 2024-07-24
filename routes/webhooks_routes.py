@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException,Request
+from fastapi import APIRouter, HTTPException,Request,BackgroundTasks
 from controllers.api import LoraApi
 from typing import Dict, Any
 import base64
@@ -11,7 +11,7 @@ webhooks_routes = APIRouter()
 
 @webhooks_routes.post("/testing")
 @webhooks_routes.get("/testing")
-async def testing(request: Request):
+async def testing(background_tasks: BackgroundTasks, request: Request):
     # try:
         data = await request.json()
         print(data)
@@ -60,9 +60,10 @@ async def testing(request: Request):
         
         
         abc = await LoraApi.webhooks_send_downlink()
-        zzz =  EnergyController.get_energy_data(request_data,1,data_list[0])
+        background_tasks.add_task(EnergyController.get_energy_data, request_data, 1, data_list[0])
+        # zzz =  EnergyController.get_energy_data(request_data,1,data_list[0])
         print("ws--------------------")
-        print(zzz)
+        # print(zzz)
         return {"status":"success"}
     # except Exception as e:
     #     raise e
