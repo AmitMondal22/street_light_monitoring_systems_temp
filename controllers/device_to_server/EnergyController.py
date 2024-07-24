@@ -12,7 +12,7 @@ from datetime import datetime
 
 @staticmethod
 async def get_energy_data(data:device_data_model.StreetLightDeviceData,client_id,device):
-    try:
+    # try:
         background_tasks = BackgroundTasks()
         device_data=select_one_data("md_device","device_id",f"client_id={client_id} AND device='{device}'")
         if device_data is None:
@@ -43,14 +43,14 @@ async def get_energy_data(data:device_data_model.StreetLightDeviceData,client_id
             await send_last_energy_data(client_id, device_id,device)
             user_data = {"energy_data_id":energy_data_id, "device_id": device_id, "device": device}
         return user_data
-    except Exception as e:
-        raise ValueError("Could not fetch data",e)
+    # except Exception as e:
+    #     raise ValueError("Could not fetch data",e)
     
     
 
 @staticmethod  
 async def send_last_energy_data(client_id, device_id, device):
-        try:
+        # try:
             print("////////////////HHHHHH")
             # Lazy import inside the function
             from Library.WsConnectionManagerManyDeviceTypes import WsConnectionManagerManyDeviceTypes
@@ -147,7 +147,7 @@ async def send_last_energy_data(client_id, device_id, device):
             print(twodata)
             await sennd_ws_message("SLMS",client_id, device_id, device, json.dumps(twodata, cls=DecimalEncoder))
             return json.dumps(lastdata, cls=DecimalEncoder)
-        except Exception as e:
-            raise ValueError("Could not fetch data",e)
+        # except Exception as e:
+        #     raise ValueError("Could not fetch data",e)
     
     
