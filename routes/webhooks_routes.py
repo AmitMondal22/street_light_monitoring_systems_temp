@@ -40,7 +40,8 @@ async def testing(request: Request):
             DOMODE=int(data_list[10]),
             SENSORFLAG=0  # SENSORFLAG is not provided in the data_list, so assign a default or calculated value
         )
-        request_data = device_data.json()
+        # request_data = device_data.json()
+        request_data = device_data
         
         
         # device_id = data_list[0]
