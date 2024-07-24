@@ -32,7 +32,7 @@ async def get_energy_data(data:device_data_model.StreetLightDeviceData,client_id
         
         
         columns = "client_id, device_id, device, tw, voltage, current, realpower, pf, kwh, runhr, frequency, domode, sensor_flag, upload_flag, date, time, created_at, updated_at"
-        value = f"{client_id}, {device_id}, '{device}', {data.TW}, {data.VOLTAGE}, {data.CURRENT}, {data.REALPOWER}, {data.PF}, {data.KWH}, {data.RUNHR}, {data.FREQ}, {data.DOMODE}, {data.SENSORFLAG}, {data.UPLOADFLAG}, '{formatted_date}', '{formatted_time}', '{current_datetime}', '{current_datetime}'"
+        value = f"{client_id}, {device_id}, '{device}', {data['TW']}, {data['VOLTAGE']}, {data['CURRENT']}, {data['REALPOWER']}, {data['PF']}, {data['KWH']}, {data['RUNHR']}, {data['FREQ']}, {data['DOMODE']}, {data['SENSORFLAG']}, {data['UPLOADFLAG']}, '{formatted_date}', '{formatted_time}', '{current_datetime}', '{current_datetime}'"
         
         print("value",value)
         energy_data_id = insert_data("td_energy_data", columns, value)
