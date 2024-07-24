@@ -24,21 +24,21 @@ async def testing(request: Request):
         
         
         
-        
+        # UID,VOLTAGE,CURRENT,REALPOWER,PF,KWH,RUNHR,frequencyUPLOADFLAG,DOMODE,sensorflag
         device_data = device_data_model.StreetLightDeviceData(
             CLIENT_ID = 1,
             UID=data_list[0],
             TW=1.0,  # TW is not provided in the data_list, so assign a default or calculated value
-            VOLTAGE=float(data_list[3]),
-            CURRENT=float(data_list[4]),
-            REALPOWER=float(data_list[5]),
-            PF=float(data_list[6]),
-            KWH=float(data_list[7]),
-            RUNHR=float(data_list[8]),
-            FREQ=50.0,  # FREQ is not provided in the data_list, so assign a default or calculated value
-            UPLOADFLAG=int(data_list[9]),
-            DOMODE=int(data_list[10]),
-            SENSORFLAG=0  # SENSORFLAG is not provided in the data_list, so assign a default or calculated value
+            VOLTAGE=float(data_list[1]),
+            CURRENT=float(data_list[2]),
+            REALPOWER=float(data_list[3]),
+            PF=float(data_list[4]),
+            KWH=float(data_list[5]),
+            RUNHR=float(data_list[6]),
+            FREQ=float(data_list[7]),
+            UPLOADFLAG=int(data_list[8]),
+            DOMODE=int(data_list[9]),
+            SENSORFLAG=int(data_list[10])  # SENSORFLAG is not provided in the data_list, so assign a default or calculated value
         )
         # request_data = device_data.json()
         request_data = device_data
