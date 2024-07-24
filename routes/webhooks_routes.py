@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException,Request,BackgroundTasks
+from fastapi import APIRouter, HTTPException,Request
 from controllers.api import LoraApi
 from typing import Dict, Any
 import base64
@@ -11,7 +11,7 @@ webhooks_routes = APIRouter()
 
 @webhooks_routes.post("/testing")
 @webhooks_routes.get("/testing")
-async def testing(background_tasks: BackgroundTasks, request: Request):
+async def testing(request: Request):
     # try:
         data = await request.json()
         print(data)
