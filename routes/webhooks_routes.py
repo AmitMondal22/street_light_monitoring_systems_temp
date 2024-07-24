@@ -15,6 +15,7 @@ async def testing(request: Request):
     # try:
         data = await request.json()
         print(data)
+        print("////////////////////////////'''''''''''''''''''''''''''")
         frm_payload_base64 = data["uplink_message"]["frm_payload"]
         frm_payload_bytes = base64.b64decode(frm_payload_base64)
         data_str = frm_payload_bytes.decode('utf-8')
