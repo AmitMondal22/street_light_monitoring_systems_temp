@@ -18,6 +18,7 @@ async def testing(request: Request):
         print("////////////////////////////'''''''''''''''''''''''''''",data["uplink_message"])
         frm_payload_base64 = data["uplink_message"]["frm_payload"]
         frm_payload_bytes = base64.b64decode(frm_payload_base64)
+        print("////////////////////////////'''''''''''''''''''''''''''",frm_payload_bytes)
         data_str = frm_payload_bytes.decode('utf-8')
         data_list = data_str.split(',')
         
