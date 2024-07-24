@@ -28,7 +28,7 @@ async def testing(request: Request):
         device_data = device_data_model.StreetLightDeviceData(
             CLIENT_ID = 1,
             UID=data_list[0],
-            TW=0.0,  # TW is not provided in the data_list, so assign a default or calculated value
+            TW=1.0,  # TW is not provided in the data_list, so assign a default or calculated value
             VOLTAGE=float(data_list[3]),
             CURRENT=float(data_list[4]),
             REALPOWER=float(data_list[5]),

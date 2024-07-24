@@ -13,6 +13,7 @@ from datetime import datetime
 @staticmethod
 async def get_energy_data(data:device_data_model.StreetLightDeviceData,client_id,device):
     # try:
+    print(";;;;;;;;;;;;;;;;;;;;;;;",data)
         background_tasks = BackgroundTasks()
         device_data=select_one_data("md_device","device_id",f"client_id={client_id} AND device='{device}'")
         if device_data is None:
