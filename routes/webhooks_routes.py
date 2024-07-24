@@ -60,10 +60,9 @@ async def testing(background_tasks: BackgroundTasks, request: Request):
         
         
         abc = await LoraApi.webhooks_send_downlink()
-        background_tasks.add_task(EnergyController.get_energy_data, request_data, 1, data_list[0])
-        # zzz =  EnergyController.get_energy_data(request_data,1,data_list[0])
+        zzz =  EnergyController.get_energy_data(request_data,1,data_list[0])
         print("ws--------------------")
-        # print(zzz)
+        print(zzz)
         return {"status":"success"}
     # except Exception as e:
     #     raise e
