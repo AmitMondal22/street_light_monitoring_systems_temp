@@ -56,7 +56,7 @@ async def webhooks_send_downlink():
     encoded_payload = base64.b64encode(frm_payload_bytes)
     encoded_string = encoded_payload.decode('utf-8')
     
-    time.sleep(2)
+    # time.sleep(2)
     url = "https://eu1.cloud.thethings.network/api/v3/as/applications/streetlighttechavo/webhooks/test/devices/eui-0080e115002b5637/down/replace"
 
     print(encoded_string)
@@ -79,3 +79,4 @@ async def webhooks_send_downlink():
     response = requests.request("POST", url, headers=headers, data=payload)
 
     print(response.text)
+    return{'success': 'Downlink sent successfully'}
