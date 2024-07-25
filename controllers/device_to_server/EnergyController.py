@@ -12,7 +12,7 @@ from datetime import datetime
 
 @staticmethod
 async def get_energy_data(data:device_data_model.StreetLightDeviceData,client_id,device):
-    # try:
+    try:
         print(";;;;;;;;;;;;;;;;;;;;;;;",data)
         background_tasks = BackgroundTasks()
         device_data=select_one_data("md_device","device_id",f"client_id={client_id} AND device='{device}'")
@@ -44,14 +44,14 @@ async def get_energy_data(data:device_data_model.StreetLightDeviceData,client_id
             await send_last_energy_data(client_id, device_id,device)
             user_data = {"energy_data_id":energy_data_id, "device_id": device_id, "device": device}
         return user_data
-    # except Exception as e:
-    #     raise ValueError("Could not fetch data",e)
+    except Exception as e:
+        raise ValueError("Could not fetch data",e)
     
     
 
 @staticmethod  
 async def send_last_energy_data(client_id, device_id, device):
-        # try:
+        try:
             print("////////////////HHHHHH")
             # Lazy import inside the function
             from Library.WsConnectionManagerManyDeviceTypes import WsConnectionManagerManyDeviceTypes
@@ -75,7 +75,10 @@ async def send_last_energy_data(client_id, device_id, device):
                                 td.sensor_flag,
                                 td.upload_flag,
                                 td.date, 
-                                td.time 
+                                td.time,
+                                COALESCE((SELECT MAX(kwh) FROM td_energy_data WHERE DATE(date) = DATE_SUB(CURDATE(), INTERVAL 1 DAY) AND device_id = td.device_id AND client_id = td.client_id AND device = td.device ORDER BY date DESC LIMIT 1), 0.0) AS kwh_yesterday,
+                                COALESCE((SELECT MAX(kwh) FROM td_energy_data WHERE DATE(date) >= DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND device_id = td.device_id AND client_id = td.client_id AND device = td.device ORDER BY date DESC LIMIT 1), 0.0) AS kwh_past_month,
+                                COALESCE((SELECT MAX(kwh) FROM td_energy_data WHERE YEAR(date) = YEAR(CURDATE())-1 AND device_id = td.device_id AND client_id = td.client_id AND device = td.device), 0.0) AS kwh_past_year
                                
                             FROM 
                                 td_energy_data td
@@ -87,17 +90,34 @@ async def send_last_energy_data(client_id, device_id, device):
                                 td.energy_data_id DESC LIMIT 1"""
             lastdata=custom_select_sql_query(custom_sql,None)
             print(lastdata)
-            
-    #          COALESCE((SELECT MAX(kwh) FROM td_energy_data WHERE DATE(date) = DATE_SUB(CURDATE(), INTERVAL 1 DAY) AND device_id = td.device_id AND client_id = td.client_id AND device = td.device ORDER BY date DESC LIMIT 1), 0.0) AS e1_yesterday,
-    # COALESCE((SELECT MAX(e2) FROM td_energy_data WHERE DATE(date) = DATE_SUB(CURDATE(), INTERVAL 1 DAY) AND device_id = td.device_id AND client_id = td.client_id AND device = td.device ORDER BY date DESC LIMIT 1), 0.0) AS e2_yesterday,
-    # COALESCE((SELECT MAX(e3) FROM td_energy_data WHERE DATE(date) = DATE_SUB(CURDATE(), INTERVAL 1 DAY) AND device_id = td.device_id AND client_id = td.client_id AND device = td.device ORDER BY date DESC LIMIT 1), 0.0) AS e3_yesterday,
-    # COALESCE((SELECT MAX(kwh) FROM td_energy_data WHERE DATE(date) >= DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND device_id = td.device_id AND client_id = td.client_id AND device = td.device ORDER BY date DESC LIMIT 1), 0.0) AS e1_past_month,
-    # COALESCE((SELECT MAX(e2) FROM td_energy_data WHERE DATE(date) >= DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND device_id = td.device_id AND client_id = td.client_id AND device = td.device ORDER BY date DESC LIMIT 1), 0.0) AS e2_past_month,
-    # COALESCE((SELECT MAX(e3) FROM td_energy_data WHERE DATE(date) >= DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND device_id = td.device_id AND client_id = td.client_id AND device = td.device ORDER BY date DESC LIMIT 1), 0.0) AS e3_past_month,
-    # COALESCE((SELECT MAX(kwh) FROM td_energy_data WHERE YEAR(date) = YEAR(CURDATE())-1 AND device_id = td.device_id AND client_id = td.client_id AND device = td.device), 0.0) AS e1_past_year,
-    # COALESCE((SELECT MAX(e2) FROM td_energy_data WHERE YEAR(date) = YEAR(CURDATE())-1 AND device_id = td.device_id AND client_id = td.client_id AND device = td.device), 0.0) AS e2_past_year,
-    # COALESCE((SELECT MAX(e3) FROM td_energy_data WHERE YEAR(date) = YEAR(CURDATE())-1 AND device_id = td.device_id AND client_id = td.client_id AND device = td.device), 0.0) AS e3_past_year
             # week_date=weekdays_date()
+            
+            
+            
+#             SELECT 
+#     curr.date,
+#     curr.time,
+#     curr.kwh
+# FROM 
+#     (
+#         SELECT 
+#             *,
+#             LAG(kwh) OVER (ORDER BY date, time) AS prev_kwh,
+#             ROW_NUMBER() OVER (PARTITION BY date ORDER BY time DESC) AS rn
+#         FROM 
+#             td_energy_data
+#         WHERE 
+#             client_id = {client_id} 
+#             AND device_id = {device_id}
+#             AND device = '{device}'
+#             AND date BETWEEN DATE_SUB({lastdata.date}, INTERVAL (WEEKDAY({lastdata.date}) + 2) DAY) 
+#                         AND DATE_SUB({lastdata.date}, INTERVAL (WEEKDAY({lastdata.date}) - 6) DAY)
+#     ) AS curr
+# WHERE 
+#     curr.rn = 1
+# ORDER BY 
+#     curr.date DESC;
+
             
             
             # custom_sql2=f""" SELECT 
@@ -148,7 +168,7 @@ async def send_last_energy_data(client_id, device_id, device):
             print(twodata)
             await sennd_ws_message("SLMS",client_id, device_id, device, json.dumps(twodata, cls=DecimalEncoder))
             return json.dumps(lastdata, cls=DecimalEncoder)
-        # except Exception as e:
-        #     raise ValueError("Could not fetch data",e)
+        except Exception as e:
+            raise ValueError("Could not fetch data",e)
     
     
