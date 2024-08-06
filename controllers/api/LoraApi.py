@@ -89,22 +89,22 @@ async def webhooks_send_downlink_test(uid):
     frm_payload = uid
 
     # Encode the string to bytes first
-    # frm_payload_bytes = frm_payload.encode('utf-8')
+    frm_payload_bytes = frm_payload.encode('utf-8')
 
     # Base64 encode the bytes
-    # encoded_payload = base64.b64encode(frm_payload_bytes)
-    # encoded_string = encoded_payload.decode('utf-8')
+    encoded_payload = base64.b64encode(frm_payload_bytes)
+    encoded_string = encoded_payload.decode('utf-8')
     
     # time.sleep(2)
-    url = f"http://lora.techavo.in:8080/api/devices/{frm_payload}/queue"
+    url = f"http://lora.techavo.in:8080/api/devices/{encoded_string}/queue"
 
-    print(frm_payload)
+    print(encoded_string)
     print("///////////////////////")
     payload = json.dumps({
         "deviceQueueItem": {
             "confirmed": True,  # Assuming you want it confirmed; set to False if not
-            "data": frm_payload,
-            "devEUI": frm_payload,  # Replace with actual device EUI
+            "data": encoded_string,
+            "devEUI": encoded_string,  # Replace with actual device EUI
             "fCnt": 0,  # Replace with the desired frame counter
             "fPort": 15,  # Using the port number from the original payload
             "jsonObject": {}  # Use if there's additional JSON to include
