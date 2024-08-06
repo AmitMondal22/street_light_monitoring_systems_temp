@@ -28,7 +28,7 @@ class DeviceAutoRegister(BaseModel):
     # client_id: int
     ib_id: int
     # device_id: int
-    do_channel:int
+    
     model:str
     lat:str
     lon:str
@@ -80,7 +80,6 @@ class UpsDeviceData(BaseModel):
     client_id: int
     device_id: int
     device: str
-    do_channel: int
     device_location: str
     device_output_current: float
     device_input_current: float
@@ -165,7 +164,6 @@ class DeviceAdd(BaseModel):
     client_id: int
     device: str
     device_name: str
-    do_channel: int
     model: str
     lat: str
     lon: str
@@ -191,7 +189,6 @@ class DeviceEdit(BaseModel):
     client_id: int
     device: str
     device_name: str
-    do_channel: int
     model: str
     lat: str
     lon: str

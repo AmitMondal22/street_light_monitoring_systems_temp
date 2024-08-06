@@ -6,7 +6,6 @@ class MqttEnergyDeviceData(BaseModel):
     ib_id: int
     device_id: int
     device: str
-    do_channel: int
     device_type: str
     device_location: str
     device_run_hours: float # number of hours the device has been running
@@ -23,7 +22,6 @@ class MqttPublishDeviceData(BaseModel):
     device_id: int
     device: str
     device_type: str
-    do_channel: int
     relay_close_time: str
     timer_start_hours: str
     timer_start_minutes: str

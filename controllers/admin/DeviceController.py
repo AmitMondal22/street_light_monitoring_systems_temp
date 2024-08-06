@@ -8,7 +8,7 @@ from routes.mqtt_routes import subscribe_topics
 async def list_device(client_id):
     try:
         select="device_id, device,device_type,meter_type"
-        # select="device_id, device, do_channel, model, lat, lon, imei_no, last_maintenance, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') AS created_at, DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') AS updated_at"
+        # select="device_id, device,  model, lat, lon, imei_no, last_maintenance, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') AS created_at, DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') AS updated_at"
         condition=f"client_id={client_id} AND device_type='EN'"
         data = select_data("md_device", select, condition)
         return data
@@ -19,7 +19,7 @@ async def list_device(client_id):
 @staticmethod
 async def user_device_list(client_id, user_id, organization_id):
     try:
-        select="d.device_id, d.device, d.do_channel, d.model, d.lat, d.lon, d.imei_no,d.device_type,d.meter_type, d.last_maintenance, DATE_FORMAT(d.created_at, '%Y-%m-%d %H:%i:%s') AS created_at, DATE_FORMAT(d.updated_at, '%Y-%m-%d %H:%i:%s') AS updated_at"
+        select="d.device_id, d.device, d.model, d.lat, d.lon, d.imei_no,d.device_type,d.meter_type, d.last_maintenance, DATE_FORMAT(d.created_at, '%Y-%m-%d %H:%i:%s') AS created_at, DATE_FORMAT(d.updated_at, '%Y-%m-%d %H:%i:%s') AS updated_at"
         
         condition = f"d.device_id = mud.device_id AND d.client_id = mud.client_id AND mud.client_id = {client_id} AND mud.user_id = {user_id} AND mud.organization_id = {organization_id} AND d.device_type='EN'"
         find_devices=select_data("md_device AS d, md_manage_user_device AS mud", select, condition,order_by="d.device_id ASC")
@@ -33,7 +33,7 @@ async def user_device_list(client_id, user_id, organization_id):
 async def device_info(params,userdata):
     try:
         condition = f"client_id={userdata['client_id']} AND device_id = {params.device_id} AND device_type='EN'"
-        select="device_id, client_id, device, device_name, do_channel, model, lat, lon, imei_no, last_maintenance,device_type,meter_type, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') AS created_at, DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') AS updated_at"
+        select="device_id, client_id, device, device_name, model, lat, lon, imei_no, last_maintenance,device_type,meter_type, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') AS created_at, DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') AS updated_at"
         data = select_one_data("md_device",select, condition,order_by="device_id DESC")
         
         select2="count(a.alert_id) alert, a.alert_type, a.unit_id,u.unit,u.unit_name"
@@ -49,7 +49,7 @@ async def add_device(params):
     try:
         
         
-        column="client_id, device, device_name, do_channel, model, lat, lon, imei_no, device_type, meter_type, last_maintenance, created_at"
+        column="client_id, device, device_name, model, lat, lon, imei_no, device_type, meter_type, last_maintenance, created_at"
         
         rows_data = []
         for params_data in params:
@@ -57,7 +57,7 @@ async def add_device(params):
                 "client_id": params_data.client_id,
                 "device": params_data.device,
                 "device_name": params_data.device_name,
-                "do_channel": params_data.do_channel,
+                # "do_channel": params_data.
                 "model": params_data.model,
                 "lat": params_data.lat,
                 "lon": params_data.lon,
@@ -81,7 +81,7 @@ async def add_device(params):
 async def edit_device(params):
     try:
         condition = f"device_id = {params.device_id} AND client_id = {params.client_id}"
-        columns={"device":params.device, "device_name":params.device_name, "do_channel":params.do_channel, "model":params.model, "lat":params.lat, "lon":params.lon, "imei_no":params.imei_no, "device_type" :params.device_type, "meter_type":params.meter_type, "updated_at":get_current_datetime()}
+        columns={"device":params.device, "device_name":params.device_name, "model":params.model, "lat":params.lat, "lon":params.lon, "imei_no":params.imei_no, "device_type" :params.device_type, "meter_type":params.meter_type, "updated_at":get_current_datetime()}
         data = update_data("md_device", columns, condition)
         print(data)
         return data
@@ -94,7 +94,7 @@ async def manage_list_device(params):
     try:
         condition = f"a.client_id = {params.client_id} AND a.device_type='EN'"
         
-        select="a.device_id, a.client_id, a.device, a.device_name, a.do_channel, a.model, a.lat, a.lon, a.imei_no, a.device_type,a.meter_type,a.last_maintenance, DATE_FORMAT(a.created_at, '%Y-%m-%d') AS device_created_at,DATE_FORMAT(a.updated_at, '%Y-%m-%d %H:%i:%s') AS device_updated_at, b.energy_data_id, b.device_id AS b_device_id, b.voltage, b.current, b.realpower, b.pf, b.kwh, b.runhr, b.frequency, b.domode, b.sensor_flag, b.upload_flag,  DATE_FORMAT(b.date, '%Y-%m-%d') AS date, TIME_FORMAT(b.time, '%H:%i:%s') AS time, DATE_FORMAT(b.created_at, '%Y-%m-%d %H:%i:%s') AS energy_data_created_at, DATE_FORMAT(b.updated_at, '%Y-%m-%d %H:%i:%s') AS energy_data_updated_at"
+        select="a.device_id, a.client_id, a.device, a.device_name, a.model, a.lat, a.lon, a.imei_no, a.device_type,a.meter_type,a.last_maintenance, DATE_FORMAT(a.created_at, '%Y-%m-%d') AS device_created_at,DATE_FORMAT(a.updated_at, '%Y-%m-%d %H:%i:%s') AS device_updated_at, b.energy_data_id, b.device_id AS b_device_id, b.voltage, b.current, b.realpower, b.pf, b.kwh, b.runhr, b.frequency, b.domode, b.sensor_flag, b.upload_flag,  DATE_FORMAT(b.date, '%Y-%m-%d') AS date, TIME_FORMAT(b.time, '%H:%i:%s') AS time, DATE_FORMAT(b.created_at, '%Y-%m-%d %H:%i:%s') AS energy_data_created_at, DATE_FORMAT(b.updated_at, '%Y-%m-%d %H:%i:%s') AS energy_data_updated_at"
         
         table="""md_device a LEFT JOIN (SELECT t1.*
     FROM td_energy_data t1
@@ -121,12 +121,12 @@ async def energy_used(params,user_data):
     try:
         if params.type=="Y" :
             condition = f"ed.client_id = {user_data['client_id']} AND ed.device_id = {params.device_id}"
-            select="ed.energy_data_id, ed.device_id, ed.do_channel, ed.e1, ed.e2, ed.e3, DATE_FORMAT(ed.date, '%Y-%m-%d') AS date, TIME_FORMAT(ed.time, '%H:%i:%s') AS time "
+            select="ed.energy_data_id, ed.device_id, ed.e1, ed.e2, ed.e3, DATE_FORMAT(ed.date, '%Y-%m-%d') AS date, TIME_FORMAT(ed.time, '%H:%i:%s') AS time "
             table =f"td_energy_data AS ed INNER JOIN (SELECT  MAX(energy_data_id) AS max_energy_data_id,  YEAR(date) AS year, MONTH(date) AS month FROM td_energy_data WHERE client_id = {user_data['client_id']} AND device_id = {params.device_id} GROUP BY  YEAR(date), MONTH(date) ) AS sub_ed ON ed.energy_data_id = sub_ed.max_energy_data_id"
             data = select_data(table,select, condition,order_by="ed.date DESC, ed.time DESC")
         elif params.type =="M":
             condition = f"ed.client_id = {user_data['client_id']} AND ed.device_id = {params.device_id}"
-            select="ed.energy_data_id, ed.device_id, ed.do_channel, ed.e1, ed.e2, ed.e3, DATE_FORMAT(ed.date, '%Y-%m-%d') AS date, TIME_FORMAT(ed.time, '%H:%i:%s') AS time"
+            select="ed.energy_data_id, ed.device_id, ed.e1, ed.e2, ed.e3, DATE_FORMAT(ed.date, '%Y-%m-%d') AS date, TIME_FORMAT(ed.time, '%H:%i:%s') AS time"
             table=f"""td_energy_data AS ed
                             INNER JOIN (
                                 SELECT
@@ -143,7 +143,7 @@ async def energy_used(params,user_data):
             data = select_data(table,select, condition,order_by="date DESC, time DESC")
         elif params.type =="D":
             condition = f"client_id = {user_data['client_id']} AND device_id = {params.device_id} AND date = CURDATE() AND (date, time) IN ( SELECT date, MAX(time) FROM td_energy_data WHERE date = CURDATE() GROUP BY date, HOUR(time))"
-            select = "energy_data_id, device_id, do_channel, e1, e2, e3, DATE_FORMAT(date, '%Y-%m-%d') AS date, TIME_FORMAT(time, '%H:%i:%s') AS time"
+            select = "energy_data_id, device_id, e1, e2, e3, DATE_FORMAT(date, '%Y-%m-%d') AS date, TIME_FORMAT(time, '%H:%i:%s') AS time"
             data = select_data("td_energy_data AS ed",select, condition,order_by="date DESC, time DESC")
         else:
             return "Invalid type"
@@ -156,12 +156,12 @@ async def voltage_data(params,user_data):
     try:
         if params.type=="Y" :
                 condition = f"ed.client_id = {user_data['client_id']} AND ed.device_id = {params.device_id}"
-                select="ed.energy_data_id, ed.device_id, ed.do_channel, ed.r, ed.y, ed.b, ed.r_y, ed.y_b, ed.b_r, DATE_FORMAT(ed.date, '%Y-%m-%d') AS date, TIME_FORMAT(ed.time, '%H:%i:%s') AS time "
+                select="ed.energy_data_id, ed.device_id, ed.r, ed.y, ed.b, ed.r_y, ed.y_b, ed.b_r, DATE_FORMAT(ed.date, '%Y-%m-%d') AS date, TIME_FORMAT(ed.time, '%H:%i:%s') AS time "
                 table =f"td_energy_data AS ed INNER JOIN (SELECT  MAX(energy_data_id) AS max_energy_data_id,  YEAR(date) AS year, MONTH(date) AS month FROM td_energy_data WHERE client_id = {user_data['client_id']} AND device_id = {params.device_id} GROUP BY  YEAR(date), MONTH(date) ) AS sub_ed ON ed.energy_data_id = sub_ed.max_energy_data_id"
                 data = select_data(table,select, condition,order_by="ed.date DESC, ed.time DESC")
         elif params.type =="M":
             condition = f"ed.client_id = {user_data['client_id']} AND ed.device_id = {params.device_id}"
-            select="ed.energy_data_id, ed.device_id, ed.do_channel, ed.r, ed.y, ed.b, ed.r_y, ed.y_b, ed.b_r, DATE_FORMAT(ed.date, '%Y-%m-%d') AS date, TIME_FORMAT(ed.time, '%H:%i:%s') AS time"
+            select="ed.energy_data_id, ed.device_id, ed.r, ed.y, ed.b, ed.r_y, ed.y_b, ed.b_r, DATE_FORMAT(ed.date, '%Y-%m-%d') AS date, TIME_FORMAT(ed.time, '%H:%i:%s') AS time"
             table=f"""td_energy_data AS ed
                             INNER JOIN (
                                 SELECT
@@ -178,7 +178,7 @@ async def voltage_data(params,user_data):
             data = select_data(table,select, condition,order_by="date DESC, time DESC")
         elif params.type =="D":
             condition = f"client_id = {user_data['client_id']} AND device_id = {params.device_id} AND date = CURDATE() AND (date, time) IN ( SELECT date, MAX(time) FROM td_energy_data WHERE date = CURDATE() GROUP BY date, HOUR(time))"
-            select = "energy_data_id, device_id, do_channel, ed.r, ed.y, ed.b, ed.r_y, ed.y_b, ed.b_r, DATE_FORMAT(date, '%Y-%m-%d') AS date, TIME_FORMAT(time, '%H:%i:%s') AS time"
+            select = "energy_data_id, device_id, ed.r, ed.y, ed.b, ed.r_y, ed.y_b, ed.b_r, DATE_FORMAT(date, '%Y-%m-%d') AS date, TIME_FORMAT(time, '%H:%i:%s') AS time"
             data = select_data("td_energy_data AS ed",select, condition,order_by="date DESC, time DESC")
         else:
             return "Invalid type"
@@ -193,17 +193,17 @@ async def current_data(params,user_data):
         # start_date_time=params.start_date_time
         
         # condition = f"client_id = {user_data['client_id']} AND device_id = {params.device_id} AND created_at BETWEEN '{start_date_time.strftime('%Y-%m-%d %H:%M:%S')}' AND '{end_date_time.strftime('%Y-%m-%d %H:%M:%S')}'"
-        # select="energy_data_id, device_id, do_channel, curr1, curr2, curr3, DATE_FORMAT(date, '%Y-%m-%d') AS date, TIME_FORMAT(time, '%H:%i:%s') AS time, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') AS created_at, DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') AS updated_at"
+        # select="energy_data_id, device_id,  curr1, curr2, curr3, DATE_FORMAT(date, '%Y-%m-%d') AS date, TIME_FORMAT(time, '%H:%i:%s') AS time, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') AS created_at, DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') AS updated_at"
         # data = select_data("td_energy_data",select, condition,order_by="energy_data_id DESC")
         # return data
         if params.type=="Y" :
                 condition = f"ed.client_id = {user_data['client_id']} AND ed.device_id = {params.device_id}"
-                select="ed.energy_data_id, ed.device_id, ed.do_channel, ed.curr1, ed.curr2, ed.curr3, DATE_FORMAT(ed.date, '%Y-%m-%d') AS date, TIME_FORMAT(ed.time, '%H:%i:%s') AS time "
+                select="ed.energy_data_id, ed.device_id, ed.curr1, ed.curr2, ed.curr3, DATE_FORMAT(ed.date, '%Y-%m-%d') AS date, TIME_FORMAT(ed.time, '%H:%i:%s') AS time "
                 table =f"td_energy_data AS ed INNER JOIN (SELECT  MAX(energy_data_id) AS max_energy_data_id,  YEAR(date) AS year, MONTH(date) AS month FROM td_energy_data WHERE client_id = {user_data['client_id']} AND device_id = {params.device_id} GROUP BY  YEAR(date), MONTH(date) ) AS sub_ed ON ed.energy_data_id = sub_ed.max_energy_data_id"
                 data = select_data(table,select, condition,order_by="ed.date DESC, ed.time DESC")
         elif params.type =="M":
             condition = f"ed.client_id = {user_data['client_id']} AND ed.device_id = {params.device_id}"
-            select="ed.energy_data_id, ed.device_id, ed.do_channel, ed.curr1, ed.curr2, ed.curr3, DATE_FORMAT(ed.date, '%Y-%m-%d') AS date, TIME_FORMAT(ed.time, '%H:%i:%s') AS time"
+            select="ed.energy_data_id, ed.device_id, ed.curr1, ed.curr2, ed.curr3, DATE_FORMAT(ed.date, '%Y-%m-%d') AS date, TIME_FORMAT(ed.time, '%H:%i:%s') AS time"
             table=f"""td_energy_data AS ed
                             INNER JOIN (
                                 SELECT
@@ -220,7 +220,7 @@ async def current_data(params,user_data):
             data = select_data(table,select, condition,order_by="date DESC, time DESC")
         elif params.type =="D":
             condition = f"client_id = {user_data['client_id']} AND device_id = {params.device_id} AND date = CURDATE() AND (date, time) IN ( SELECT date, MAX(time) FROM td_energy_data WHERE date = CURDATE() GROUP BY date, HOUR(time))"
-            select = "energy_data_id, device_id, do_channel, ed.curr1, ed.curr2, ed.curr3, DATE_FORMAT(date, '%Y-%m-%d') AS date, TIME_FORMAT(time, '%H:%i:%s') AS time"
+            select = "energy_data_id, device_id,  ed.curr1, ed.curr2, ed.curr3, DATE_FORMAT(date, '%Y-%m-%d') AS date, TIME_FORMAT(time, '%H:%i:%s') AS time"
             data = select_data("td_energy_data AS ed",select, condition,order_by="date DESC, time DESC")
         else:
             return "Invalid type"
@@ -236,18 +236,18 @@ async def power_data(params,user_data):
         # start_date_time=params.start_date_time
     
         # condition = f"client_id = {user_data['client_id']} AND device_id = {params.device_id} AND created_at BETWEEN '{start_date_time.strftime('%Y-%m-%d %H:%M:%S')}' AND '{end_date_time.strftime('%Y-%m-%d %H:%M:%S')}'"
-        # select="energy_data_id, device_id, do_channel, activep1, activep2, activep3, apparentp1, apparentp2, apparentp3, pf1, pf2, pf3, DATE_FORMAT(date, '%Y-%m-%d') AS date, TIME_FORMAT(time, '%H:%i:%s') AS time, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') AS created_at, DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') AS updated_at"
+        # select="energy_data_id, device_id,  activep1, activep2, activep3, apparentp1, apparentp2, apparentp3, pf1, pf2, pf3, DATE_FORMAT(date, '%Y-%m-%d') AS date, TIME_FORMAT(time, '%H:%i:%s') AS time, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') AS created_at, DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') AS updated_at"
         # data = select_data("td_energy_data",select, condition,order_by="energy_data_id DESC")
         # return data
     
         if params.type=="Y" :
                 condition = f"ed.client_id = {user_data['client_id']} AND ed.device_id = {params.device_id}"
-                select="ed.energy_data_id, ed.device_id, ed.do_channel, ed.activep1, ed.activep2, ed.activep3, ed.apparentp1, ed.apparentp2, ed.apparentp3, ed.pf1, ed.pf2, ed.pf3, DATE_FORMAT(ed.date, '%Y-%m-%d') AS date, TIME_FORMAT(ed.time, '%H:%i:%s') AS time "
+                select="ed.energy_data_id, ed.device_id, ed.activep1, ed.activep2, ed.activep3, ed.apparentp1, ed.apparentp2, ed.apparentp3, ed.pf1, ed.pf2, ed.pf3, DATE_FORMAT(ed.date, '%Y-%m-%d') AS date, TIME_FORMAT(ed.time, '%H:%i:%s') AS time "
                 table =f"td_energy_data AS ed INNER JOIN (SELECT  MAX(energy_data_id) AS max_energy_data_id,  YEAR(date) AS year, MONTH(date) AS month FROM td_energy_data WHERE client_id = {user_data['client_id']} AND device_id = {params.device_id} GROUP BY  YEAR(date), MONTH(date) ) AS sub_ed ON ed.energy_data_id = sub_ed.max_energy_data_id"
                 data = select_data(table,select, condition,order_by="ed.date DESC, ed.time DESC")
         elif params.type =="M":
             condition = f"ed.client_id = {user_data['client_id']} AND ed.device_id = {params.device_id}"
-            select="ed.energy_data_id, ed.device_id, ed.do_channel, ed.activep1, ed.activep2, ed.activep3, ed.apparentp1, ed.apparentp2, ed.apparentp3, ed.pf1, ed.pf2, ed.pf3, DATE_FORMAT(ed.date, '%Y-%m-%d') AS date, TIME_FORMAT(ed.time, '%H:%i:%s') AS time"
+            select="ed.energy_data_id, ed.device_id, ed.activep1, ed.activep2, ed.activep3, ed.apparentp1, ed.apparentp2, ed.apparentp3, ed.pf1, ed.pf2, ed.pf3, DATE_FORMAT(ed.date, '%Y-%m-%d') AS date, TIME_FORMAT(ed.time, '%H:%i:%s') AS time"
             table=f"""td_energy_data AS ed
                             INNER JOIN (
                                 SELECT
@@ -264,7 +264,7 @@ async def power_data(params,user_data):
             data = select_data(table,select, condition,order_by="date DESC, time DESC")
         elif params.type =="D":
             condition = f"client_id = {user_data['client_id']} AND device_id = {params.device_id} AND date = CURDATE() AND (date, time) IN ( SELECT date, MAX(time) FROM td_energy_data WHERE date = CURDATE() GROUP BY date, HOUR(time))"
-            select = "energy_data_id, device_id, do_channel, ed.activep1, ed.activep2, ed.activep3, ed.apparentp1, ed.apparentp2, ed.apparentp3, ed.pf1, ed.pf2, ed.pf3, DATE_FORMAT(date, '%Y-%m-%d') AS date, TIME_FORMAT(time, '%H:%i:%s') AS time"
+            select = "energy_data_id, device_id,  ed.activep1, ed.activep2, ed.activep3, ed.apparentp1, ed.apparentp2, ed.apparentp3, ed.pf1, ed.pf2, ed.pf3, DATE_FORMAT(date, '%Y-%m-%d') AS date, TIME_FORMAT(time, '%H:%i:%s') AS time"
             data = select_data("td_energy_data AS ed",select, condition,order_by="date DESC, time DESC")
         else:
             return "Invalid type"
@@ -278,7 +278,7 @@ async def total_power_analisis(params,user_data):
         # end_date_time=params.end_date_time
         # start_date_time=params.start_date_time
         # condition = f"client_id = {user_data['client_id']} AND device_id = {params.device_id} AND created_at BETWEEN '{start_date_time.strftime('%Y-%m-%d %H:%M:%S')}' AND '{end_date_time.strftime('%Y-%m-%d %H:%M:%S')}'"
-        # select="energy_data_id, device_id, do_channel, totkw, totkva, totkvar, runhr, DATE_FORMAT(date, '%Y-%m-%d') AS date, TIME_FORMAT(time, '%H:%i:%s') AS time, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') AS created_at, DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') AS updated_at"
+        # select="energy_data_id, device_id,  totkw, totkva, totkvar, runhr, DATE_FORMAT(date, '%Y-%m-%d') AS date, TIME_FORMAT(time, '%H:%i:%s') AS time, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') AS created_at, DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') AS updated_at"
         # data = select_data("td_energy_data",select, condition,order_by="energy_data_id DESC")
         # return data
     
@@ -286,12 +286,12 @@ async def total_power_analisis(params,user_data):
     
         if params.type=="Y" :
                 condition = f"ed.client_id = {user_data['client_id']} AND ed.device_id = {params.device_id}"
-                select="ed.energy_data_id, ed.device_id, ed.do_channel,ed.totkw, ed.totkva, ed.totkvar, ed.runhr, DATE_FORMAT(ed.date, '%Y-%m-%d') AS date, TIME_FORMAT(ed.time, '%H:%i:%s') AS time "
+                select="ed.energy_data_id, ed.device_id,ed.totkw, ed.totkva, ed.totkvar, ed.runhr, DATE_FORMAT(ed.date, '%Y-%m-%d') AS date, TIME_FORMAT(ed.time, '%H:%i:%s') AS time "
                 table =f"td_energy_data AS ed INNER JOIN (SELECT  MAX(energy_data_id) AS max_energy_data_id,  YEAR(date) AS year, MONTH(date) AS month FROM td_energy_data WHERE client_id = {user_data['client_id']} AND device_id = {params.device_id} GROUP BY  YEAR(date), MONTH(date) ) AS sub_ed ON ed.energy_data_id = sub_ed.max_energy_data_id"
                 data = select_data(table,select, condition,order_by="ed.date DESC, ed.time DESC")
         elif params.type =="M":
             condition = f"ed.client_id = {user_data['client_id']} AND ed.device_id = {params.device_id}"
-            select="ed.energy_data_id, ed.device_id, ed.do_channel,ed.totkw, ed.totkva, ed.totkvar, ed.runhr, DATE_FORMAT(ed.date, '%Y-%m-%d') AS date, TIME_FORMAT(ed.time, '%H:%i:%s') AS time"
+            select="ed.energy_data_id, ed.device_id,ed.totkw, ed.totkva, ed.totkvar, ed.runhr, DATE_FORMAT(ed.date, '%Y-%m-%d') AS date, TIME_FORMAT(ed.time, '%H:%i:%s') AS time"
             table=f"""td_energy_data AS ed
                             INNER JOIN (
                                 SELECT
@@ -308,7 +308,7 @@ async def total_power_analisis(params,user_data):
             data = select_data(table,select, condition,order_by="date DESC, time DESC")
         elif params.type =="D":
             condition = f"client_id = {user_data['client_id']} AND device_id = {params.device_id} AND date = CURDATE() AND (date, time) IN ( SELECT date, MAX(time) FROM td_energy_data WHERE date = CURDATE() GROUP BY date, HOUR(time))"
-            select = "energy_data_id, device_id, do_channel,ed.totkw, ed.totkva, ed.totkvar, ed.runhr, DATE_FORMAT(date, '%Y-%m-%d') AS date, TIME_FORMAT(time, '%H:%i:%s') AS time"
+            select = "energy_data_id, device_id, ed.totkw, ed.totkva, ed.totkvar, ed.runhr, DATE_FORMAT(date, '%Y-%m-%d') AS date, TIME_FORMAT(time, '%H:%i:%s') AS time"
             data = select_data("td_energy_data AS ed",select, condition,order_by="date DESC, time DESC")
         else:
             return "Invalid type"
@@ -324,7 +324,7 @@ async def organization_settings(client_id,user_id,params):
     try:
 
         
-        #  column="client_id, device, device_name, do_channel, model, lat, lon, imei_no, device_type, meter_type, last_maintenance, created_at"
+        #  column="client_id, device, device_name,  model, lat, lon, imei_no, device_type, meter_type, last_maintenance, created_at"
         
         # rows_data = []
         # for params_data in params:
@@ -332,7 +332,7 @@ async def organization_settings(client_id,user_id,params):
         #         "client_id": params_data.client_id,
         #         "device": params_data.device,
         #         "device_name": params_data.device_name,
-        #         "do_channel": params_data.do_channel,
+        #         "do_channel": params_data.
         #         "model": params_data.model,
         #         "lat": params_data.lat,
         #         "lon": params_data.lon,
@@ -434,7 +434,7 @@ async def edit_organization_info(client_id,user_id,params):
 async def get_device_schedule(userdata,params):
     try:
         condition = f"client_id = {userdata['client_id']} AND device_id = {params.device_id}"
-        select = "device_scheduling_id, device_id, device, client_id, device_type, do_channel, relay_close_time, timer_start_hours, timer_start_minutes, timer_stop_hours_1, timer_stop_minutes_1, create_by, created_at, updated_at"
+        select = "device_scheduling_id, device_id, device, client_id, device_type, relay_close_time, timer_start_hours, timer_start_minutes, timer_stop_hours_1, timer_stop_minutes_1, create_by, created_at, updated_at"
         table = "st_device_scheduling"
         data = select_one_data(table, select, condition,order_by="device_scheduling_id DESC")
         return data
