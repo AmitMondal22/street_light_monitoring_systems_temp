@@ -100,7 +100,7 @@ async def webhooks_send_downlink_test(uid):
 
     print(encoded_string)
     print("///////////////////////")
-    payload = json.dumps({
+    payload = {
         "deviceQueueItem": {
             "confirmed": True,  # Assuming you want it confirmed; set to False if not
             "data": encoded_string,
@@ -109,7 +109,7 @@ async def webhooks_send_downlink_test(uid):
             "fPort": 15,  # Using the port number from the original payload
             "jsonObject": {}  # Use if there's additional JSON to include
         }
-    })
+    }
     print(payload)
     headers = {
     'Content-Type': 'application/json',
