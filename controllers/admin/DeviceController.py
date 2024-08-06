@@ -143,7 +143,7 @@ async def energy_used(params,user_data):
             data = select_data(table,select, condition,order_by="date DESC, time DESC")
         elif params.type =="D":
             condition = f"client_id = {user_data['client_id']} AND device_id = {params.device_id} AND date = CURDATE() AND (date, time) IN ( SELECT date, MAX(time) FROM td_energy_data WHERE date = CURDATE() GROUP BY date, HOUR(time))"
-            select = "energy_data_id, device_id, e1, e2, e3, DATE_FORMAT(date, '%Y-%m-%d') AS date, TIME_FORMAT(time, '%H:%i:%s') AS time"
+            select = "ed.energy_data_id, ed.device_id, ed.e1, ed.e2, ed.e3, DATE_FORMAT(ed.date, '%Y-%m-%d') AS date, TIME_FORMAT(ed.time, '%H:%i:%s') AS time"
             data = select_data("td_energy_data AS ed",select, condition,order_by="date DESC, time DESC")
         else:
             return "Invalid type"
