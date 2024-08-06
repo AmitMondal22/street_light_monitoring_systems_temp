@@ -53,7 +53,7 @@ async def testing(request: Request):
 async def testing2(request: Request):
     # try:
         data = await request.json()
-        print("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZrequest",data)
+        print("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZrequest",data.devEUI)
         # frm_payload_base64 = data["uplink_message"]["frm_payload"]
         # frm_payload_bytes = base64.b64decode(frm_payload_base64)
         # data_str = frm_payload_bytes.decode('utf-8')
@@ -80,7 +80,7 @@ async def testing2(request: Request):
         # # request_data = device_data.json()
         # request_data = device_data
         
-        # abc = await LoraApi.webhooks_send_downlink()
+        abc = await LoraApi.webhooks_send_downlink_test(data.devEUI)
         # zzz = await EnergyController.get_energy_data(request_data,1,data_list[0])
         return {"status":"success"}
     # except Exception as e:

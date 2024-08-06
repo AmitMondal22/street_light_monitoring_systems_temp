@@ -80,3 +80,43 @@ async def webhooks_send_downlink():
 
     print(response.text)
     return{'success': 'Downlink sent successfully'}
+
+
+
+@staticmethod
+async def webhooks_send_downlink_test(uid):
+   
+    frm_payload = uid
+
+    # Encode the string to bytes first
+    # frm_payload_bytes = frm_payload.encode('utf-8')
+
+    # Base64 encode the bytes
+    # encoded_payload = base64.b64encode(frm_payload_bytes)
+    # encoded_string = encoded_payload.decode('utf-8')
+    
+    # time.sleep(2)
+    url = f"http://lora.techavo.in:8080/api/devices/{frm_payload}/queue"
+
+    print(frm_payload)
+    print("///////////////////////")
+    payload = json.dumps({
+        "deviceQueueItem": {
+            "confirmed": True,  # Assuming you want it confirmed; set to False if not
+            "data": frm_payload,
+            "devEUI": frm_payload,  # Replace with actual device EUI
+            "fCnt": 0,  # Replace with the desired frame counter
+            "fPort": 15,  # Using the port number from the original payload
+            "jsonObject": {}  # Use if there's additional JSON to include
+        }
+    })
+    print(payload)
+    headers = {
+    'Content-Type': 'application/json',
+    # 'Authorization': 'Bearer NNSXS.SKSGTTX6IIDKM7THS3RATJBRL5ZHMKO4A6ZBGXY.WVF3AVQVGOAVWK3E7CIGPVLXPHREIL5D5FXJCK5E2BCKZWL6PAVA'
+    }
+
+    response = requests.request("POST", url, headers=headers, data=payload)
+
+    print(response.text)
+    return{'success': 'Downlink sent successfully'}
