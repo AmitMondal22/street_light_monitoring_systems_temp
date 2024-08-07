@@ -5,6 +5,8 @@ import base64
 from controllers.device_to_server import EnergyController
 from models import device_data_model
 
+from utils.base64 import decode_base64
+
 
 webhooks_routes = APIRouter()
 
@@ -59,7 +61,8 @@ async def testing2(request: Request):
         # Extract Device EUI and the uplink payload
         dev_eui = event.get("devEUI")
         print(">>>>>>>>>>>>>>>>>>>>>>>devEUI",dev_eui)
-       
+        abc=decode_base64(dev_eui)
+        print(">>>>>>>>>>>>>>>>>>>>>>>abc",abc)
         
         
         
