@@ -101,14 +101,19 @@ async def webhooks_send_downlink_test(dev_eui: str, payload: str):
 
     # print(encoded_string)
     print("///////////////////////")
+    # data = {
+    #     "confirmed": False,
+    #     "f_port": 1,  # Use a valid f_port value
+    #     "data": payload,
+    #     "devEUI": dev_eui,
+    #     "fCnt": 0,
+    #     "fPort": 1,
+    #     "jsonObject": "string"
+    # }
     data = {
-        "confirmed": False,
-        "f_port": 1,  # Use a valid f_port value
-        "data": payload,
-        "devEUI": dev_eui,
-        "fCnt": 0,
-        "fPort": 0,
-        "jsonObject": "string"
+        "confirmed": False,  # Whether to require confirmation of receipt
+        "f_port": 1,  # Use a valid f_port value (> 0)
+        "data": payload  # Base64 encoded payload
     }
     print(payload)
     headers = {
