@@ -6,6 +6,9 @@ from typing import Any
 from fastapi.encoders import jsonable_encoder
 import time
 
+import grpc
+from chirpstack_api import api
+
 
 api_key = 'NNSXS.SKSGTTX6IIDKM7THS3RATJBRL5ZHMKO4A6ZBGXY.WVF3AVQVGOAVWK3E7CIGPVLXPHREIL5D5FXJCK5E2BCKZWL6PAVA'
 application_id = 'streetlighttechavo'
@@ -85,42 +88,64 @@ async def webhooks_send_downlink():
 
 @staticmethod
 async def webhooks_send_downlink_test(dev_eui: str, payload: str):
-   
-    # frm_payload = uid
+    # This must point to the API interface.
+    server = "http://lora.techavo.in:8080"
 
-    # Encode the string to bytes first
-    # frm_payload_bytes = frm_payload.encode('utf-8')
 
-    # Base64 encode the bytes
-    # encoded_payload = base64.b64encode(frm_payload_bytes)
-    # encoded_string = encoded_payload.decode('utf-8')
+    # The API token (retrieved using the web-interface).
+    api_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5X2lkIjoiYTBmOTUzZTQtNWRlMi00NDhiLWJiMmQtYWQxOTM3OTMxMGRlIiwiYXVkIjoiYXMiLCJpc3MiOiJhcyIsIm5iZiI6MTcyMjk0NDE5Miwic3ViIjoiYXBpX2tleSJ9.ep4D5-YaGQru0o0ur77TK5CuwtFFNPlQaSu0zfrw6Lo"
     
-    # time.sleep(2)
-    # url = f"http://lora.techavo.in:8080/api/devices/{encoded_string}/queue"
-    url = f"http://lora.techavo.in:8080/api/devices/{dev_eui}/queue"
+    
+    # Connect without using TLS.
+    channel = grpc.insecure_channel(server)
 
-    # print(encoded_string)
-    print("///////////////////////")
+    # Device-queue API client.
+    client = api.DeviceServiceStub(channel)
+
+    # Define the API key meta-data.
+    auth_token = [("authorization", "Bearer %s" % api_token)]
+
+    # Construct request.
+    req = api.EnqueueDeviceQueueItemRequest()
+    req.queue_item.confirmed = False
+    req.queue_item.data = bytes([0x01, 0x02, 0x03])
+    req.queue_item.dev_eui = dev_eui
+    req.queue_item.f_port = 10
+
+    resp = client.Enqueue(req, metadata=auth_token)
+
+    # Print the downlink id
+    print(resp.id)
+  
+  
+  
+  
+
+    # url = f"http://lora.techavo.in:8080/api/devices/{dev_eui}/queue"
+    # # url = f"http://lora.techavo.in:8080/api/devices/{dev_eui}/downlink"
+
+    # # print(encoded_string)
+    # print("///////////////////////")
+    # # data = {
+    # #     "confirmed": False,
+    # #     "f_port": 1,  # Use a valid f_port value
+    # #     "data": payload,
+    # #     "devEUI": dev_eui,
+    # #     "fCnt": 0,
+    # #     "fPort": 1,
+    # #     "jsonObject": "string"
+    # # }
     # data = {
-    #     "confirmed": False,
-    #     "f_port": 1,  # Use a valid f_port value
-    #     "data": payload,
-    #     "devEUI": dev_eui,
-    #     "fCnt": 0,
-    #     "fPort": 1,
-    #     "jsonObject": "string"
+    #     "fPort": 2,
+    #     "data": "AQAB",
+    #     "confirmed": True
     # }
-    data = {
-        "fPort": 2,
-        "data": "AQAB",
-        "confirmed": True
-    }
-    headers = {
-        "Authorization": f"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5X2lkIjoiYTBmOTUzZTQtNWRlMi00NDhiLWJiMmQtYWQxOTM3OTMxMGRlIiwiYXVkIjoiYXMiLCJpc3MiOiJhcyIsIm5iZiI6MTcyMjk0NDE5Miwic3ViIjoiYXBpX2tleSJ9.ep4D5-YaGQru0o0ur77TK5CuwtFFNPlQaSu0zfrw6Lo",
-        "Content-Type": "application/json"
-    }
-    response = requests.post(url, headers=headers, json=data)
-    # response = requests.request("POST", url, headers=headers, data=payload)
+    # headers = {
+    #     "Authorization": f"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5X2lkIjoiYTBmOTUzZTQtNWRlMi00NDhiLWJiMmQtYWQxOTM3OTMxMGRlIiwiYXVkIjoiYXMiLCJpc3MiOiJhcyIsIm5iZiI6MTcyMjk0NDE5Miwic3ViIjoiYXBpX2tleSJ9.ep4D5-YaGQru0o0ur77TK5CuwtFFNPlQaSu0zfrw6Lo",
+    #     "Content-Type": "application/json"
+    # }
+    # response = requests.post(url, headers=headers, json=data)
+    # # response = requests.request("POST", url, headers=headers, data=payload)
 
-    print(response.text)
-    return{'success': 'Downlink sent successfully'}
+    # print(response.text)
+    # return{'success': 'Downlink sent successfully'}
