@@ -111,14 +111,9 @@ async def webhooks_send_downlink_test(dev_eui: str, payload: str):
     #     "jsonObject": "string"
     # }
     data = {
-        "confirmed": False,  # Set to True if confirmation is needed
-        "f_port": 1,         # Ensure f_port is a valid value (greater than 0)
-        "fCnt": 0, # Set to True if confirmation is needed
-        "data": payload,     # Base64 encoded payload
-        # "priority": "NORMAL",  # Optional: Set the priority if needed
-        "devEUI": dev_eui,
-        # "replace": True       # Optional: Replace the queue with this message
-        "jsonObject":""
+        "fPort": 1,
+        "data": "AQAB",
+        "confirmed": True
     }
     headers = {
         "Authorization": f"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5X2lkIjoiYTBmOTUzZTQtNWRlMi00NDhiLWJiMmQtYWQxOTM3OTMxMGRlIiwiYXVkIjoiYXMiLCJpc3MiOiJhcyIsIm5iZiI6MTcyMjk0NDE5Miwic3ViIjoiYXBpX2tleSJ9.ep4D5-YaGQru0o0ur77TK5CuwtFFNPlQaSu0zfrw6Lo",
