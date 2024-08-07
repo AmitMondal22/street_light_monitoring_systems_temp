@@ -110,7 +110,7 @@ async def webhooks_send_downlink_test(dev_eui: str, payload: str):
     req.queue_item.confirmed = False
     req.queue_item.data = bytes([0x01, 0x02, 0x03])
     req.queue_item.dev_eui = dev_eui
-    req.queue_item.f_port = 10
+    req.queue_item.f_port = 2
 
     resp = client.Enqueue(req, metadata=auth_token)
 
