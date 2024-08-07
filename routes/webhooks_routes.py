@@ -59,6 +59,14 @@ async def testing2(request: Request):
         # Extract Device EUI and the uplink payload
         dev_eui = event.get("devEUI")
         print(">>>>>>>>>>>>>>>>>>>>>>>devEUI",dev_eui)
+        try:
+            dev_eui_bytes = bytes.fromhex(dev_eui)
+            print(f"Device EUI (bytes): {dev_eui_bytes}")
+        except ValueError as e:
+            raise HTTPException(status_code=400, detail=f"Invalid devEUI format: {str(e)}")
+        
+        
+        
         uplink_data = event.get("data")
         print("dev_eui",dev_eui)
 
