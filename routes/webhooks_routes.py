@@ -56,10 +56,11 @@ async def testing2(request: Request):
         event = await request.json()
 
         # Extract Device EUI and the uplink payload
-        dev_eui = event["devEUI"]
-        uplink_data = event["data"]
-        decoded_data = base64.b64decode(uplink_data).hex()
-        print(f"Received uplink data from device {dev_eui}: {decoded_data}")
+        dev_eui = event.get("devEUI")
+        uplink_data = event.get("data")
+
+        if not dev_eui or not uplink_data:
+            raise HTTPException(status_code=400, detail="Invalid uplink data")
 
         # Prepare the downlink payload (example)
         downlink_payload = base64.b64encode(b'\x02\x03\x04').decode('utf-8')
