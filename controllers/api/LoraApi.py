@@ -84,39 +84,35 @@ async def webhooks_send_downlink():
 
 
 @staticmethod
-async def webhooks_send_downlink_test(uid):
+async def webhooks_send_downlink_test(dev_eui: str, payload: str):
    
-    frm_payload = uid
+    # frm_payload = uid
 
     # Encode the string to bytes first
-    frm_payload_bytes = frm_payload.encode('utf-8')
+    # frm_payload_bytes = frm_payload.encode('utf-8')
 
     # Base64 encode the bytes
-    encoded_payload = base64.b64encode(frm_payload_bytes)
-    encoded_string = encoded_payload.decode('utf-8')
+    # encoded_payload = base64.b64encode(frm_payload_bytes)
+    # encoded_string = encoded_payload.decode('utf-8')
     
     # time.sleep(2)
-    url = f"http://lora.techavo.in:8080/api/devices/{encoded_string}/queue"
+    # url = f"http://lora.techavo.in:8080/api/devices/{encoded_string}/queue"
+    url = f"http://lora.techavo.in:8080/api/devices/{dev_eui}/queue"
 
-    print(encoded_string)
+    # print(encoded_string)
     print("///////////////////////")
-    payload = json.dumps({
-        "deviceQueueItem": {
-            "confirmed": True,  # Assuming you want it confirmed; set to False if not
-            "data": encoded_string,
-            "devEUI": encoded_string,  # Replace with actual device EUI
-            "fCnt": 0,  # Replace with the desired frame counter
-            "fPort": 15,  # Using the port number from the original payload
-            "jsonObject": {}  # Use if there's additional JSON to include
-        }
-    })
+    data = {
+        "confirmed": False,
+        "f_port": 1,
+        "data": payload
+    }
     print(payload)
     headers = {
-    'Content-Type': 'application/json',
-    # 'Authorization': 'Bearer NNSXS.SKSGTTX6IIDKM7THS3RATJBRL5ZHMKO4A6ZBGXY.WVF3AVQVGOAVWK3E7CIGPVLXPHREIL5D5FXJCK5E2BCKZWL6PAVA'
+        "Authorization": f"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5X2lkIjoiYTBmOTUzZTQtNWRlMi00NDhiLWJiMmQtYWQxOTM3OTMxMGRlIiwiYXVkIjoiYXMiLCJpc3MiOiJhcyIsIm5iZiI6MTcyMjk0NDE5Miwic3ViIjoiYXBpX2tleSJ9.ep4D5-YaGQru0o0ur77TK5CuwtFFNPlQaSu0zfrw6Lo",
+        "Content-Type": "application/json"
     }
-
-    response = requests.request("POST", url, headers=headers, data=payload)
+    response = requests.post(url, headers=headers, json=data)
+    # response = requests.request("POST", url, headers=headers, data=payload)
 
     print(response.text)
     return{'success': 'Downlink sent successfully'}
