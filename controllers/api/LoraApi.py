@@ -142,7 +142,8 @@ async def webhooks_send_downlink_test(dev_eui: str, payload: str):
     # }
     # headers = {
     #     "Authorization": f"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5X2lkIjoiYTBmOTUzZTQtNWRlMi00NDhiLWJiMmQtYWQxOTM3OTMxMGRlIiwiYXVkIjoiYXMiLCJpc3MiOiJhcyIsIm5iZiI6MTcyMjk0NDE5Miwic3ViIjoiYXBpX2tleSJ9.ep4D5-YaGQru0o0ur77TK5CuwtFFNPlQaSu0zfrw6Lo",
-    #     "Content-Type": "application/json"
+    #     "Content-Type": "application/json"pip install chirpstack-api
+
     # }
     # response = requests.post(url, headers=headers, json=data)
     # # response = requests.request("POST", url, headers=headers, data=payload)
