@@ -58,6 +58,7 @@ async def testing2(request: Request):
 
         # Extract Device EUI and the uplink payload
         dev_eui = event.get("devEUI")
+        print("devEUI",dev_eui)
         uplink_data = event.get("data")
         print("dev_eui",dev_eui)
 
@@ -67,6 +68,7 @@ async def testing2(request: Request):
         # Prepare the downlink payload (example)
         downlink_payload = base64.b64encode(b'\x02\x03\x04').decode('utf-8')
         print("Updating the downlink payload to:", downlink_payload)
+        
         
         # Send a downlink message
         await LoraApi.webhooks_send_downlink_test("0080e115002b5626", "hello")
