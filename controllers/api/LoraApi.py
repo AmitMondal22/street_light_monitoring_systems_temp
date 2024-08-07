@@ -107,30 +107,5 @@ async def webhooks_send_downlink_test(dev_eui: str, payload: str):
 
     response = requests.post(url, headers=headers, json=data)
     print(response.text)
-
-
-        # url = f"http://lora.techavo.in:8080/api/devices/{dev_eui}/queue"
-        # base64_payload = base64.b64encode(payload.encode()).decode('utf-8')
-
-        # data = {
-        #     "fPort": 2,             # Ensure this is a valid f_port
-        #     "data": base64_payload, # Base64 encoded payload
-        #     "confirmed": True,      # Set to True if confirmation is needed
-        #     "f_port": 1
-        # }
-
-        # headers = {
-        #     "Authorization": f"Bearer <YOUR_API_KEY>",
-        #     "Content-Type": "application/json"
-        # }
-
-        # # Sending the request with a JSON payload, not a string
-        # response = requests.post(url, headers=headers, json=data)
-
-        # # Check for response status and content
-        # if response.status_code != 200:
-        #     print(f"Error sending downlink: {response.text}")
-        #     return {'error': 'Failed to send downlink'}
-
-        # print(response.text)
-        # return {'success': 'Downlink sent successfully'}
+    print("?????????????")
+    return True
