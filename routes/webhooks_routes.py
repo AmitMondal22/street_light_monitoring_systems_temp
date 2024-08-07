@@ -54,6 +54,7 @@ async def testing2(request: Request):
     # try:
          # Parse the incoming webhook request
         event = await request.json()
+        print("event",event)
 
         # Extract Device EUI and the uplink payload
         dev_eui = event.get("devEUI")
