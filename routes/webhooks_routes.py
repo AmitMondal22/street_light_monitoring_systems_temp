@@ -58,7 +58,7 @@ async def testing2(request: Request):
 
         # Extract Device EUI and the uplink payload
         dev_eui = event.get("devEUI")
-        print("devEUI",dev_eui)
+        print(">>>>>>>>>>>>>>>>>>>>>>>devEUI",dev_eui)
         uplink_data = event.get("data")
         print("dev_eui",dev_eui)
 
