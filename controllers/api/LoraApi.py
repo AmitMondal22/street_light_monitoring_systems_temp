@@ -101,7 +101,7 @@ async def webhooks_send_downlink_test(dev_eui: str, payload: str):
         "deviceQueueItem": {
             "confirmed": False,
             "data": "AQID",
-            "fPort": 10
+            "fPort": 2
         }
     }
 

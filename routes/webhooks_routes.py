@@ -69,7 +69,7 @@ async def testing2(request: Request):
         print("Updating the downlink payload to:", downlink_payload)
         
         # Send a downlink message
-        await LoraApi.webhooks_send_downlink_test("0101010101010101", "hello")
+        await LoraApi.webhooks_send_downlink_test("AIDhFQArViY=", "hello")
 
         # return {"message": "Uplink processed and downlink queued"}
         
