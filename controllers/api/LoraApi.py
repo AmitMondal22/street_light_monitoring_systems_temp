@@ -94,7 +94,8 @@ async def webhooks_send_downlink_test(dev_eui: str, payload: str):
         data = {
             "fPort": 2,             # Ensure this is a valid f_port
             "data": base64_payload, # Base64 encoded payload
-            "confirmed": True       # Set to True if confirmation is needed
+            "confirmed": True,      # Set to True if confirmation is needed
+            "f_port": 1
         }
 
         headers = {
