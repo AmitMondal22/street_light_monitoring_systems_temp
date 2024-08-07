@@ -101,8 +101,8 @@ async def webhooks_send_downlink_test(dev_eui: str, payload: str):
     
     # time.sleep(2)
     # url = f"http://lora.techavo.in:8080/api/devices/{encoded_string}/queue"
-    # url = f"http://lora.techavo.in:8080/api/devices/{dev_eui}/queue"
-    url = f"http://lora.techavo.in:8080/api/devices/{dev_eui}/downlink"
+    url = f"http://lora.techavo.in:8080/api/devices/{dev_eui}/queue"
+    # url = f"http://lora.techavo.in:8080/api/devices/{dev_eui}/downlink"
 
     # print(encoded_string)
     print("///////////////////////")
@@ -128,4 +128,5 @@ async def webhooks_send_downlink_test(dev_eui: str, payload: str):
     # response = requests.request("POST", url, headers=headers, data=payload)
 
     print(response.text)
+    print("ZZZZZZZZZZZZZZZZ")
     return{'success': 'Downlink sent successfully'}
