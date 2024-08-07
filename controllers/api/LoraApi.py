@@ -111,7 +111,7 @@ async def webhooks_send_downlink_test(dev_eui: str, payload: str):
     #     "jsonObject": "string"
     # }
     data = {
-        "fPort": 1,
+        "fPort": 2,
         "data": "AQAB",
         "confirmed": True
     }
