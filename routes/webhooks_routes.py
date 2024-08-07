@@ -61,7 +61,7 @@ async def testing2(request: Request):
         # Extract Device EUI and the uplink payload
         dev_eui = event.get("devEUI")
         print(">>>>>>>>>>>>>>>>>>>>>>>devEUI",dev_eui)
-        abc=decode_base64(dev_eui)
+        decodedev_eui=decode_base64(dev_eui)
         print(">>>>>>>>>>>>>>>>>>>>>>>abc",abc)
         
         
@@ -69,8 +69,7 @@ async def testing2(request: Request):
         uplink_data = event.get("data")
         print("dev_eui",dev_eui)
 
-        if not dev_eui or not uplink_data:
-            raise HTTPException(status_code=400, detail="Invalid uplink data")
+        
 
         # Prepare the downlink payload (example)
         downlink_payload = base64.b64encode(b'\x02\x03\x04').decode('utf-8')
@@ -78,7 +77,7 @@ async def testing2(request: Request):
         
         
         # Send a downlink message
-        await LoraApi.webhooks_send_downlink_test("0080e115002b5626", "hello")
+        await LoraApi.webhooks_send_downlink_test(decodedev_eui, "hello")
 
         # return {"message": "Uplink processed and downlink queued"}
         
