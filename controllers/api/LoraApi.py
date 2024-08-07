@@ -106,6 +106,7 @@ async def webhooks_send_downlink_test(dev_eui: str, payload: str):
     }
 
     response = requests.post(url, headers=headers, json=data)
+    print(response.text)
 
 
         # url = f"http://lora.techavo.in:8080/api/devices/{dev_eui}/queue"
