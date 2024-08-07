@@ -52,21 +52,22 @@ async def testing(request: Request):
 @webhooks_routes.get("/testing2")
 async def testing2(request: Request):
     # try:
+         # Parse the incoming webhook request
         event = await request.json()
-        print("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZrequest",event)
+
+        # Extract Device EUI and the uplink payload
         dev_eui = event["devEUI"]
         uplink_data = event["data"]
         decoded_data = base64.b64decode(uplink_data).hex()
         print(f"Received uplink data from device {dev_eui}: {decoded_data}")
-       
-        
-         # Prepare the downlink payload (example)
+
+        # Prepare the downlink payload (example)
         downlink_payload = base64.b64encode(b'\x02\x03\x04').decode('utf-8')
         
         # Send a downlink message
         await LoraApi.webhooks_send_downlink_test(dev_eui, downlink_payload)
 
-        return {"message": "Uplink processed and downlink queued"}
+        # return {"message": "Uplink processed and downlink queued"}
         
         
         
@@ -91,6 +92,6 @@ async def testing2(request: Request):
         
         # abc = await LoraApi.webhooks_send_downlink_test(data['devEUI'])
         # zzz = await EnergyController.get_energy_data(request_data,1,data_list[0])
-        # return {"status":"success"}
+        return {"status":"success"}
     # except Exception as e:
     #     raise e

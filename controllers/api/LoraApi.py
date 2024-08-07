@@ -103,8 +103,12 @@ async def webhooks_send_downlink_test(dev_eui: str, payload: str):
     print("///////////////////////")
     data = {
         "confirmed": False,
-        "f_port": 1,
-        "data": payload
+        "f_port": 1,  # Use a valid f_port value
+        "data": payload,
+        "devEUI": dev_eui,
+        "fCnt": 0,
+        "fPort": 0,
+        "jsonObject": "string"
     }
     print(payload)
     headers = {
