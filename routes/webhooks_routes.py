@@ -62,7 +62,7 @@ async def testing2(request: Request):
         dev_eui = event.get("devEUI")
         print(">>>>>>>>>>>>>>>>>>>>>>>devEUI",dev_eui)
         decodedev_eui=decode_base64(dev_eui)
-        print(">>>>>>>>>>>>>>>>>>>>>>>abc",abc)
+        print(">>>>>>>>>>>>>>>>>>>>>>>decodedev_eui",decodedev_eui)
         
         
         
