@@ -109,7 +109,7 @@ async def new_energy_usage_billing(user_data,params):
                                         LIMIT 1
                                     )
                                 ) IS NOT NULL"""
-                select=f"""ed.e1,ed.e2,ed.e3,ed.energy_data_id, ed.device_id, ed.activep1, ed.activep2, ed.activep3, ed.apparentp1, ed.apparentp2, ed.apparentp3, ed.pf1, ed.pf2, ed.pf3, DATE_FORMAT(ed.date, '%Y-%m-%d') AS date, TIME_FORMAT(ed.time, '%H:%i:%s') AS time,
+                select=f"""ed.kwh,ed.energy_data_id, ed.device_id, ed.pf, DATE_FORMAT(ed.date, '%Y-%m-%d') AS date, TIME_FORMAT(ed.time, '%H:%i:%s') AS time,
                 
                 
                 
@@ -175,9 +175,7 @@ async def new_energy_usage_billing(user_data,params):
                         ) IS NOT NULL"""
                 select=f""" ed.energy_data_id,
                             ed.device_id,
-                            ed .e1,
-                            ed .e2,
-                            ed .e3,
+                            ed.kwh, ed.device_id, ed.pf,
                             DATE_FORMAT(ed.date, '%Y-%m-%d') AS date,
                             TIME_FORMAT(ed.time, '%H:%i:%s') AS time,
                             
@@ -236,7 +234,7 @@ async def new_energy_usage_billing(user_data,params):
                                     LIMIT 1
                                 )
                             ) IS NOT NULL"""
-                select=f"""ed.e1,ed.e2,ed.e3,ed.energy_data_id, ed.device_id, ed.activep1, ed.activep2, ed.activep3, ed.apparentp1, ed.apparentp2, ed.apparentp3, ed.pf1, ed.pf2, ed.pf3, DATE_FORMAT(ed.date, '%Y-%m-%d') AS date, TIME_FORMAT(ed.time, '%H:%i:%s') AS time,
+                select=f"""ed.kwh,ed.energy_data_id, ed.device_id, ed.pf, DATE_FORMAT(ed.date, '%Y-%m-%d') AS date, TIME_FORMAT(ed.time, '%H:%i:%s') AS time,
                 
                 COALESCE(
                                 a.billing_price, 
