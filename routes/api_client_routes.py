@@ -666,16 +666,16 @@ async def energy_usage_billing(request: Request,params:EnergyUsageBilling):
     
 @api_client_routes.post("/report_analysis/new_energy_usage_billing", dependencies=[Depends(mw_user_client)])
 async def new_energy_usage_billing(request: Request,params:EnergyUsageBilling):
-    # try:
+    try:
         userdata=request.state.user_data
         data = await ReportAnalysisController.new_energy_usage_billing(userdata,params)
         resdata = successResponse(data, message="Organization settings")
         print(resdata)
-        return Response(content=json.dumps(resdata), media_type="application/json", status_code=200)
-    # except ValueError as ve:
-    #     raise HTTPException(status_code=400, detail=str(ve))
-    # except Exception as e:
-    #     raise HTTPException(status_code=500, detail="Internal server error")
+        return Response(content=json.dumps(resdata,cls=DecimalEncoder), media_type="application/json", status_code=200)
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Internal server error")
     
 # ===========================================================
 # ===========================================================
