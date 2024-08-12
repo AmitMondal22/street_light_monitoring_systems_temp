@@ -152,7 +152,7 @@ async def new_energy_usage_billing(user_data,params):
                 
                 condition2=f"""client_id = {user_data['client_id']} AND device_id = {params.device_id} AND date < '{fdatetdate["first_day"]}' """
                 
-                end_date_last_row=select_one_data("td_energy_data","e1,e2,e3,date,time", condition2, order_by="date DESC, time DESC")
+                end_date_last_row=select_one_data("td_energy_data","kwh,date,time", condition2, order_by="date DESC, time DESC")
                 # data = select_data(table,select, condition,order_by="ed.date ASC, ed.time ASC")
                 # if params.end_date_time == None:
                     #     condition=f"a.client_id={user_data['client_id']} AND a.device_id={params.device_id} AND a.date BETWEEN '{params.start_date_time}' AND '{params.start_date_time}'"
