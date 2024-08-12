@@ -218,7 +218,7 @@ async def new_energy_usage_billing(user_data,params):
                 
                 
                 condition2=f"""client_id = {user_data['client_id']} AND device_id = {params.device_id} AND date < '{fdatetdate["first_day"]}' """
-                end_date_last_row=select_one_data("td_energy_data","e1,e2,e3, date,time", condition2, order_by="date DESC, time DESC ")
+                end_date_last_row=select_one_data("td_energy_data","kwh, date,time", condition2, order_by="date DESC, time DESC ")
             elif params.report_type == "C": # customized
                 condition = f"""ed.client_id = {user_data['client_id']} AND ed.device_id = {params.device_id}  AND COALESCE(
                                 a.billing_price,
