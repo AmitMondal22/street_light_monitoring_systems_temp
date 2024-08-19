@@ -59,8 +59,11 @@ async def testing(request: Request):
 
 @webhooks_routes.post("/sl-webhooks")
 @webhooks_routes.get("/sl-webhooks")
-async def testing2(request: Request):
+async def testing2(request: Request,event: str):
     # try:
+    if event != "up":
+      return {"status":"success"}   
+    else:
          # Parse the incoming webhook request
         print(".............................")
         event =  await request.json()
