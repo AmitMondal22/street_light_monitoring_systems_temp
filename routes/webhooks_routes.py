@@ -133,11 +133,6 @@ async def testing2(request: Request):
         print("dev_eui",dev_eui)
 
         
-
-        # Prepare the downlink payload (example)
-        downlink_payload = base64.b64encode(b'\x02\x03\x04').decode('utf-8')
-        print("Updating the downlink payload to:", downlink_payload)
-        
         
         # Send a downlink message
         await LoraApi.webhooks_send_downlink_test(decodedev_eui, "hello")

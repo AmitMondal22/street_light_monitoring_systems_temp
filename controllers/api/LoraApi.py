@@ -114,6 +114,7 @@ async def webhooks_send_downlink():
 @staticmethod
 async def webhooks_send_downlink_test(dev_eui: str, payload: str):
     base64_encoded = encode_to_base64(payload)
+    print(base64_encoded)
     url = f'http://lora.techavo.in:8080/api/devices/{dev_eui}/queue'
     headers = {
         'Content-Type': 'application/json',
