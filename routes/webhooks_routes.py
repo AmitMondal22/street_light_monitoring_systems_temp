@@ -63,7 +63,7 @@ async def testing2(request: Request):
     # try:
          # Parse the incoming webhook request
         print(".............................")
-        event =  request.json()
+        event =  await request.json()
         print("event",event)
 
         # Extract Device EUI and the uplink payload
@@ -75,7 +75,7 @@ async def testing2(request: Request):
         
         
         uplink_data = event.get("data")
-        print("dev_eui",dev_eui)
+        print("dev_eui",uplink_data)
         # Prepare the downlink payload (example)
         downlink_payload = base64.b64encode(b'dsfjsnwkjfvsekwj').decode('utf-8')
         print("Updating the downlink payload to:", downlink_payload)
