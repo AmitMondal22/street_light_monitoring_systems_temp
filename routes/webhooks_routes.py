@@ -110,20 +110,21 @@ async def testing2(request: Request,event: str):
         
         
         
-        paydata={
-            "SRHR":10,
-            "SRMM":20,
-            "SSHR":20,
-            "SSMM":30,
-            "DD":20,
-            "MM":30,
-            "YYYY":2021,
-            "HR":10,
-            "MM":20,
-            "SS":30,
-            "ZZ":"R1"            
-        }
-   
+        # paydata={
+        #     "SRHR":10,
+        #     "SRMM":20,
+        #     "SSHR":20,
+        #     "SSMM":30,
+        #     "DD":20,
+        #     "MM":30,
+        #     "YYYY":2021,
+        #     "HR":10,
+        #     "MM":20,
+        #     "SS":30,
+        #     "ZZ":"R1"            
+        # }
+    
+        paydata="*R1, ,1,10,22,17,30,23,7,2034,16,07,33,ZZ#"
         await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
         zzz = await EnergyController.get_energy_data(device_data,1,data_list[0])
 
