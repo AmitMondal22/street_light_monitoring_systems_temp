@@ -114,8 +114,8 @@ async def testing2(request: Request):
     # except Exception as e:
     #     raise e
 
-@webhooks_routes.post("/testing2")
-@webhooks_routes.get("/testing2")
+@webhooks_routes.post("/testing22")
+@webhooks_routes.get("/testing22")
 async def testing2(request: Request):
     # try:
          # Parse the incoming webhook request
