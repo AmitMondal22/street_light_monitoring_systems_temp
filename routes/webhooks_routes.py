@@ -122,7 +122,7 @@ async def testing2(request: Request):
         }
    
         await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
-        zzz = await EnergyController.get_energy_data(request_data,1,data_list[0])
+        zzz = await EnergyController.get_energy_data(device_data,1,data_list[0])
 
         # return {"message": "Uplink processed and downlink queued"}
         
@@ -149,6 +149,7 @@ async def testing2(request: Request):
         
         # abc = await LoraApi.webhooks_send_downlink_test(data['devEUI'])
         # zzz = await EnergyController.get_energy_data(request_data,1,data_list[0])
+        print("?????????????????????????????????????")
         return {"status":"success"}
     # except Exception as e:
     #     raise e
