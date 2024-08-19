@@ -75,11 +75,14 @@ async def testing2(request: Request):
         
         
         uplink_data = event.get("data")
+        print("uplink_data",uplink_data)
         decodeuplink_data=decode_base64(uplink_data)
         print("dev_eui",decodeuplink_data)
         # Prepare the downlink payload (example)
         # downlink_payload = base64.b64encode(b'dsfjsnwkjfvsekwj').decode('utf-8')
         # print("Updating the downlink payload to:", downlink_payload)
+        
+        
         paydata={
             "SRHR":10,
             "SRMM":20,
