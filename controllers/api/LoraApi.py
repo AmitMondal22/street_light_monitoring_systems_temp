@@ -16,6 +16,10 @@ api_key = 'NNSXS.SKSGTTX6IIDKM7THS3RATJBRL5ZHMKO4A6ZBGXY.WVF3AVQVGOAVWK3E7CIGPVL
 application_id = 'streetlighttechavo'
 device_id = 'eui-0080e115002b5637'
 
+def decode_base64(encoded_str):
+    """Decode a Base64 encoded string."""
+    return base64.b64decode(encoded_str).decode('utf-8')
+
 @staticmethod
 async def uplink(user, params):
     try:
@@ -111,3 +115,113 @@ async def webhooks_send_downlink_test(dev_eui: str, payload: str):
     print(response.text)
     print("?????????????")
     return True
+
+
+
+
+# def get_devices(application_id):
+#     """Fetch all devices for a given application ID."""
+#     url = f'http://lora.techavo.in:8080/api/applications/{application_id}/devices'
+#     headers = {
+#         'Grpc-Metadata-Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5X2lkIjoiYTBmOTUzZTQtNWRlMi00NDhiLWJiMmQtYWQxOTM3OTMxMGRlIiwiYXVkIjoiYXMiLCJpc3MiOiJhcyIsIm5iZiI6MTcyMjk0NDE5Miwic3ViIjoiYXBpX2tleSJ9.ep4D5-YaGQru0o0ur77TK5CuwtFFNPlQaSu0zfrw6Lo'
+#     }
+#     response = requests.get(url, headers=headers)
+#     if response.status_code == 200:
+#         print("..................................................", response)
+#         return response.json().get('result', [])
+#     else:
+#         print(f"Failed to fetch devices: {response.status_code}")
+#         return []
+
+async def get_devices(application_id):
+    # url = f'http://lora.techavo.in:8080/api/devices?applicationID={application_id}'
+    # headers = {
+    #     'Grpc-Metadata-Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5X2lkIjoiYTBmOTUzZTQtNWRlMi00NDhiLWJiMmQtYWQxOTM3OTMxMGRlIiwiYXVkIjoiYXMiLCJpc3MiOiJhcyIsIm5iZiI6MTcyMjk0NDE5Miwic3ViIjoiYXBpX2tleSJ9.ep4D5-YaGQru0o0ur77TK5CuwtFFNPlQaSu0zfrw6Lo'
+    # }
+
+    # response = requests.get(url, headers=headers)
+    # if response.status_code == 200:
+    #     # print(".................................",response.text)
+    #     return response.json()
+    # else:
+    #     print(f"Error fetching devices: {response.status_code}")
+    #     return None
+    
+    # url = f'http://lora.techavo.in:8080/api/devices?applicationID={application_id}'
+    url = f'http://lora.techavo.in:8080/api/devices'
+    headers = {
+        'Grpc-Metadata-Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5X2lkIjoiYTBmOTUzZTQtNWRlMi00NDhiLWJiMmQtYWQxOTM3OTMxMGRlIiwiYXVkIjoiYXMiLCJpc3MiOiJhcyIsIm5iZiI6MTcyMjk0NDE5Miwic3ViIjoiYXBpX2tleSJ9.ep4D5-YaGQru0o0ur77TK5CuwtFFNPlQaSu0zfrw6Lo'
+    }
+    params = {
+        'applicationID': application_id
+    }
+
+    response = requests.get(url, headers=headers, params=params)
+
+    # response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        try:
+            # Parse the JSON response
+            data = response.json()
+
+            # Debug: print the raw response
+            print(f"Raw JSON response: {data}")
+
+            # Access the "result" which contains device information
+            devices = data.get("result", [])
+
+            if not devices:
+                print("No devices found in the response.")
+            else:
+                # Print device IDs and other relevant info
+                for device in devices:
+                    device_id = device.get("id")
+                    dev_eui = device.get("devEUI")
+                    print(f"Device ID: {device_id}, DevEUI: {dev_eui}")
+
+        except ValueError as e:
+            print(f"Error parsing JSON: {e}")
+
+    else:
+        print(f"Error fetching devices: {response.status_code}")
+        print(f"Response content: {response.text}")
+    
+    
+
+
+
+def send_downlink(dev_eui_encoded, data, fPort):
+    """Send downlink data to a device."""
+    dev_eui = decode_base64(dev_eui_encoded)
+    url = f'http://lora.techavo.in:8080/api/devices/{dev_eui}/queue'
+    headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Grpc-Metadata-Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5X2lkIjoiYTBmOTUzZTQtNWRlMi00NDhiLWJiMmQtYWQxOTM3OTMxMGRlIiwiYXVkIjoiYXMiLCJpc3MiOiJhcyIsIm5iZiI6MTcyMjk0NDE5Miwic3ViIjoiYXBpX2tleSJ9.ep4D5-YaGQru0o0ur77TK5CuwtFFNPlQaSu0zfrw6Lo'
+    }
+    payload = {
+        "deviceQueueItem": {
+            "confirmed": True,
+            "data": data,  # Base64 encoded payload data
+            "fPort": fPort
+        }
+    }
+    response = requests.post(url, headers=headers, json=payload)
+    print(f"Downlink response for {dev_eui}: {response.status_code}")
+    return response.status_code == 200
+
+
+
+async def manage_devices(application_id, downlink_data, fPort):
+    devices = await get_devices(application_id)
+    print("devices", devices)
+    if devices:
+        for device in devices['result']:
+            print("?????????????",device)
+    # for device in devices:
+    #     device_id = device['id']
+    #     dev_eui_encoded = device['devEUI']
+        
+    #     # Send downlink
+    #     send_downlink(dev_eui_encoded, downlink_data, fPort)
