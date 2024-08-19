@@ -83,6 +83,30 @@ async def testing2(request: Request):
         # print("Updating the downlink payload to:", downlink_payload)
         
         
+        data_list = decodeuplink_data.split(',')
+        
+        # TECH000001,0.00,0.00,0.00,0.00,0.00,0.50,0.00,1,1,0
+        
+        # UID,VOLTAGE,CURRENT,REALPOWER,PF,KWH,RUNHR,frequencyUPLOADFLAG,DOMODE,sensorflag
+        device_data = device_data_model.StreetLightDeviceData(
+            CLIENT_ID = 1,
+            UID=data_list[0],
+            TW=1.0,  # TW is not provided in the data_list, so assign a default or calculated value
+            VOLTAGE=float(data_list[1]),
+            CURRENT=float(data_list[2]),
+            REALPOWER=float(data_list[3]),
+            PF=float(data_list[4]),
+            KWH=float(data_list[5]),
+            RUNHR=float(data_list[6]),
+            FREQ=float(data_list[7]),
+            UPLOADFLAG=int(data_list[8]),
+            DOMODE=int(data_list[9]),
+            SENSORFLAG=int(data_list[10])  # SENSORFLAG is not provided in the data_list, so assign a default or calculated value
+        )
+        
+        
+        
+        
         paydata={
             "SRHR":10,
             "SRMM":20,
@@ -98,6 +122,7 @@ async def testing2(request: Request):
         }
    
         await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
+        zzz = await EnergyController.get_energy_data(request_data,1,data_list[0])
 
         # return {"message": "Uplink processed and downlink queued"}
         
