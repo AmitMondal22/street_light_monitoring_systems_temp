@@ -12,6 +12,25 @@ import grpc
 from chirpstack_api import api
 
 
+def encode_to_base64(data):
+    if isinstance(data, str):
+        # Convert string to bytes
+        data_bytes = data.encode('utf-8')
+    elif isinstance(data, dict):
+        # Convert dictionary to JSON string and then to bytes
+        data_json = json.dumps(data)
+        data_bytes = data_json.encode('utf-8')
+    else:
+        raise ValueError("Data must be a string or a dictionary")
+
+    # Encode bytes to base64
+    base64_bytes = base64.b64encode(data_bytes)
+    # Convert base64 bytes to string
+    base64_string = base64_bytes.decode('utf-8')
+    
+    return base64_string
+
+
 api_key = 'NNSXS.SKSGTTX6IIDKM7THS3RATJBRL5ZHMKO4A6ZBGXY.WVF3AVQVGOAVWK3E7CIGPVLXPHREIL5D5FXJCK5E2BCKZWL6PAVA'
 application_id = 'streetlighttechavo'
 device_id = 'eui-0080e115002b5637'
@@ -94,9 +113,8 @@ async def webhooks_send_downlink():
 
 @staticmethod
 async def webhooks_send_downlink_test(dev_eui: str, payload: str):
-    
+    base64_encoded = encode_to_base64(payload)
     url = f'http://lora.techavo.in:8080/api/devices/{dev_eui}/queue'
-
     headers = {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -106,7 +124,7 @@ async def webhooks_send_downlink_test(dev_eui: str, payload: str):
     data = {
         "deviceQueueItem": {
             "confirmed": True,
-            "data": "AQID",
+            "data": base64_encoded,
             "fPort": 2
         }
     }
@@ -147,9 +165,10 @@ async def get_devices(application_id):
     #     print(f"Error fetching devices: {response.status_code}")
     #     return None
     
-    # url = f'http://lora.techavo.in:8080/api/devices?applicationID={application_id}'
-    url = f'http://lora.techavo.in:8080/api/devices'
+    url = f'http://lora.techavo.in:8080/api/devices?applicationID=6'
+    # url = f'http://lora.techavo.in:8080/api/devices'
     headers = {
+        # 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5X2lkIjoiYTBmOTUzZTQtNWRlMi00NDhiLWJiMmQtYWQxOTM3OTMxMGRlIiwiYXVkIjoiYXMiLCJpc3MiOiJhcyIsIm5iZiI6MTcyMjk0NDE5Miwic3ViIjoiYXBpX2tleSJ9.ep4D5-YaGQru0o0ur77TK5CuwtFFNPlQaSu0zfrw6Lo'
         'Grpc-Metadata-Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5X2lkIjoiYTBmOTUzZTQtNWRlMi00NDhiLWJiMmQtYWQxOTM3OTMxMGRlIiwiYXVkIjoiYXMiLCJpc3MiOiJhcyIsIm5iZiI6MTcyMjk0NDE5Miwic3ViIjoiYXBpX2tleSJ9.ep4D5-YaGQru0o0ur77TK5CuwtFFNPlQaSu0zfrw6Lo'
     }
     params = {
@@ -157,35 +176,19 @@ async def get_devices(application_id):
     }
 
     response = requests.get(url, headers=headers, params=params)
+    print("response",response)
 
     # response = requests.get(url, headers=headers)
-
     if response.status_code == 200:
-        try:
-            # Parse the JSON response
-            data = response.json()
-
-            # Debug: print the raw response
-            print(f"Raw JSON response: {data}")
-
-            # Access the "result" which contains device information
-            devices = data.get("result", [])
-
-            if not devices:
-                print("No devices found in the response.")
-            else:
-                # Print device IDs and other relevant info
-                for device in devices:
-                    device_id = device.get("id")
-                    dev_eui = device.get("devEUI")
-                    print(f"Device ID: {device_id}, DevEUI: {dev_eui}")
-
-        except ValueError as e:
-            print(f"Error parsing JSON: {e}")
-
+        devices = response.json().get('result', [])
+        print("devices",devices)
+        if devices:
+            dev_euis = [device['devEUI'] for device in devices]
+            return dev_euis
+        else:
+            return "No devices found for the specified application."
     else:
-        print(f"Error fetching devices: {response.status_code}")
-        print(f"Response content: {response.text}")
+        return f"Failed to retrieve devices: {response.status_code} - {response.text}"
     
     
 
