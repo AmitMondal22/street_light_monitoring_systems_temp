@@ -75,14 +75,15 @@ async def testing2(request: Request):
         
         
         uplink_data = event.get("data")
-        print("dev_eui",uplink_data)
+        decodeuplink_data=decode_base64(uplink_data)
+        print("dev_eui",decodeuplink_data)
         # Prepare the downlink payload (example)
-        downlink_payload = base64.b64encode(b'dsfjsnwkjfvsekwj').decode('utf-8')
-        print("Updating the downlink payload to:", downlink_payload)
+        # downlink_payload = base64.b64encode(b'dsfjsnwkjfvsekwj').decode('utf-8')
+        # print("Updating the downlink payload to:", downlink_payload)
         
         
         # Send a downlink message
-        await LoraApi.webhooks_send_downlink_test(decodedev_eui, "hello")
+        await LoraApi.webhooks_send_downlink_test(decodedev_eui, "helloLL")
 
         # return {"message": "Uplink processed and downlink queued"}
         
