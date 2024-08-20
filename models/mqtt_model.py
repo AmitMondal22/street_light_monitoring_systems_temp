@@ -22,11 +22,9 @@ class MqttPublishDeviceData(BaseModel):
     device_id: int
     device: str
     device_type: str
-    relay_close_time: str
-    timer_start_hours: str
-    timer_start_minutes: str
-    timer_stop_hours_1: str
-    timer_stop_minutes_1: str
+    device_mode: str
+    sunrise_tmime: str
+    sunset_time: str
 
     # @field_validator('relay_close_time', 'timer_start_hours', 'timer_start_minutes', 'timer_stop_hours_1', 'timer_stop_minutes_1')
     # def validate_time_format(cls, value: str, info: FieldValidationInfo) -> str:

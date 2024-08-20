@@ -109,7 +109,6 @@ async def user_device_list(data):
 @staticmethod
 async def device_schedule_settings(used_data,requestdata):
     try:
-        
         current_datetime = get_current_datetime()
         select="st_sl_settings_id, device_id, device, client_id, sunrise_hour, sunrise_min, sunset_hour, sunset_min, created_by"
         conditions=f"device_id = {requestdata.device_id} AND client_id = {used_data['client_id']} "
@@ -118,17 +117,17 @@ async def device_schedule_settings(used_data,requestdata):
         print(find_devices)
         
         sunrise = get_hour_minute(requestdata.timer_start_hours)
-        sunset = get_hour_minute(requestdata.timer_stop_hours_1)
+        sunset = get_hour_minute(requestdata.sunset_time)
         
         if find_devices is None or not find_devices:
             print("No devices found")
             columns="device_id, device, client_id, device_type,device_mode, sunrise_hour, sunrise_min, sunset_hour, sunset_min, created_by, created_at"
             # row_data= f"'{current_datetime}'"
-            row_data= f"{requestdata.device_id}, '{requestdata.device}', {used_data['client_id']}, '{requestdata.device_type}', '0', '{sunrise['hour']}', '{sunrise['min']}', '{sunset['hour']}', '{sunset['min']}', {used_data['user_id']}, '{current_datetime}'"
+            row_data= f"{requestdata.device_id}, '{requestdata.device}', {used_data['client_id']}, '{requestdata.device_type}', '{requestdata.device_mode}', '{sunrise['hour']}', '{sunrise['min']}', '{sunset['hour']}', '{sunset['min']}', {used_data['user_id']}, '{current_datetime}'"
             insdata=insert_data("st_sl_settings_scheduling", columns, row_data)
         else:
             print("Error inserting")
-            setvalue={"sunrise_hour": sunrise['hour'], "sunrise_min": sunrise['min'], "sunset_hour": sunset['hour'], "sunset_min": sunset['min'], "device_type": requestdata.device_type, "created_by": used_data['user_id'], "updated_at": current_datetime}
+            setvalue={"device_type":requestdata.device_type,"device_mode":requestdata.device_mode, "sunrise_hour": sunrise['hour'], "sunrise_min": sunrise['min'], "sunset_hour": sunset['hour'], "sunset_min": sunset['min'], "device_type": requestdata.device_type, "created_by": used_data['user_id'], "updated_at": current_datetime}
             # conditions=""
             insdata=update_data("st_sl_settings_scheduling",setvalue , conditions)
 
