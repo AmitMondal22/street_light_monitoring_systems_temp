@@ -78,7 +78,7 @@ async def add_device(params):
 async def edit_device(params):
     try:
         condition = f"device_id = {params.device_id} AND client_id = {params.client_id}"
-        columns={"device":params.device, "device_name":params.device_name, "model":params.model, "lat":params.lat, "lon":params.lon, "imei_no":params.imei_no, "device_type" :params.device_type, "meter_type":params.meter_type, "updated_at":get_current_datetime()}
+        columns={"device":params.device, "device_name":params.device_name, "model":params.model, "lat":params.lat, "lon":params.lon, "device_type" :params.device_type, "updated_at":get_current_datetime()}
         data = update_data("md_device", columns, condition)
         print(data)
         return data

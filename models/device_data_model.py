@@ -192,18 +192,17 @@ class DeviceEdit(BaseModel):
     model: str
     lat: str
     lon: str
-    imei_no: str
     device_type: str
-    meter_type: str
-    @validator('meter_type')
-    def validate_meter_type(cls, v):
-        valid_meter_type = {"ENSF", "ENTF"}
-        if v not in valid_meter_type:
-            raise ValueError('Invalid alert status')
-        return v
+    # meter_type: str
+    # @validator('meter_type')
+    # def validate_meter_type(cls, v):
+    #     valid_meter_type = {"ENSF", "ENTF"}
+    #     if v not in valid_meter_type:
+    #         raise ValueError('Invalid alert status')
+    #     return v
     @validator('device_type')
     def validate_device_type(cls, v):
-        valid_device_type = {"EN", "UPS"}
+        valid_device_type = {"EN", "UPS","SL"}
         if v not in valid_device_type:
             raise ValueError('Invalid alert status')
         return v
