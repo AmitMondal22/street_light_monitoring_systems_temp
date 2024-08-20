@@ -1,6 +1,9 @@
 from db_model.MASTER_MODEL import select_data, insert_data,select_one_data,select_last_data,update_data
-from utils.date_time_format import get_current_datetime,get_time_time_firmat
+from utils.date_time_format import get_current_datetime,get_time_time_firmat,get_hour_minute,get_current_datetime_string
 from utils.utils import increment_string
+
+from controllers.api import LoraApi
+
 
 
 from hooks.update_event_hooks import update_topics
@@ -70,30 +73,75 @@ async def user_device_list(data):
     
     
     
+# @staticmethod
+# async def device_schedule_settings(used_data,requestdata):
+#     try:
+        
+#         current_datetime = get_current_datetime()
+#         select="device_scheduling_id, device_id, device, client_id, device_type, relay_close_time, timer_start_hours, timer_start_minutes, timer_stop_hours_1, timer_stop_minutes_1, create_by"
+#         conditions=f"device_id = {requestdata.device_id} AND client_id = {used_data['client_id']} "
+        
+#         find_devices=select_one_data("st_device_scheduling", select, conditions,None)
+#         print(find_devices)
+#         if find_devices is None or not find_devices:
+#             print("No devices found")
+#             columns="device_id, device, client_id, device_type, relay_close_time, timer_start_hours, timer_start_minutes, timer_stop_hours_1, timer_stop_minutes_1, create_by,created_at"
+#             # row_data= f"'{current_datetime}'"
+#             row_data= f"{requestdata.device_id}, '{requestdata.device}', {used_data['client_id']}, '{requestdata.device_type}', '{get_time_time_firmat(requestdata.relay_close_time)}', '{get_time_time_firmat(requestdata.timer_start_hours)}', '{get_time_time_firmat(requestdata.timer_start_minutes)}', '{get_time_time_firmat(requestdata.timer_stop_hours_1)}', '{get_time_time_firmat(requestdata.timer_stop_minutes_1)}', {used_data['user_id']}, '{current_datetime}'"
+#             insdata=insert_data("st_device_scheduling", columns, row_data)
+#         else:
+#             print("Error inserting")
+#             setvalue={"relay_close_time": get_time_time_firmat(requestdata.relay_close_time), "timer_start_hours": get_time_time_firmat(requestdata.timer_start_hours), "timer_start_minutes": get_time_time_firmat(requestdata.timer_start_minutes), "timer_stop_hours_1": get_time_time_firmat(requestdata.timer_stop_hours_1), "timer_stop_minutes_1": get_time_time_firmat(requestdata.timer_stop_minutes_1), "create_by": used_data['user_id'], "updated_at": current_datetime}
+#             # conditions=""
+#             insdata=update_data("st_device_scheduling",setvalue , conditions)
+        
+        
+        
+#         print("find_devices>>>>>>>>>>>>>>>>>",insdata)
+#         return insdata
+#     except Exception as e:
+#         raise ValueError("Could not fetch data")
+
+
+
+
+
 @staticmethod
 async def device_schedule_settings(used_data,requestdata):
     try:
         
         current_datetime = get_current_datetime()
-        select="device_scheduling_id, device_id, device, client_id, device_type, relay_close_time, timer_start_hours, timer_start_minutes, timer_stop_hours_1, timer_stop_minutes_1, create_by"
+        select="st_sl_settings_id, device_id, device, client_id, sunrise_hour, sunrise_min, sunset_hour, sunset_min, created_by"
         conditions=f"device_id = {requestdata.device_id} AND client_id = {used_data['client_id']} "
         
-        find_devices=select_one_data("st_device_scheduling", select, conditions,None)
+        find_devices=select_one_data("st_sl_settings_scheduling", select, conditions,None)
         print(find_devices)
+        
+        sunrise = get_hour_minute(requestdata.timer_start_hours)
+        sunset = get_hour_minute(requestdata.timer_stop_hours_1)
+        
         if find_devices is None or not find_devices:
             print("No devices found")
-            columns="device_id, device, client_id, device_type, relay_close_time, timer_start_hours, timer_start_minutes, timer_stop_hours_1, timer_stop_minutes_1, create_by,created_at"
+            columns="device_id, device, client_id, device_type,device_mode, sunrise_hour, sunrise_min, sunset_hour, sunset_min, created_by, created_at"
             # row_data= f"'{current_datetime}'"
-            row_data= f"{requestdata.device_id}, '{requestdata.device}', {used_data['client_id']}, '{requestdata.device_type}', '{get_time_time_firmat(requestdata.relay_close_time)}', '{get_time_time_firmat(requestdata.timer_start_hours)}', '{get_time_time_firmat(requestdata.timer_start_minutes)}', '{get_time_time_firmat(requestdata.timer_stop_hours_1)}', '{get_time_time_firmat(requestdata.timer_stop_minutes_1)}', {used_data['user_id']}, '{current_datetime}'"
-            insdata=insert_data("st_device_scheduling", columns, row_data)
+            row_data= f"{requestdata.device_id}, '{requestdata.device}', {used_data['client_id']}, '{requestdata.device_type}', '0', '{sunrise['hour']}', '{sunrise['min']}', '{sunset['hour']}', '{sunset['min']}', {used_data['user_id']}, '{current_datetime}'"
+            insdata=insert_data("st_sl_settings_scheduling", columns, row_data)
         else:
             print("Error inserting")
-            setvalue={"relay_close_time": get_time_time_firmat(requestdata.relay_close_time), "timer_start_hours": get_time_time_firmat(requestdata.timer_start_hours), "timer_start_minutes": get_time_time_firmat(requestdata.timer_start_minutes), "timer_stop_hours_1": get_time_time_firmat(requestdata.timer_stop_hours_1), "timer_stop_minutes_1": get_time_time_firmat(requestdata.timer_stop_minutes_1), "create_by": used_data['user_id'], "updated_at": current_datetime}
+            setvalue={"sunrise_hour": sunrise['hour'], "sunrise_min": sunrise['min'], "sunset_hour": sunset['hour'], "sunset_min": sunset['min'], "device_type": requestdata.device_type, "created_by": used_data['user_id'], "updated_at": current_datetime}
             # conditions=""
-            insdata=update_data("st_device_scheduling",setvalue , conditions)
+            insdata=update_data("st_sl_settings_scheduling",setvalue , conditions)
+
+        decodedev_eui=requestdata.device
+        # paydata="*R1, ,1,10,22,17,30,23,7,2034,16,07,33,ZZ#"
+        #    *R1, ,datalogtimeMin,SRHR,SRMM,SSHR,SSMM,DD,MM,YYYY,HR,MM,SS,DEVICE_MODE,ZZ#
+
+        # Ex:
+        # *R1, ,1,10,22,17,30,23,7,2034,16,07,33,ZZ#
         
-        
-        
+        paydata =f"*R1, ,1,{sunrise['hour']},{sunrise['min']},{sunset['hour']},{sunset['min']},{get_current_datetime_string()},0,ZZ#"
+        await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
+        print("================================" ,paydata)
         print("find_devices>>>>>>>>>>>>>>>>>",insdata)
         return insdata
     except Exception as e:

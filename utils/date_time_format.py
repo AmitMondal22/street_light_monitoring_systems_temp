@@ -103,3 +103,22 @@ def get_time_time_firmat(time_string):
         # If it fails, parse the time string without seconds
         time_obj = datetime.strptime(time_string, "%H:%M")
     return time_obj.strftime("%H:%M:%S")
+
+def get_hour_minute(time_string):
+    # Parse the time string to a datetime object
+    time_obj = datetime.strptime(time_string, "%H:%M:%S")
+    
+    # Extract hour and minute and return them as a dictionary
+    return {
+        "hour": int(time_obj.strftime("%H")),
+        "min": int(time_obj.strftime("%M"))
+    }
+
+def get_current_datetime_string():
+    # Get the current date and time
+    now = datetime.now()
+    
+    # Format the datetime as "DD,MM,YYYY,HR,MM,SS"
+    formatted_datetime = now.strftime("%d,%m,%Y,%H,%M,%S")
+    
+    return formatted_datetime

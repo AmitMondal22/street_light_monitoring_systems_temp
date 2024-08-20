@@ -113,27 +113,31 @@ async def webhooks_send_downlink():
 
 @staticmethod
 async def webhooks_send_downlink_test(dev_eui: str, payload: str):
-    base64_encoded = encode_to_base64(payload)
-    print(base64_encoded)
-    url = f'http://lora.techavo.in:8080/api/devices/{dev_eui}/queue'
-    headers = {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Grpc-Metadata-Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5X2lkIjoiYTBmOTUzZTQtNWRlMi00NDhiLWJiMmQtYWQxOTM3OTMxMGRlIiwiYXVkIjoiYXMiLCJpc3MiOiJhcyIsIm5iZiI6MTcyMjk0NDE5Miwic3ViIjoiYXBpX2tleSJ9.ep4D5-YaGQru0o0ur77TK5CuwtFFNPlQaSu0zfrw6Lo'
-    }
-
-    data = {
-        "deviceQueueItem": {
-            "confirmed": True,
-            "data": base64_encoded,
-            "fPort": 2
+    try:
+        base64_encoded = encode_to_base64(payload)
+        print(base64_encoded)
+        url = f'http://lora.techavo.in:8080/api/devices/{dev_eui}/queue'
+        headers = {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Grpc-Metadata-Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5X2lkIjoiYTBmOTUzZTQtNWRlMi00NDhiLWJiMmQtYWQxOTM3OTMxMGRlIiwiYXVkIjoiYXMiLCJpc3MiOiJhcyIsIm5iZiI6MTcyMjk0NDE5Miwic3ViIjoiYXBpX2tleSJ9.ep4D5-YaGQru0o0ur77TK5CuwtFFNPlQaSu0zfrw6Lo'
         }
-    }
 
-    response = requests.post(url, headers=headers, json=data)
-    print(response.text)
-    print("?????????????")
-    return True
+        data = {
+            "deviceQueueItem": {
+                "confirmed": True,
+                "data": base64_encoded,
+                "fPort": 2
+            }
+        }
+
+        response = requests.post(url, headers=headers, json=data)
+        print(response.text)
+        print("?????????????")
+        return True
+    except Exception as e:
+        print(e)
+        return False
 
 
 

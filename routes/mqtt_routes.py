@@ -55,9 +55,8 @@ async def publish_message(request: Request, message_data: MqttPublishDeviceData)
     try:
         user_data=request.state.user_data
         data= await DeviceController.device_schedule_settings(user_data, message_data)
-       
-        mqtt_client.publish(f"SCHEDULING/{message_data.device_type}/{user_data['client_id']}/{message_data.device}", message_data.json(), qos=0)
-        print(f"SCHEDULING/{message_data.device_type}/{user_data['client_id']}/{message_data.device}")
+        # mqtt_client.publish(f"SCHEDULING/{message_data.device_type}/{user_data['client_id']}/{message_data.device}", message_data.json(), qos=0)
+        # print(f"SCHEDULING/{message_data.device_type}/{user_data['client_id']}/{message_data.device}")
         # *scheduling,123,21321,65456,545.132#
         #scheduling/EN/1/ABCDE01003
         #SCHEDULING/{message_data.device_type}/{user_data['client_id']}/{message_data.device}
