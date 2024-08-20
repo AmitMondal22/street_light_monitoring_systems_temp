@@ -435,8 +435,8 @@ async def edit_organization_info(client_id,user_id,params):
 async def get_device_schedule(userdata,params):
     try:
         condition = f"client_id = {userdata['client_id']} AND device_id = {params.device_id}"
-        select = "device_scheduling_id, device_id, device, client_id, device_type, relay_close_time, timer_start_hours, timer_start_minutes, timer_stop_hours_1, timer_stop_minutes_1, create_by, created_at, updated_at"
-        table = "st_device_scheduling"
+        select = "st_sl_settings_id, device_id, device, client_id, device_type, device_mode, sunrise_hour, sunrise_min, sunset_hour, sunset_min, created_by, created_at, updated_at"
+        table = "st_sl_settings_scheduling"
         data = select_one_data(table, select, condition,order_by="device_scheduling_id DESC")
         return data
     except Exception as e:
