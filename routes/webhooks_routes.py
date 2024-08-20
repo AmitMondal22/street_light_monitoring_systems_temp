@@ -97,7 +97,7 @@ async def testing2(request: Request,event: str):
             SENSORFLAG=int(data_list[10])  # SENSORFLAG is not provided in the data_list, so assign a default or calculated value
         )
         
-        print("device_dataaaaaaaaaaaaaaaaaaaaaaaaaaaaa",device_data)
+        print("device_dataaaaaaaaaaaaaaaaaaaaaaaaaaaaa",data_list,device_data)
         
         select="sunrise_hour, sunrise_min, sunset_hour, sunset_min,device,device_id,device_mode"
         condition = f"device='{decodedev_eui}'"
