@@ -57,7 +57,6 @@ async def add_device(params):
                 "client_id": params_data.client_id,
                 "device": params_data.device,
                 "device_name": params_data.device_name,
-                # "do_channel": params_data.
                 "model": params_data.model,
                 "lat": params_data.lat,
                 "lon": params_data.lon,
@@ -92,7 +91,7 @@ async def manage_list_device(params):
     try:
         condition = f"a.client_id = {params.client_id} AND a.device_type='EN'"
         
-        select="a.device_id, a.client_id, a.device, a.device_name, a.model, a.lat, a.lon, a.imei_no, a.device_type,a.meter_type,a.last_maintenance, DATE_FORMAT(a.created_at, '%Y-%m-%d') AS device_created_at,DATE_FORMAT(a.updated_at, '%Y-%m-%d %H:%i:%s') AS device_updated_at, b.energy_data_id, b.device_id AS b_device_id, b.voltage, b.current, b.realpower, b.pf, b.kwh, b.runhr, b.frequency, b.domode, b.sensor_flag, b.upload_flag,  DATE_FORMAT(b.date, '%Y-%m-%d') AS date, TIME_FORMAT(b.time, '%H:%i:%s') AS time, DATE_FORMAT(b.created_at, '%Y-%m-%d %H:%i:%s') AS energy_data_created_at, DATE_FORMAT(b.updated_at, '%Y-%m-%d %H:%i:%s') AS energy_data_updated_at"
+        select="a.device_id, a.client_id, a.device, a.device_name, a.model, a.lat, a.lon, a.device_type,a.meter_type,a.last_maintenance, DATE_FORMAT(a.created_at, '%Y-%m-%d') AS device_created_at,DATE_FORMAT(a.updated_at, '%Y-%m-%d %H:%i:%s') AS device_updated_at, b.energy_data_id, b.device_id AS b_device_id, b.voltage, b.current, b.realpower, b.pf, b.kwh, b.runhr, b.frequency, b.domode, b.sensor_flag, b.upload_flag,  DATE_FORMAT(b.date, '%Y-%m-%d') AS date, TIME_FORMAT(b.time, '%H:%i:%s') AS time, DATE_FORMAT(b.created_at, '%Y-%m-%d %H:%i:%s') AS energy_data_created_at, DATE_FORMAT(b.updated_at, '%Y-%m-%d %H:%i:%s') AS energy_data_updated_at"
         
         table="""md_device a LEFT JOIN (SELECT t1.*
     FROM td_energy_data t1
