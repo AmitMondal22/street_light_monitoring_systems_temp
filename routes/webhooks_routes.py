@@ -107,7 +107,7 @@ async def testing2(request: Request,event: str):
         print("stdataMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM",stdata['sunrise_hour'])
         #  {'sunrise_hour': '10', 'sunrise_min': '29', 'sunset_hour': '17', 'sunset_min': '38', 'device': '0080e115002b54b0', 'device_id': 28}
         # paydata =f"*R1, ,1,{sunrise['hour']},{sunrise['min']},{sunset['hour']},{sunset['min']},{get_current_datetime_string()},0,ZZ#"
-        paydata=f"*R1, ,1,{stdata['sunrise_hour']},{stdata['sunrise_min']},{stdata['sunset_hour']},{stdata['sunset_min']},{get_current_datetime_string},{stdata['device_mode']},ZZ#"
+        paydata=f"*R1, ,1,{stdata['sunrise_hour']},{stdata['sunrise_min']},{stdata['sunset_hour']},{stdata['sunset_min']},{get_current_datetime_string},ZZ#"
         # paydata=f"*R1, ,1,10,22,17,30,23,7,2034,16,07,33,ZZ#"
         
         # *R1, ,datalogtimeMin,SRHR,SRMM,SSHR,SSMM,DD,MM,YYYY,HR,MM,SS,ZZ#
