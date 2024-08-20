@@ -97,13 +97,13 @@ async def testing2(request: Request,event: str):
         )
         
         select="sunrise_hour, sunrise_min, sunset_hour, sunset_min,device,device_id,device"
-        condition = f"device={decodedev_eui}"
-        print(select,"////////////", condition)
+        condition = f"device='{decodedev_eui}'"
+        # print(select,"////////////", condition)
         
         # select_one_data("md_device","device_id",f"client_id={client_id} AND device='{device}'")
         
-        # stdata = select_one_data("st_sl_settings_scheduling",select,condition)
-        # print("stdata",stdata)
+        stdata = select_one_data("st_sl_settings_scheduling",select,condition)
+        print("stdata",stdata)
         # paydata =f"*R1, ,1,{sunrise['hour']},{sunrise['min']},{sunset['hour']},{sunset['min']},{get_current_datetime_string()},0,ZZ#"
         paydata="*R1, ,1,10,22,17,30,23,7,2034,16,07,33,ZZ#"
         
