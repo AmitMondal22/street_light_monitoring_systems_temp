@@ -9,7 +9,7 @@ async def list_device(client_id):
     try:
         select="device_id, device,device_type,meter_type"
         # select="device_id, device,  model, lat, lon, imei_no, last_maintenance, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') AS created_at, DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') AS updated_at"
-        condition=f"client_id={client_id} AND device_type='EN'"
+        condition=f"client_id={client_id} AND device_type='SL'"
         data = select_data("md_device", select, condition)
         return data
     except Exception as e:
@@ -32,7 +32,7 @@ async def user_device_list(client_id, user_id, organization_id):
 @staticmethod
 async def device_info(params,userdata):
     try:
-        condition = f"client_id={userdata['client_id']} AND device_id = {params.device_id} AND device_type='EN'"
+        condition = f"client_id={userdata['client_id']} AND device_id = {params.device_id} AND device_type='SL'"
         select="device_id, client_id, device, device_name, model, lat, lon, imei_no, last_maintenance,device_type,meter_type, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') AS created_at, DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') AS updated_at"
         data = select_one_data("md_device",select, condition,order_by="device_id DESC")
         
