@@ -83,7 +83,7 @@ async def testing2(request: Request,event: str):
         # UID,VOLTAGE,CURRENT,REALPOWER,PF,KWH,RUNHR,frequencyUPLOADFLAG,DOMODE,sensorflag
         device_data = device_data_model.StreetLightDeviceData(
             CLIENT_ID = 1,
-            UID=data_list[0],
+            UID=decodedev_eui,
             TW=1.0,  # TW is not provided in the data_list, so assign a default or calculated value
             VOLTAGE=float(data_list[1]),
             CURRENT=float(data_list[2]),
