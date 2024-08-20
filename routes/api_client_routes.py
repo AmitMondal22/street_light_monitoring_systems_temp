@@ -356,14 +356,14 @@ async def list_device(request: Request,params:DeviceInfo):
 # @api_client_routes.post("/manage/devices/add")
 @api_client_routes.post("/manage/devices/add", dependencies=[Depends(mw_client)])
 async def add_device(request: Request,params:List[DeviceAdd]):
-    try:
+    # try:
         data = await DeviceController.add_device(params)
         resdata = successResponse(data, message="Device added successfully")
         return Response(content=json.dumps(resdata), media_type="application/json", status_code=200)
-    except ValueError as ve:
-        raise HTTPException(status_code=400, detail=str(ve))
-    except Exception as e:
-        raise HTTPException(status_code=500, detail="Internal server error")
+    # except ValueError as ve:
+    #     raise HTTPException(status_code=400, detail=str(ve))
+    # except Exception as e:
+    #     raise HTTPException(status_code=500, detail="Internal server error")
     
     
 @api_client_routes.post("/manage/devices/edit", dependencies=[Depends(mw_client)])

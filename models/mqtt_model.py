@@ -23,7 +23,7 @@ class MqttPublishDeviceData(BaseModel):
     device: str
     device_type: str
     device_mode: str
-    sunrise_tmime: str
+    sunrise_time: str
     sunset_time: str
 
     # @field_validator('relay_close_time', 'timer_start_hours', 'timer_start_minutes', 'timer_stop_hours_1', 'timer_stop_minutes_1')

@@ -116,7 +116,7 @@ async def device_schedule_settings(used_data,requestdata):
         find_devices=select_one_data("st_sl_settings_scheduling", select, conditions,None)
         print(find_devices)
         
-        sunrise = get_hour_minute(requestdata.timer_start_hours)
+        sunrise = get_hour_minute(requestdata.sunrise_time)
         sunset = get_hour_minute(requestdata.sunset_time)
         
         if find_devices is None or not find_devices:

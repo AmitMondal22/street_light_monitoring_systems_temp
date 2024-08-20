@@ -46,10 +46,10 @@ async def device_info(params,userdata):
 
 @staticmethod
 async def add_device(params):
-    try:
+    # try:
         
         
-        column="client_id, device, device_name, model, lat, lon, imei_no, device_type, meter_type, last_maintenance, created_at"
+        column="client_id, device, device_name, model, lat, lon, device_type, last_maintenance, created_at"
         
         rows_data = []
         for params_data in params:
@@ -61,9 +61,7 @@ async def add_device(params):
                 "model": params_data.model,
                 "lat": params_data.lat,
                 "lon": params_data.lon,
-                "imei_no": params_data.imei_no,
                 "device_type": params_data.device_type,
-                "meter_type": params_data.meter_type,
                 "last_maintenance": params_data.last_maintenance,
                 "created_at": get_current_datetime()  # Assuming get_current_datetime() returns the current datetime
             }
@@ -74,8 +72,8 @@ async def add_device(params):
         
         await subscribe_topics()
         return batch_dataid
-    except Exception as e:
-        raise e
+    # except Exception as e:
+    #     raise e
     
 @staticmethod
 async def edit_device(params):
