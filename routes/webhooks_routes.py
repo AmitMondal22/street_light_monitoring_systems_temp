@@ -9,7 +9,6 @@ from models.webhooks_model import WhDownlinkParams
 from db_model.MASTER_MODEL import select_data, insert_data,select_one_data,select_last_data,update_data
 
 from utils.base64 import decode_base64
-from utils.date_time_format import get_current_datetime_string
 import json
 
 
@@ -97,7 +96,7 @@ async def testing2(request: Request,event: str):
             SENSORFLAG=int(data_list[10])  # SENSORFLAG is not provided in the data_list, so assign a default or calculated value
         )
         
-        select="sunrise_hour, sunrise_min, sunset_hour, sunset_min,device,device_id,device_mode"
+        select="sunrise_hour, sunrise_min, sunset_hour, sunset_min,device,device_id,device"
         condition = f"device='{decodedev_eui}'"
         # print(select,"////////////", condition)
         
@@ -107,7 +106,7 @@ async def testing2(request: Request,event: str):
         print("stdataMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM",stdata)
         #  {'sunrise_hour': '10', 'sunrise_min': '29', 'sunset_hour': '17', 'sunset_min': '38', 'device': '0080e115002b54b0', 'device_id': 28}
         # paydata =f"*R1, ,1,{sunrise['hour']},{sunrise['min']},{sunset['hour']},{sunset['min']},{get_current_datetime_string()},0,ZZ#"
-        paydata=f"*R1, ,1,{stdata.sunrise_hour},{stdata.sunrise_min},{stdata.sunset_hour},{stdata.sunset_min},{get_current_datetime_string},{stdata.device_mode},ZZ#"
+        paydata=f"*R1, ,1,10,22,17,30,23,7,2034,16,07,33,ZZ#"
         
         # *R1, ,datalogtimeMin,SRHR,SRMM,SSHR,SSMM,DD,MM,YYYY,HR,MM,SS,ZZ#
 
