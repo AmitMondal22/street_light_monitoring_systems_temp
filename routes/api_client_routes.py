@@ -715,12 +715,12 @@ async def client_screen_settings_edit(request: Request,params:ClientScreenSettin
     
 @api_client_routes.post('/device_schedule', dependencies=[Depends(mw_user_client)])
 async def device_schedule(request: Request,params:DeviceSchedule):
-    # try:
+    try:
         userdata=request.state.user_data
         data = await DeviceController.get_device_schedule(userdata,params)
         resdata = successResponse(data, message="Device Schedule successfully")
         return Response(content=json.dumps(resdata,cls=DecimalEncoder), media_type="application/json", status_code=200)
-    # except ValueError as ve:
-    #     raise HTTPException(status_code=400, detail=str(ve))
-    # except Exception as e:
-    #     raise HTTPException(status_code=500, detail="Internal server error")
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Internal server error")
