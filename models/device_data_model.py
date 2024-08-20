@@ -167,7 +167,7 @@ class DeviceAdd(BaseModel):
     model: str
     lat: str
     lon: str
-    imei_no: str
+    # imei_no: str
     device_type: str
     # meter_type: str
     last_maintenance: date
