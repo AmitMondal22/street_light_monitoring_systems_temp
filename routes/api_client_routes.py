@@ -260,16 +260,16 @@ async def delete_user(request: Request,user:DeleteUser):
 
 @api_client_routes.post("/manage_user/add_device", dependencies=[Depends(mw_client)])
 async def add_device(request: Request,user:UserDeviceAdd):
-    try:
+    # try:
         data = DeviceManageUserController.add_device(user)
         resdata = successResponse(data, message="Device added successfully")
         return Response(content=json.dumps(resdata), media_type="application/json", status_code=200)
-    except ValueError as ve:
-        # If there's a ValueError, return a 400 Bad Request with the error message
-        raise HTTPException(status_code=400, detail=str(ve))
-    except Exception as e:
-        # For any other unexpected error, return a 500 Internal Server Error
-        raise HTTPException(status_code=500, detail="Internal server error")
+    # except ValueError as ve:
+    #     # If there's a ValueError, return a 400 Bad Request with the error message
+    #     raise HTTPException(status_code=400, detail=str(ve))
+    # except Exception as e:
+    #     # For any other unexpected error, return a 500 Internal Server Error
+    #     raise HTTPException(status_code=500, detail="Internal server error")
     
 @api_client_routes.post("/manage_user/list_user_device", dependencies=[Depends(mw_client)])
 async def list_user_device(request: Request,params:ClientId):

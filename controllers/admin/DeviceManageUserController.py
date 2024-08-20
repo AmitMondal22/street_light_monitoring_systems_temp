@@ -3,7 +3,7 @@ from utils.date_time_format import get_current_datetime
 
 @staticmethod
 def add_device(device):
-    try:
+    # try:
         current_datetime = get_current_datetime()
         columns = "client_id,organization_id, user_id, device_id,device, created_by, created_at"
         value = f"{device.client_id},{device.organization_id}, {device.user_id}, {device.device_id},'{device.device}', '{device.created_by}', '{current_datetime}'"
@@ -14,8 +14,8 @@ def add_device(device):
         else:
             device_data = {"device_id": device_id, "client_id": device.client_id, "organization_id": device.organization_id, "user_id": device.user_id, "device_id": device.device_id, "device": device.device, "created_by": device.created_by, "created_at": current_datetime}
         return device_data
-    except Exception as e:
-        raise e
+    # except Exception as e:
+    #     raise e
     
     
 @staticmethod
