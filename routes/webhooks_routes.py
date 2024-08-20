@@ -68,6 +68,7 @@ async def testing2(request: Request,event: str):
       return {"status":"success"}   
     else:
         event =  await request.json()
+        print(event)
         # Extract Device EUI and the uplink payload
         dev_eui = event.get("devEUI")
         decodedev_eui=decode_base64(dev_eui)
@@ -80,7 +81,7 @@ async def testing2(request: Request,event: str):
         
         # TECH000001,0.00,0.00,0.00,0.00,0.00,0.50,0.00,1,1,0
         
-        # UID,VOLTAGE,CURRENT,REALPOWER,PF,KWH,RUNHR,frequencyUPLOADFLAG,DOMODE,sensorflag
+        # UID,VOLTAGE,CURRENT,REALPOWER,PF,KWH,RUNHR,frequency,UPLOADFLAG,DOMODE,sensorflag
         device_data = device_data_model.StreetLightDeviceData(
             CLIENT_ID = 1,
             UID=decodedev_eui,
