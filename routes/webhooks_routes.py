@@ -112,7 +112,7 @@ async def testing2(request: Request,event: str):
         #     Ex:
         #     *R1, ,1,10,22,17,30,23,7,2034,16,07,33,ZZ#
         await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
-        await EnergyController.get_energy_data(device_data,1,data_list[0])
+        await EnergyController.get_energy_data(device_data,1,decodedev_eui)
 
       
         # print("?????????????????????????????????????")
