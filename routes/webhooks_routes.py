@@ -98,7 +98,7 @@ async def testing2(request: Request,event: str):
         
         select="sunrise_hour, sunrise_min, sunset_hour, sunset_min,device,device_id,device"
         condition = f"device={decodedev_eui}"
-        
+        print(select,"////////////", condition)
         
         # select_one_data("md_device","device_id",f"client_id={client_id} AND device='{device}'")
         
