@@ -104,7 +104,7 @@ async def testing2(request: Request,event: str):
         
         print("device_dataaaaaaaaaaaaaaaaaaaaaaaaaaaaa",data_list,device_data)
         
-        select="sunrise_hour, sunrise_min, sunset_hour, sunset_min,device,device_id,device_mode"
+        select="sunrise_hour, sunrise_min, sunset_hour, sunset_min,device,device_id,device_mode,v_rms, irms,datalog_interval"
         condition = f"device='{decodedev_eui}'"
         # print(select,"////////////", condition)
         
@@ -114,7 +114,9 @@ async def testing2(request: Request,event: str):
         print("stdataMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM",stdata['sunrise_hour'])
         #  {'sunrise_hour': '10', 'sunrise_min': '29', 'sunset_hour': '17', 'sunset_min': '38', 'device': '0080e115002b54b0', 'device_id': 28}
         # paydata =f"*R1, ,1,{sunrise['hour']},{sunrise['min']},{sunset['hour']},{sunset['min']},{get_current_datetime_string()},0,ZZ#"
-        paydata=f"*R1, ,1,{stdata['sunrise_hour']},{stdata['sunrise_min']},{stdata['sunset_hour']},{stdata['sunset_min']},{get_current_datetime_string()},{stdata['device_mode']},ZZ#"
+        #         //*R1, ,datalogtimeMin,SRHR,SRMM,SSHR,SSMM,DD,MM,YYYY,HR,MM,SS,domode,VRMS,IRMS,ZZ#
+        #   //**R1, ,1,10,32,17,46,21,08,2024,11,57,55,0,235.6,1.5,ZZ
+        paydata=f"*R1, ,{stdata['datalog_interval']},{stdata['sunrise_hour']},{stdata['sunrise_min']},{stdata['sunset_hour']},{stdata['sunset_min']},{get_current_datetime_string()},{stdata['device_mode']},{stdata['v_rms']},{stdata['irms']},ZZ#"
         # print("================================",paydata2)
         # paydata=f"*R1, ,1,10,22,17,30,23,7,2034,16,07,33,ZZ#"
         
