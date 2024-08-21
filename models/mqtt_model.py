@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field, constr, field_validator,FieldValidationInfo
 from datetime import date,datetime,time
+from typing import Optional
 
 
 class MqttEnergyDeviceData(BaseModel):
@@ -25,6 +26,7 @@ class MqttPublishDeviceData(BaseModel):
     device_mode: str
     sunrise_time: str
     sunset_time: str
+    device_switch: Optional[int] = None
 
     # @field_validator('relay_close_time', 'timer_start_hours', 'timer_start_minutes', 'timer_stop_hours_1', 'timer_stop_minutes_1')
     # def validate_time_format(cls, value: str, info: FieldValidationInfo) -> str:

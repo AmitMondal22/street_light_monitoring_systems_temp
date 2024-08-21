@@ -116,32 +116,42 @@ async def device_schedule_settings(used_data,requestdata):
         find_devices=select_one_data("st_sl_settings_scheduling", select, conditions,None)
         print(find_devices)
         
-        sunrise = get_hour_minute(requestdata.sunrise_time)
-        sunset = get_hour_minute(requestdata.sunset_time)
         
-        if find_devices is None or not find_devices:
-            print("No devices found")
-            columns="device_id, device, client_id, device_type,device_mode, sunrise_hour, sunrise_min, sunset_hour, sunset_min, created_by, created_at"
-            # row_data= f"'{current_datetime}'"
-            row_data= f"{requestdata.device_id}, '{requestdata.device}', {used_data['client_id']}, '{requestdata.device_type}', '{requestdata.device_mode}', '{sunrise['hour']}', '{sunrise['min']}', '{sunset['hour']}', '{sunset['min']}', {used_data['user_id']}, '{current_datetime}'"
-            insdata=insert_data("st_sl_settings_scheduling", columns, row_data)
-        else:
-            print("Error inserting")
-            setvalue={"device_type":requestdata.device_type,"device_mode":requestdata.device_mode, "sunrise_hour": sunrise['hour'], "sunrise_min": sunrise['min'], "sunset_hour": sunset['hour'], "sunset_min": sunset['min'], "device_type": requestdata.device_type, "created_by": used_data['user_id'], "updated_at": current_datetime}
-            # conditions=""
-            insdata=update_data("st_sl_settings_scheduling",setvalue , conditions)
-
         decodedev_eui=requestdata.device
-        # paydata="*R1, ,1,10,22,17,30,23,7,2034,16,07,33,ZZ#"
-        #    *R1, ,datalogtimeMin,SRHR,SRMM,SSHR,SSMM,DD,MM,YYYY,HR,MM,SS,DEVICE_MODE,ZZ#
-
-        # Ex:
-        # *R1, ,1,10,22,17,30,23,7,2034,16,07,33,ZZ#
         
-        paydata =f"*R1, ,1,{sunrise['hour']},{sunrise['min']},{sunset['hour']},{sunset['min']},{get_current_datetime_string()},0,ZZ#"
-        await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
-        print("================================" ,paydata)
-        print("find_devices>>>>>>>>>>>>>>>>>",insdata)
-        return insdata
+        if requestdata.device_mode == 0 & requestdata.device_mode == "0":
+           
+            sunrise = get_hour_minute(requestdata.sunrise_time)
+            sunset = get_hour_minute(requestdata.sunset_time)
+        
+            if find_devices is None or not find_devices:
+                print("No devices found")
+                columns="device_id, device, client_id, device_type,device_mode, sunrise_hour, sunrise_min, sunset_hour, sunset_min, created_by, created_at"
+                # row_data= f"'{current_datetime}'"
+                row_data= f"{requestdata.device_id}, '{requestdata.device}', {used_data['client_id']}, '{requestdata.device_type}', '{requestdata.device_mode}', '{sunrise['hour']}', '{sunrise['min']}', '{sunset['hour']}', '{sunset['min']}', {used_data['user_id']}, '{current_datetime}'"
+                insdata=insert_data("st_sl_settings_scheduling", columns, row_data)
+            else:
+                print("Error inserting")
+                setvalue={"device_type":requestdata.device_type,"device_mode":requestdata.device_mode, "sunrise_hour": sunrise['hour'], "sunrise_min": sunrise['min'], "sunset_hour": sunset['hour'], "sunset_min": sunset['min'], "device_type": requestdata.device_type, "created_by": used_data['user_id'], "updated_at": current_datetime}
+                # conditions=""
+                insdata=update_data("st_sl_settings_scheduling",setvalue , conditions)
+
+            
+            # paydata="*R1, ,1,10,22,17,30,23,7,2034,16,07,33,ZZ#"
+            #    *R1, ,datalogtimeMin,SRHR,SRMM,SSHR,SSMM,DD,MM,YYYY,HR,MM,SS,DEVICE_MODE,ZZ#
+
+            # Ex:
+            # *R1, ,1,10,22,17,30,23,7,2034,16,07,33,ZZ#
+            
+            paydata =f"*R1, ,1,{sunrise['hour']},{sunrise['min']},{sunset['hour']},{sunset['min']},{get_current_datetime_string()},0,ZZ#"
+            await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
+        else:
+            if requestdata.device_switch is not None and requestdata.device_switch != "":
+                # *OPADO, ,0,XX#
+                paydata =f"*OPADO, ,{requestdata.device_switch},XX#"
+                await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
+                abc="dfvd"
+       
+        return True
     except Exception as e:
         raise ValueError("Could not fetch data")
