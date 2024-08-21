@@ -115,11 +115,15 @@ async def device_schedule_settings(used_data,requestdata):
         
         find_devices=select_one_data("st_sl_settings_scheduling", select, conditions,None)
         print(find_devices)
+        print(requestdata)
         
         
         decodedev_eui=requestdata.device
         
+        print(requestdata.device_mode)
+        
         if requestdata.device_mode == 0 & requestdata.device_mode == "0":
+            print(requestdata.device_mode)
            
             sunrise = get_hour_minute(requestdata.sunrise_time)
             sunset = get_hour_minute(requestdata.sunset_time)
@@ -147,13 +151,15 @@ async def device_schedule_settings(used_data,requestdata):
             #   //**R1, ,1,10,32,17,46,21,08,2024,11,57,55,0,235.6,1.5,ZZ
             
             paydata =f"*R1, ,{requestdata.datalog_interval},{sunrise['hour']},{sunrise['min']},{sunset['hour']},{sunset['min']},{get_current_datetime_string()},{requestdata.device_mode},{requestdata.vrms},{requestdata.irms},ZZ#"
+            
+            print(paydata)
             await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
         else:
             if requestdata.device_switch is not None and requestdata.device_switch != "":
                 # *OPADO, ,0,XX#
                 paydata =f"*OPADO, ,{requestdata.device_switch},XX#"
                 await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
-                abc="dfvd"
+                print(paydata)
        
         return True
     except Exception as e:
