@@ -138,6 +138,7 @@ async def device_schedule_settings(used_data,requestdata):
                 print("Error inserting")
                 setvalue={"device_type":requestdata.device_type,"device_mode":requestdata.device_mode, "sunrise_hour": sunrise['hour'], "sunrise_min": sunrise['min'], "sunset_hour": sunset['hour'], "sunset_min": sunset['min'],"v_rms":requestdata.vrms,"datalog_interval":requestdata.datalog_interval, "irms":requestdata.irms, "created_by": used_data['user_id'], "updated_at": current_datetime}
                 # conditions=""
+                print("Requestdata",setvalue , conditions)
                 insdata=update_data("st_sl_settings_scheduling",setvalue , conditions)
 
             
