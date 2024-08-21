@@ -6,7 +6,7 @@ from controllers.device_to_server import EnergyController
 from models import device_data_model
 from models.webhooks_model import WhDownlinkParams
 
-from db_model.MASTER_MODEL import select_data, insert_data,select_one_data,select_last_data,update_data
+from db_model.MASTER_MODEL import select_one_data
 
 from utils.base64 import decode_base64
 from utils.date_time_format import get_current_datetime_string
@@ -78,12 +78,13 @@ async def testing2(request: Request,event: str):
         print("uplink_data",uplink_data)
         decodeuplink_data=base64.b64decode(uplink_data).decode('utf-8')  
         data_list = decodeuplink_data.split(',')
+        # 0         1        2        3     4   5   6    7         8          9        10         11          12  13    14   15
+    #    clientid,VOLTAGE,CURRENT,REALPOWER,PF,KWH,RUNHR,frequency,UPLOADFLAG,DOMODE,sensorflag,log_sec_ref,sr_h,sr_m,ss_h,ss_m
+    #    1,        0.00,    0.00,   0.00,  0.00,0.00,0.50, 0.00,       1,         1,     0,        30,        18,  0,   16,  30
         
-        # TECH000001,0.00,0.00,0.00,0.00,0.00,0.50,0.00,1,1,0
-        
-        # UID,VOLTAGE,CURRENT,REALPOWER,PF,KWH,RUNHR,frequency,UPLOADFLAG,DOMODE,sensorflag
+
         device_data = device_data_model.StreetLightDeviceData(
-            CLIENT_ID = 1,
+            CLIENT_ID = data_list[0],
             UID=decodedev_eui,
             TW=1.0,  # TW is not provided in the data_list, so assign a default or calculated value
             VOLTAGE=float(data_list[1]),
@@ -105,7 +106,7 @@ async def testing2(request: Request,event: str):
         # print(select,"////////////", condition)
         
         # select_one_data("md_device","device_id",f"client_id={client_id} AND device='{device}'")
-        
+        await LoraApi.update_device_schedule_settings(data_list[0],decodedev_eui,data_list[10],data_list[12],data_list[13],data_list[14],data_list[15])
         stdata = select_one_data("st_sl_settings_scheduling",select,condition)
         print("stdataMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM",stdata['sunrise_hour'])
         #  {'sunrise_hour': '10', 'sunrise_min': '29', 'sunset_hour': '17', 'sunset_min': '38', 'device': '0080e115002b54b0', 'device_id': 28}
@@ -119,6 +120,8 @@ async def testing2(request: Request,event: str):
         #     Ex:
         #     *R1, ,1,10,22,17,30,23,7,2034,16,07,33,ZZ#
         await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
+       
+        
         await EnergyController.get_energy_data(device_data,1,decodedev_eui)
 
       

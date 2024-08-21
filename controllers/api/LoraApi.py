@@ -5,6 +5,8 @@ import base64
 from typing import Any
 from fastapi.encoders import jsonable_encoder
 import time
+from utils.date_time_format import get_current_datetime
+from db_model.MASTER_MODEL import  insert_data,select_one_data
 
 
 
@@ -138,6 +140,26 @@ async def webhooks_send_downlink_test(dev_eui: str, payload: str):
     except Exception as e:
         print(e)
         return False
+    
+@staticmethod
+async def update_device_schedule_settings(client_id,decodedev_eui,device_mode,sunrise_hour,sunrise_min,sunset_hour,sunset_min):
+    try:
+        current_datetime = get_current_datetime()
+        select="st_sl_settings_id, device_id, device, client_id, sunrise_hour, sunrise_min, sunset_hour, sunset_min, created_by"
+        conditions=f"device = {decodedev_eui} AND client_id = {client_id} "
+
+        find_devices=select_one_data("st_sl_settings_scheduling", select, conditions,None)
+        print(find_devices)
+
+        if find_devices is None or not find_devices:
+            print("No devices found")
+            columns="device, client_id, device_type,device_mode, sunrise_hour, sunrise_min, sunset_hour, sunset_min, created_by, created_at"
+            row_data= f"'{decodedev_eui}', {client_id}, 'SL', '{device_mode}', '{sunrise_hour}', '{sunrise_min}', '{sunset_hour}', '{sunset_min}', {0}, '{current_datetime}'"
+            insdata=insert_data("st_sl_settings_scheduling", columns, row_data)
+
+        return True
+    except Exception as e:
+        raise e
 
 
 
