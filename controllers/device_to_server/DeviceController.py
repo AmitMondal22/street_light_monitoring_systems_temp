@@ -108,7 +108,7 @@ async def user_device_list(data):
 
 @staticmethod
 async def device_schedule_settings(used_data,requestdata):
-    # try:
+    try:
         current_datetime = get_current_datetime()
         select="st_sl_settings_id, device_id, device, client_id, sunrise_hour, sunrise_min, sunset_hour, sunset_min, created_by"
         conditions=f"device_id = {requestdata.device_id} AND client_id = {used_data['client_id']} "
@@ -153,5 +153,5 @@ async def device_schedule_settings(used_data,requestdata):
                 abc="dfvd"
        
         return True
-    # except Exception as e:
-    #     raise ValueError("Could not fetch data")
+    except Exception as e:
+        raise ValueError("Could not fetch data")
