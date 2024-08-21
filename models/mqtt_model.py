@@ -23,7 +23,7 @@ class MqttPublishDeviceData(BaseModel):
     device_id: int
     device: str
     device_type: str
-    device_mode: str
+    device_mode: int
     sunrise_time: str
     sunset_time: str
     device_switch: Optional[int] = None
