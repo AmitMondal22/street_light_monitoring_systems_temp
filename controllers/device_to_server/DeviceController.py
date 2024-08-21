@@ -122,7 +122,7 @@ async def device_schedule_settings(used_data,requestdata):
         
         print(requestdata.device_mode)
         
-        if requestdata.device_mode == 0 & requestdata.device_mode == "0":
+        if requestdata.device_mode == 0 or requestdata.device_mode == "0":
             print(requestdata.device_mode)
            
             sunrise = get_hour_minute(requestdata.sunrise_time)
