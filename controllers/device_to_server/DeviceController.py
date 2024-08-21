@@ -140,6 +140,9 @@ async def device_schedule_settings(used_data,requestdata):
                 # conditions=""
                 print("Requestdata",setvalue , conditions)
                 insdata=update_data("st_sl_settings_scheduling",setvalue , conditions)
+                
+                
+                
 
             
             # paydata="*R1, ,1,10,22,17,30,23,7,2034,16,07,33,ZZ#"
