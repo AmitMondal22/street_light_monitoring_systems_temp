@@ -432,7 +432,7 @@ async def edit_organization_info(client_id,user_id,params):
 async def get_device_schedule(userdata,params):
     try:
         condition = f"client_id = {userdata['client_id']} AND device_id = {params.device_id}"
-        select = "st_sl_settings_id, device_id, device, client_id, device_type, device_mode, sunrise_hour, sunrise_min, sunset_hour, sunset_min, created_by"
+        select = "st_sl_settings_id, device_id, device, client_id, device_type, device_mode, sunrise_hour, sunrise_min, sunset_hour, sunset_min,sunset_min, v_rms, irms,	datalog_interval, created_by"
         table = "st_sl_settings_scheduling"
         print(table,select,condition)
         data = select_one_data(table, select, condition,order_by="st_sl_settings_id DESC")
