@@ -146,7 +146,7 @@ async def update_device_schedule_settings(client_id,decodedev_eui,device_mode,su
     try:
         current_datetime = get_current_datetime()
         select="st_sl_settings_id, device_id, device, client_id, sunrise_hour, sunrise_min, sunset_hour, sunset_min, created_by"
-        conditions=f"device = {decodedev_eui} AND client_id = {client_id} "
+        conditions=f"device = '{decodedev_eui}' AND client_id = {client_id} "
 
         find_devices=select_one_data("st_sl_settings_scheduling", select, conditions,None)
         print(find_devices)

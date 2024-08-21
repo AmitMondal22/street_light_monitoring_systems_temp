@@ -81,6 +81,9 @@ async def testing2(request: Request,event: str):
         # 0         1        2        3     4   5   6    7         8          9        10         11          12  13    14   15
     #    clientid,VOLTAGE,CURRENT,REALPOWER,PF,KWH,RUNHR,frequency,UPLOADFLAG,DOMODE,sensorflag,log_sec_ref,sr_h,sr_m,ss_h,ss_m
     #    1,        0.00,    0.00,   0.00,  0.00,0.00,0.50, 0.00,       1,         1,     0,        30,        18,  0,   16,  30
+    
+    
+    #  ['0.000', '0.00', '0.00', '0.00', '0.00', '0.50', '0.00', '1', '1', '0', '30', '18', '0', '16', '30']
         
 
         device_data = device_data_model.StreetLightDeviceData(
