@@ -126,13 +126,13 @@ async def device_schedule_settings(used_data,requestdata):
         
             if find_devices is None or not find_devices:
                 print("No devices found")
-                columns="device_id, device, client_id, device_type,device_mode, sunrise_hour, sunrise_min, sunset_hour, sunset_min, created_by, created_at"
+                columns="device_id, device, client_id, device_type,device_mode, sunrise_hour, sunrise_min, sunset_hour, sunset_min,v_rms, irms,	datalog_interval, created_by, created_at"
                 # row_data= f"'{current_datetime}'"
-                row_data= f"{requestdata.device_id}, '{requestdata.device}', {used_data['client_id']}, '{requestdata.device_type}', '{requestdata.device_mode}', '{sunrise['hour']}', '{sunrise['min']}', '{sunset['hour']}', '{sunset['min']}', {used_data['user_id']}, '{current_datetime}'"
+                row_data= f"{requestdata.device_id}, '{requestdata.device}', {used_data['client_id']}, '{requestdata.device_type}', '{requestdata.device_mode}', '{sunrise['hour']}', '{sunrise['min']}', '{sunset['hour']}', '{sunset['min']}','{requestdata.vrms}', '{requestdata.irms}',{requestdata.datalog_interval} {used_data['user_id']}, '{current_datetime}'"
                 insdata=insert_data("st_sl_settings_scheduling", columns, row_data)
             else:
                 print("Error inserting")
-                setvalue={"device_type":requestdata.device_type,"device_mode":requestdata.device_mode, "sunrise_hour": sunrise['hour'], "sunrise_min": sunrise['min'], "sunset_hour": sunset['hour'], "sunset_min": sunset['min'], "device_type": requestdata.device_type, "created_by": used_data['user_id'], "updated_at": current_datetime}
+                setvalue={"device_type":requestdata.device_type,"device_mode":requestdata.device_mode, "sunrise_hour": sunrise['hour'], "sunrise_min": sunrise['min'], "sunset_hour": sunset['hour'], "sunset_min": sunset['min'],"v_rms":requestdata.vrms,"datalog_interval":requestdata.datalog_interval, "irms":requestdata.irms, "created_by": used_data['user_id'], "updated_at": current_datetime}
                 # conditions=""
                 insdata=update_data("st_sl_settings_scheduling",setvalue , conditions)
 
@@ -143,7 +143,10 @@ async def device_schedule_settings(used_data,requestdata):
             # Ex:
             # *R1, ,1,10,22,17,30,23,7,2034,16,07,33,ZZ#
             
-            paydata =f"*R1, ,1,{sunrise['hour']},{sunrise['min']},{sunset['hour']},{sunset['min']},{get_current_datetime_string()},0,ZZ#"
+            #  //*R1, ,datalogtimeMin,SRHR,SRMM,SSHR,SSMM,DD,MM,YYYY,HR,MM,SS,domode,VRMS,IRMS,ZZ#
+            #   //**R1, ,1,10,32,17,46,21,08,2024,11,57,55,0,235.6,1.5,ZZ
+            
+            paydata =f"*R1, ,{requestdata.datalog_interval},{sunrise['hour']},{sunrise['min']},{sunset['hour']},{sunset['min']},{get_current_datetime_string()},{requestdata.device_mode},{requestdata.vrms},{requestdata.irms},ZZ#"
             await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
         else:
             if requestdata.device_switch is not None and requestdata.device_switch != "":
