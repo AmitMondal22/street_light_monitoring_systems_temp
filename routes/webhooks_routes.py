@@ -72,6 +72,15 @@ async def testing2(request: Request,event: str):
         print(event)
         # Extract Device EUI and the uplink payload
         dev_eui = event.get("devEUI")
+        # rssi = event.get("rxInfo")
+        rxInfo = event.get("rxInfo")
+
+        # Print RSSI value
+        if rxInfo and len(rxInfo) > 0:
+            rssi=rxInfo[0].get("rssi")
+            # print(rxInfo[0].get("rssi"))
+        else:
+            rssi=0.0
         decodedev_eui=decode_base64(dev_eui)
         print(">>>>>>>>>>>>>>>>>>>>>>>decodedev_eui",decodedev_eui)
 
@@ -90,7 +99,7 @@ async def testing2(request: Request,event: str):
         device_data = device_data_model.StreetLightDeviceData(
             CLIENT_ID = data_list[0],
             UID=decodedev_eui,
-            TW=1.0,  # TW is not provided in the data_list, so assign a default or calculated value
+            TW=rssi,  # TW is not provided in the data_list, so assign a default or calculated value
             VOLTAGE=float(data_list[1]),
             CURRENT=float(data_list[2]),
             REALPOWER=float(data_list[3]),
