@@ -184,12 +184,12 @@ async def update_device_schedule_settings(client_id,decodedev_eui,device_mode,su
             columns="device, client_id, device_type,device_mode, sunrise_hour, sunrise_min, sunset_hour, sunset_min, created_by, created_at"
             row_data= f"'{decodedev_eui}', {client_id}, 'SL', '{device_mode}', '{sunrise_hour}', '{sunrise_min}', '{sunset_hour}', '{sunset_min}', {0}, '{current_datetime}'"
             insdata=insert_data("st_sl_settings_scheduling", columns, row_data)
-        else:
-            if sunrise_hour != find_devices['sunrise_hour'] or sunrise_min != find_devices['sunrise_min'] or sunset_hour != find_devices['sunset_hour'] or sunset_min != find_devices['sunset_min']:
-                print("Error inserting")
-                setvalue={"sunrise_hour": sunrise_hour, "sunrise_min": sunrise_min, "sunset_hour": sunset_hour, "sunset_min": sunset_min, "updated_at": current_datetime}
-                print("Requestdata",setvalue , conditions)
-                insdata=update_data("st_sl_settings_scheduling",setvalue , conditions)
+        # else:
+        #     if sunrise_hour != find_devices['sunrise_hour'] or sunrise_min != find_devices['sunrise_min'] or sunset_hour != find_devices['sunset_hour'] or sunset_min != find_devices['sunset_min']:
+        #         print("Error inserting")
+        #         setvalue={"sunrise_hour": sunrise_hour, "sunrise_min": sunrise_min, "sunset_hour": sunset_hour, "sunset_min": sunset_min, "updated_at": current_datetime}
+        #         print("Requestdata",setvalue , conditions)
+        #         insdata=update_data("st_sl_settings_scheduling",setvalue , conditions)
                 
                 
                 
