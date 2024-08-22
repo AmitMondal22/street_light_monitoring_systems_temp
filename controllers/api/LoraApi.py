@@ -136,7 +136,8 @@ async def webhooks_send_downlink_test(dev_eui: str, payload: str):
         delete= requests.delete(url, headers=headers)
         response = requests.post(url, headers=headers, json=data)
         print(response.text)
-        print("?????????????")
+        print(delete.text)
+        print("?????????????./././../././././/.")
         return True
     except Exception as e:
         print(e)
