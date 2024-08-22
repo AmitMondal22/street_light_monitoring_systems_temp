@@ -24,11 +24,11 @@ async def get_energy_data(data:device_data_model.StreetLightDeviceData,client_id
       
         # date_obj = datetime.strptime(data.DT, "%d%m%y")
         # formatted_date = date_obj.strftime("%Y-%m-%d")
-        formatted_date = get_current_date_utc()
+        formatted_date = get_current_date()
         
         # time_obj = datetime.strptime(data.TIME, "%H%M%S")
         # formatted_time = time_obj.strftime("%H:%M:%S")
-        formatted_time = get_current_time_utc()
+        formatted_time = get_current_time()
         
         
         columns = "client_id, device_id, device, tw, voltage, current, realpower, pf, kwh, runhr, frequency, domode, sensor_flag, upload_flag, date, time, created_at, updated_at"
