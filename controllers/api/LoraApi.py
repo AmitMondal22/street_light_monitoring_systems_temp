@@ -133,7 +133,7 @@ async def webhooks_send_downlink_test(dev_eui: str, payload: str):
                 "fPort": 2
             }
         }
-
+        delete= requests.delete(url, headers=headers)
         response = requests.post(url, headers=headers, json=data)
         print(response.text)
         print("?????????????")
