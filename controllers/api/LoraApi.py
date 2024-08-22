@@ -118,7 +118,8 @@ async def webhooks_send_downlink_test(dev_eui: str, payload: str):
     try:
         base64_encoded = encode_to_base64(payload)
         print(base64_encoded)
-        url = f'http://lora.techavo.in:8080/api/devices/{dev_eui}/queue'
+        # url = f'http://lora.techavo.in:8080/api/devices/{dev_eui}/queue'
+        url = f'http://lora.techavo.in:8080/api/devices/{dev_eui}/downlinks'
         headers = {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
