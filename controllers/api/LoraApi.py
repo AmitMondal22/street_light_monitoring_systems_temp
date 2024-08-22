@@ -190,9 +190,6 @@ async def update_device_schedule_settings(client_id,decodedev_eui,device_mode,su
         #         setvalue={"sunrise_hour": sunrise_hour, "sunrise_min": sunrise_min, "sunset_hour": sunset_hour, "sunset_min": sunset_min, "updated_at": current_datetime}
         #         print("Requestdata",setvalue , conditions)
         #         insdata=update_data("st_sl_settings_scheduling",setvalue , conditions)
-                
-                
-                
 
         return True
     except Exception as e:
