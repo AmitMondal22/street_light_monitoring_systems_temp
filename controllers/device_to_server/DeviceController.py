@@ -154,7 +154,8 @@ async def device_schedule_settings(used_data,requestdata):
             #  //*R1, ,datalogtimeMin,SRHR,SRMM,SSHR,SSMM,DD,MM,YYYY,HR,MM,SS,domode,VRMS,IRMS,ZZ#
             #   //**R1, ,1,10,32,17,46,21,08,2024,11,57,55,0,235.6,1.5,ZZ
             
-            paydata =f"*R1, ,{requestdata.datalog_interval},{sunrise['hour']},{sunrise['min']},{sunset['hour']},{sunset['min']},{get_current_datetime_string()},{requestdata.device_mode},{requestdata.vrms},{requestdata.irms},ZZ#"
+            # paydata =f"*R1, ,{requestdata.datalog_interval},{sunrise['hour']},{sunrise['min']},{sunset['hour']},{sunset['min']},{get_current_datetime_string()},{requestdata.device_mode},{requestdata.vrms},{requestdata.irms},ZZ#"
+            paydata =f"*R1, ,{requestdata.datalog_interval},{sunrise['hour']},{sunrise['min']},{sunset['hour']},{sunset['min']},{get_current_datetime_string()},{requestdata.device_mode},ZZ#"
             
             print(paydata)
             await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)

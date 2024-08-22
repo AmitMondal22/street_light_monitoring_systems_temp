@@ -10,6 +10,7 @@ from db_model.MASTER_MODEL import select_one_data
 
 from utils.base64 import decode_base64
 from utils.date_time_format import get_current_datetime_string
+from utils.number_conversion import dec_to_num
 import json
 
 
@@ -116,7 +117,8 @@ async def testing2(request: Request,event: str):
         # paydata =f"*R1, ,1,{sunrise['hour']},{sunrise['min']},{sunset['hour']},{sunset['min']},{get_current_datetime_string()},0,ZZ#"
         #         //*R1, ,datalogtimeMin,SRHR,SRMM,SSHR,SSMM,DD,MM,YYYY,HR,MM,SS,domode,VRMS,IRMS,ZZ#
         #   //**R1, ,1,10,32,17,46,21,08,2024,11,57,55,0,235.6,1.5,ZZ
-        paydata=f"*R1, ,{stdata['datalog_interval']},{stdata['sunrise_hour']},{stdata['sunrise_min']},{stdata['sunset_hour']},{stdata['sunset_min']},{get_current_datetime_string()},{stdata['device_mode']},{stdata['v_rms']},{stdata['irms']},ZZ#"
+        # paydata=f"*R1, ,{stdata['datalog_interval']},{stdata['sunrise_hour']},{stdata['sunrise_min']},{stdata['sunset_hour']},{stdata['sunset_min']},{get_current_datetime_string()},{dec_to_num(stdata['device_mode'])},{dec_to_num(stdata['v_rms'])},{dec_to_num(stdata['irms'])},ZZ#"
+        paydata=f"*R1, ,{stdata['datalog_interval']},{stdata['sunrise_hour']},{stdata['sunrise_min']},{stdata['sunset_hour']},{stdata['sunset_min']},{get_current_datetime_string()},{dec_to_num(stdata['device_mode'])},ZZ#"
         print("================================",paydata)
         # paydata=f"*R1, ,1,10,22,17,30,23,7,2034,16,07,33,ZZ#"
         
