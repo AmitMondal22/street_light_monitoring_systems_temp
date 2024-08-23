@@ -92,70 +92,36 @@ async def send_last_energy_data(client_id, device_id, device):
             print(lastdata)
             # week_date=weekdays_date()
             
-            
-            
-            custom_sql2=f"""SELECT 
-                            curr.date,
-                            curr.time,
-                            curr.kwh
-                        FROM 
-                            (
-                                SELECT 
-                                    *,
-                                    LAG(kwh) OVER (ORDER BY date, time) AS prev_kwh,
-                                    ROW_NUMBER() OVER (PARTITION BY date ORDER BY time DESC) AS rn
-                                FROM 
-                                    td_energy_data
-                                WHERE 
-                                    client_id = {client_id} 
-                                    AND device_id = {device_id}
-                                    AND device = '{device}'
-                                    AND date BETWEEN DATE_SUB('{lastdata['date']}', INTERVAL (WEEKDAY('{lastdata['date']}') + 2) DAY) 
-                                                AND DATE_SUB('{lastdata['date']}', INTERVAL (WEEKDAY('{lastdata['date']}') - 6) DAY)
-                            ) AS curr
-                        WHERE 
-                            curr.rn = 1
-                        ORDER BY 
-                            curr.date DESC;"""
+            try:
+                custom_sql2=f"""SELECT 
+                                curr.date,
+                                curr.time,
+                                curr.kwh
+                            FROM 
+                                (
+                                    SELECT 
+                                        *,
+                                        LAG(kwh) OVER (ORDER BY date, time) AS prev_kwh,
+                                        ROW_NUMBER() OVER (PARTITION BY date ORDER BY time DESC) AS rn
+                                    FROM 
+                                        td_energy_data
+                                    WHERE 
+                                        client_id = {client_id} 
+                                        AND device_id = {device_id}
+                                        AND device = '{device}'
+                                        AND date BETWEEN DATE_SUB('{lastdata['date']}', INTERVAL (WEEKDAY('{lastdata['date']}') + 2) DAY) 
+                                                    AND DATE_SUB('{lastdata['date']}', INTERVAL (WEEKDAY('{lastdata['date']}') - 6) DAY)
+                                ) AS curr
+                            WHERE 
+                                curr.rn = 1
+                            ORDER BY 
+                                curr.date DESC;"""
+                
+                lastdata_weekdata=custom_select_sql_query(custom_sql2,1)
+                print("Last data",lastdata_weekdata)
 
-            
-            
-            # custom_sql2=f""" SELECT 
-            #                     curr.energy_data_id,
-            #                     curr.client_id,
-            #                     curr.device_id,
-            #                     curr.device,
-            #                     curr.do_channel,
-            #                     curr.tw,
-            #                     curr.e1 - COALESCE(curr.prev_e1, 0) AS e1_diff,
-            #                     curr.e2 - COALESCE(curr.prev_e2, 0) AS e2_diff,
-            #                     curr.e3 - COALESCE(curr.prev_e3, 0) AS e3_diff,
-            #                     curr.date,
-            #                     curr.time
-            #                 FROM 
-            #                     (
-            #                         SELECT 
-            #                             *,
-            #                             LAG(e1) OVER (ORDER BY date, time) AS prev_e1,
-            #                             LAG(e2) OVER (ORDER BY date, time) AS prev_e2,
-            #                             LAG(e3) OVER (ORDER BY date, time) AS prev_e3,
-            #                             ROW_NUMBER() OVER (PARTITION BY date ORDER BY time DESC) AS rn
-            #                         FROM 
-            #                             td_energy_data
-            #                         WHERE 
-            #                             client_id = {client_id} 
-            #                             AND device_id = {device_id}
-            #                             AND device = '{device}'
-            #                             AND date BETWEEN DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE()) + 2) DAY) 
-            #                                         AND DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE()) - 6) DAY)
-            #                     ) AS curr
-            #                 WHERE 
-            #                     curr.rn = 1
-            #                 ORDER BY 
-            #                     curr.date DESC; """
-            
-            lastdata_weekdata=custom_select_sql_query(custom_sql2,1)
-            print("Last data",lastdata_weekdata)
+            except:
+                lastdata_weekdata=None
             
             # background_tasks.add_task(AlertLibrary.send_alert, client_id, device_id, device, json.dumps(lastdata, cls=DecimalEncoder))
             
