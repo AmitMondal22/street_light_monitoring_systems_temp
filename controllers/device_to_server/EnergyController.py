@@ -94,29 +94,29 @@ async def send_last_energy_data(client_id, device_id, device):
             
             
             
-            custom_sql2="""SELECT 
-                            curr.date,
-                            curr.time,
-                            curr.kwh
-                        FROM 
-                            (
-                                SELECT 
-                                    *,
-                                    LAG(kwh) OVER (ORDER BY date, time) AS prev_kwh,
-                                    ROW_NUMBER() OVER (PARTITION BY date ORDER BY time DESC) AS rn
-                                FROM 
-                                    td_energy_data
-                                WHERE 
-                                    client_id = {client_id} 
-                                    AND device_id = {device_id}
-                                    AND device = '{device}'
-                                    AND date BETWEEN DATE_SUB('{lastdata['date']}', INTERVAL (WEEKDAY('{lastdata['date']}') + 2) DAY) 
-                                                AND DATE_SUB('{lastdata['date']}', INTERVAL (WEEKDAY('{lastdata['date']}') - 6) DAY)
-                            ) AS curr
-                        WHERE 
-                            curr.rn = 1
-                        ORDER BY 
-                            curr.date DESC;"""
+#             SELECT 
+#     curr.date,
+#     curr.time,
+#     curr.kwh
+# FROM 
+#     (
+#         SELECT 
+#             *,
+#             LAG(kwh) OVER (ORDER BY date, time) AS prev_kwh,
+#             ROW_NUMBER() OVER (PARTITION BY date ORDER BY time DESC) AS rn
+#         FROM 
+#             td_energy_data
+#         WHERE 
+#             client_id = {client_id} 
+#             AND device_id = {device_id}
+#             AND device = '{device}'
+#             AND date BETWEEN DATE_SUB({lastdata.date}, INTERVAL (WEEKDAY({lastdata.date}) + 2) DAY) 
+#                         AND DATE_SUB({lastdata.date}, INTERVAL (WEEKDAY({lastdata.date}) - 6) DAY)
+#     ) AS curr
+# WHERE 
+#     curr.rn = 1
+# ORDER BY 
+#     curr.date DESC;
 
             
             
@@ -154,7 +154,7 @@ async def send_last_energy_data(client_id, device_id, device):
             #                 ORDER BY 
             #                     curr.date DESC; """
             
-            lastdata_weekdata=custom_select_sql_query(custom_sql2,1)
+            # lastdata_weekdata=custom_select_sql_query(custom_sql2,1)
             # print("Last data",lastdata_weekdata)
             
             # background_tasks.add_task(AlertLibrary.send_alert, client_id, device_id, device, json.dumps(lastdata, cls=DecimalEncoder))
