@@ -129,8 +129,8 @@ async def send_last_energy_data(client_id, device_id, device):
             print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>|||||||||||")
             
             # await manager.send_personal_message("SLMS",client_id, device_id, device, json.dumps(lastdata, cls=DecimalEncoder))
-            # twodata={"lastdata_weekdata":lastdata_weekdata,"lastdata":lastdata}
-            twodata={"lastdata":lastdata}
+            twodata={"lastdata_weekdata":lastdata_weekdata,"lastdata":lastdata}
+            # twodata={"lastdata":lastdata}
             print(twodata)
             await sennd_ws_message("SLMS",client_id, device_id, device, json.dumps(twodata, cls=DecimalEncoder))
             return json.dumps(lastdata, cls=DecimalEncoder)
