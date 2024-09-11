@@ -14,8 +14,8 @@ app = FastAPI()
 
 # Set up CORS
 origins = [
-    "http://192.168.29.210:8009",
-    "http://localhost:8009",
+    "http://192.168.29.210:8011",
+    "http://localhost:8011",
     "*"
 ]
 
@@ -86,13 +86,13 @@ def index():
 if __name__ == "__main__":
     
     # Run the FastAPI application
-    uvicorn.run("main:app", host="0.0.0.0", port=8009, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8011, reload=True)
     
 # if __name__ == "__main__":
 #     uvicorn.run(
 #         "main:app",       # Reference to the FastAPI app in the format 'module:instance'
 #         host="0.0.0.0",
-#         port=8009,
+#         port=8011,
 #         workers=8,        # Number of worker processes
 #         # threads=8 
 #         loop="asyncio",  # Event loop policy, usually "asyncio" or "auto"
