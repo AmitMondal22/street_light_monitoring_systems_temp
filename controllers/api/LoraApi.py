@@ -11,7 +11,7 @@ from db_model.MASTER_MODEL import  insert_data,select_one_data,update_data
 
 
 # import grpc
-from chirpstack_api import api
+# from chirpstack_api import api
 
 
 def encode_to_base64(data):
