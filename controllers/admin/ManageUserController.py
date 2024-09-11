@@ -5,7 +5,7 @@ from utils.otp import generate_otp
 
 
 
-@staticmethod
+
 def add_user(user):
     try:
         password = get_password_hash(user.password)
@@ -24,7 +24,7 @@ def add_user(user):
         raise e
 
 
-@staticmethod
+
 def list_user(params):
     try:
         select="u.user_id, u.user_name, u.user_email, u.user_info_id, u.user_active_status, u.user_type, u.otp_number, u.otp_active_status, u.created_by, DATE_FORMAT(u.created_at, '%Y-%m-%d %H:%i:%s') AS created_at, o.organization_name, o.organization_id"
@@ -36,7 +36,7 @@ def list_user(params):
         raise e
 
 
-@staticmethod
+
 def user_info(params):
     try:
         select="u.user_id, u.user_name, u.user_email, u.user_info_id, u.user_active_status, u.user_type, u.otp_number, u.otp_active_status, u.created_by, DATE_FORMAT(u.created_at, '%Y-%m-%d %H:%i:%s') AS created_at, o.organization_name, o.organization_id"
@@ -48,7 +48,7 @@ def user_info(params):
         raise e
 
 
-@staticmethod
+
 def edit_user(user):
     try:
         # password = get_password_hash(user.password)
@@ -59,7 +59,7 @@ def edit_user(user):
     except Exception as e:
         raise e
 
-@staticmethod
+
 def delete_user(user):
     try:
         condition = f"user_id = {user.user_id}"

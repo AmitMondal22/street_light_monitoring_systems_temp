@@ -36,7 +36,7 @@ async def send_message(data_type:str,client_id: int,device_id:int,device:str, me
 
 
 
-@staticmethod
+
 async def sennd_ws_message(data_type:str,client_id: int,device_id:int,device:str, message: str):
     await manager.send_personal_message(data_type, client_id, device_id, device, json.dumps(message))
     return {"message": "Message sent successfully"}

@@ -10,7 +10,7 @@ from db_model.MASTER_MODEL import  insert_data,select_one_data,update_data
 
 
 
-import grpc
+# import grpc
 from chirpstack_api import api
 
 
@@ -41,7 +41,7 @@ def decode_base64(encoded_str):
     """Decode a Base64 encoded string."""
     return base64.b64decode(encoded_str).decode('utf-8')
 
-@staticmethod
+
 async def uplink(user, params):
     try:
         return "data"
@@ -49,7 +49,7 @@ async def uplink(user, params):
         raise e
     
 
-@staticmethod
+
 def send_downlink(user: Any, params: Any) -> dict:
     # Replace these values with your actual values
    
@@ -74,7 +74,7 @@ def send_downlink(user: Any, params: Any) -> dict:
         return {'error': f'Error: {response.status_code} - {response.text}'}
         
     
-@staticmethod
+
 async def webhooks_send_downlink():
    
     frm_payload = "R1, ,1,10,22,17,30,24,7,2024,16,07,33,ZZ"
@@ -113,7 +113,7 @@ async def webhooks_send_downlink():
 
 
 
-@staticmethod
+
 async def webhooks_send_downlink_test(dev_eui: str, payload: str):
     try:
         base64_encoded = encode_to_base64(payload)
@@ -143,7 +143,7 @@ async def webhooks_send_downlink_test(dev_eui: str, payload: str):
         print(e)
         return False
     
-@staticmethod
+
 async def webhooks_send_downlink_test_menual(dev_eui: str, payload: str):
     try:
         base64_encoded = encode_to_base64(payload)
@@ -171,7 +171,7 @@ async def webhooks_send_downlink_test_menual(dev_eui: str, payload: str):
         print(e)
         return False
     
-@staticmethod
+
 async def update_device_schedule_settings(client_id,decodedev_eui,device_mode,sunrise_hour,sunrise_min,sunset_hour,sunset_min):
     try:
         current_datetime = get_current_datetime()

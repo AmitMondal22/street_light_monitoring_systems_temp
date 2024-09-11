@@ -7,7 +7,7 @@ from fastapi import HTTPException
 
 
 
-@staticmethod
+
 async def register(user) -> dict:
     try:
         password = get_password_hash(user.password)
@@ -25,7 +25,7 @@ async def register(user) -> dict:
         raise e
 
 
-# @staticmethod
+# 
 # async def login(user) -> dict:
 #     try:
 #         condition = f"user_email = '{user.email}'"
@@ -91,7 +91,7 @@ async def register(user) -> dict:
 
 
 
-@staticmethod
+
 async def login(user) -> dict:
     try:
         # Base select and condition for initial user info fetch

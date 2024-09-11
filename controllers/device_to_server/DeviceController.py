@@ -9,7 +9,7 @@ from controllers.api import LoraApi
 from hooks.update_event_hooks import update_topics
 
    
-@staticmethod
+
 async def device_auto_register(data):
     try:
         select="device_id, device, model, lat, lon, imei_no, last_maintenance,device_type,meter_type, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') AS created_at, DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') AS updated_at"
@@ -42,7 +42,7 @@ async def device_auto_register(data):
     except Exception as e:
         raise ValueError("Could not fetch data")
     
-@staticmethod
+
 async def checked_devices(data):
     try:
         select="device_id, device, model, lat, lon, imei_no, last_maintenance,device_type,meter_type, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') AS created_at, DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') AS updated_at"
@@ -60,7 +60,7 @@ async def checked_devices(data):
     
     
 
-@staticmethod
+
 async def user_device_list(data):
     try:
         select="d.device_id, d.device, d.model, d.lat, d.lon, d.imei_no,d.device_type,d.meter_type, d.last_maintenance, DATE_FORMAT(d.created_at, '%Y-%m-%d %H:%i:%s') AS created_at, DATE_FORMAT(d.updated_at, '%Y-%m-%d %H:%i:%s') AS updated_at"
@@ -73,7 +73,7 @@ async def user_device_list(data):
     
     
     
-# @staticmethod
+# 
 # async def device_schedule_settings(used_data,requestdata):
 #     try:
         
@@ -106,7 +106,7 @@ async def user_device_list(data):
 
 
 
-@staticmethod
+
 async def device_schedule_settings(used_data,requestdata):
     try:
         current_datetime = get_current_datetime()

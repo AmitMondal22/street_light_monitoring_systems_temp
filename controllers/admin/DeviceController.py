@@ -4,7 +4,7 @@ from utils.last12month import last_12_month
 from routes.mqtt_routes import subscribe_topics
 
 
-@staticmethod
+
 async def list_device(client_id):
     try:
         select="device_id, device,device_type,meter_type"
@@ -16,7 +16,7 @@ async def list_device(client_id):
         raise e
     
     
-@staticmethod
+
 async def user_device_list(client_id, user_id, organization_id):
     try:
         select="d.device_id, d.device, d.model, d.lat, d.lon,d.device_type, d.last_maintenance, DATE_FORMAT(d.created_at, '%Y-%m-%d %H:%i:%s') AS created_at, DATE_FORMAT(d.updated_at, '%Y-%m-%d %H:%i:%s') AS updated_at"
@@ -29,7 +29,7 @@ async def user_device_list(client_id, user_id, organization_id):
         raise ValueError("Could not fetch data")
 
 
-@staticmethod
+
 async def device_info(params,userdata):
     try:
         condition = f"client_id={userdata['client_id']} AND device_id = {params.device_id} AND device_type='SL'"
@@ -45,7 +45,7 @@ async def device_info(params,userdata):
     except Exception as e:
         raise e
 
-@staticmethod
+
 async def add_device(params):
     # try:
         
@@ -75,7 +75,7 @@ async def add_device(params):
     # except Exception as e:
     #     raise e
     
-@staticmethod
+
 async def edit_device(params):
     try:
         condition = f"device_id = {params.device_id} AND client_id = {params.client_id}"
@@ -87,7 +87,7 @@ async def edit_device(params):
         raise e
     
 
-@staticmethod
+
 async def manage_list_device(params):
     try:
         condition = f"a.client_id = {params.client_id} AND a.device_type='SL'"
@@ -114,7 +114,7 @@ async def manage_list_device(params):
 
     
 # =========================================================
-@staticmethod
+
 async def energy_used(params,user_data):
     try:
         if params.type=="Y" :
@@ -150,7 +150,7 @@ async def energy_used(params,user_data):
     except Exception as e:
         raise e
     
-@staticmethod
+
 async def voltage_data(params,user_data):
     try:
         if params.type=="Y" :
@@ -185,7 +185,7 @@ async def voltage_data(params,user_data):
     except Exception as e:
         raise e
 
-@staticmethod
+
 async def current_data(params,user_data):
     try:
         # end_date_time=params.end_date_time
@@ -228,7 +228,7 @@ async def current_data(params,user_data):
         raise e
     
     
-@staticmethod
+
 async def power_data(params,user_data):
     try:
         # end_date_time=params.end_date_time
@@ -271,7 +271,7 @@ async def power_data(params,user_data):
     except Exception as e:
         raise e
     
-# @staticmethod
+# 
 # async def total_power_analisis(params,user_data):
 #     try:
 #         # end_date_time=params.end_date_time
@@ -318,7 +318,7 @@ async def power_data(params,user_data):
     
 
 
-@staticmethod
+
 async def organization_settings(client_id,user_id,params):
     try:
 
@@ -374,7 +374,7 @@ async def organization_settings(client_id,user_id,params):
     except Exception as e:
         raise e
     
-@staticmethod
+
 async def organization_settings_list(client_id,user_id,params):
     try:
         condition = f"""st_org.client_id = sb_org.client_id 
@@ -395,7 +395,7 @@ async def organization_settings_list(client_id,user_id,params):
     except Exception as e:
         raise e
     
-@staticmethod
+
 async def old_bill_list(client_id, user_id, params):
     try:
         condition = f"client_id = {client_id} AND organization_id = {params.organization_id}"
@@ -407,7 +407,7 @@ async def old_bill_list(client_id, user_id, params):
     except Exception as e:
         raise e
     
-@staticmethod
+
 async def add_bill(client_id, user_id, params):
     try:
         update_condition=f"client_id = {client_id} AND organization_id = {params.organization_id} AND billing_status = 'Y'"
@@ -420,7 +420,7 @@ async def add_bill(client_id, user_id, params):
     except Exception as e:
         raise e
     
-@staticmethod
+
 async def edit_organization_info(client_id,user_id,params):
     try:
         update_condition=f"client_id = {client_id} AND organization_id = {params.organization_id}"
@@ -429,7 +429,7 @@ async def edit_organization_info(client_id,user_id,params):
         return edit_organization
     except Exception as e:
         raise e
-@staticmethod
+
 async def get_device_schedule(userdata,params):
     try:
         condition = f"client_id = {userdata['client_id']} AND device_id = {params.device_id}"

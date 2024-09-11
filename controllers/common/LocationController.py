@@ -1,6 +1,6 @@
 from db_model.MASTER_MODEL import select_data, insert_data,update_data,delete_data
 
-@staticmethod
+
 async def regions_list():
    try:
        data = select_data("md_lo_regions", "*")
@@ -9,7 +9,7 @@ async def regions_list():
    except Exception as e:
          raise e
      
-@staticmethod
+
 async def sub_regions_list(regions=None):
    try:
        condition = f"region_id={regions}" if regions is not None else None
@@ -18,7 +18,7 @@ async def sub_regions_list(regions=None):
    except Exception as e:
          raise e
      
-@staticmethod
+
 async def countries_list(subregion_id=None,region_id=None):
     try:
          condition = f"region_id={region_id}" if region_id is not None else None
@@ -28,7 +28,7 @@ async def countries_list(subregion_id=None,region_id=None):
     except Exception as e:
             raise e
         
-@staticmethod
+
 async def states_list(country_id=None):
     try:
         condition = f"country_id={country_id}" if country_id is not None else None

@@ -10,7 +10,7 @@ from datetime import datetime
 
 
 
-@staticmethod
+
 async def get_energy_data(data:device_data_model.StreetLightDeviceData,client_id,device):
     try:
         print(";;;;;;;;;;;;;;;;;;;;;;;",data)
@@ -49,7 +49,7 @@ async def get_energy_data(data:device_data_model.StreetLightDeviceData,client_id
     
     
 
-@staticmethod  
+  
 async def send_last_energy_data(client_id, device_id, device):
         try:
             print("////////////////HHHHHH")

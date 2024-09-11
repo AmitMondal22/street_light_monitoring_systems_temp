@@ -2,7 +2,7 @@
 from db_model.MASTER_MODEL import select_data, insert_data,update_data,delete_data
 from utils.date_time_format import get_current_datetime
 
-@staticmethod
+
 def add_organization(organization):
     try:
               
@@ -18,7 +18,7 @@ def add_organization(organization):
     except Exception as e:
         raise e
     
-@staticmethod
+
 def list_organization(params,user_data):
     try:
         if user_data["user_type"]=='U' or user_data["user_type"]=='O':
@@ -33,7 +33,7 @@ def list_organization(params,user_data):
         raise e
     
     
-@staticmethod
+
 def edit_organization(organization):
     try:
         condition = f"organization_id = {organization.organization_id} AND client_id={organization.client_id}"
@@ -43,7 +43,7 @@ def edit_organization(organization):
     except Exception as e:
         raise e
 
-@staticmethod
+
 def delete_organization(organization):
     try:
         condition = f"organization_id = {organization.organization_id} AND client_id={organization.client_id}"
@@ -53,7 +53,7 @@ def delete_organization(organization):
         raise e
     
 
-@staticmethod
+
 def energy_data(energy_data):
     try:
         table="td_energy_data AS ed, md_device AS md"

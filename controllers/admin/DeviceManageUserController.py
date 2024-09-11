@@ -1,7 +1,7 @@
 from db_model.MASTER_MODEL import select_data, insert_data,update_data,delete_data
 from utils.date_time_format import get_current_datetime
 
-@staticmethod
+
 def add_device(device):
     try:
         current_datetime = get_current_datetime()
@@ -18,7 +18,7 @@ def add_device(device):
         raise e
     
     
-@staticmethod
+
 def list_user_device(params):
     try:
         select="o.organization_name,o.organization_id,u.user_id,u.user_name,u.user_email,u.user_active_status,d.device_id,d.device,d.model,d.lat,d.lon,d.device_type,d.meter_type, mud.manage_user_device_id"
@@ -32,7 +32,7 @@ def list_user_device(params):
     except Exception as e:
         raise e
 
-@staticmethod
+
 def edit_device(device):
     try:
         condition = f"manage_user_device_id = {device.manage_user_device_id} AND client_id = {device.client_id}"
@@ -43,7 +43,7 @@ def edit_device(device):
     except Exception as e:
         raise e
 
-@staticmethod
+
 def delete_device(device):
     try:
         condition = f"manage_user_device_id = {device.manage_user_device_id} AND client_id = {device.client_id}"

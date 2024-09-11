@@ -41,7 +41,7 @@ def add_alert(data):
         raise e
 
 
-@staticmethod
+
 async def edit_alert(params):
     try:
         condition = f"alert_id = {params.alert_id} AND client_id = {params.client_id}"
@@ -52,7 +52,7 @@ async def edit_alert(params):
     except Exception as e:
         raise e
 
-@staticmethod
+
 async def list_alert(params,user_data):
     try:
         
@@ -72,7 +72,7 @@ async def list_alert(params,user_data):
         raise e
 
 
-@staticmethod
+
 async def delete_alert(params):
     try:
         condition = f"alert_id = {params.alert_id} AND client_id = {params.client_id} AND organization_id = {params.organization_id} AND device_id = {params.device_id}"

@@ -3,7 +3,7 @@ from utils.first_day_last_day import first_day_last_day,first_year_day_last_year
 # from Library.DecimalEncoder import DecimalEncoder
 # import json
 
-@staticmethod
+
 async def energy_usage_billing(user_data,params):
     try:
         if user_data['user_type'] == "C":
@@ -89,7 +89,7 @@ async def energy_usage_billing(user_data,params):
     
 
 
-@staticmethod
+
 async def new_energy_usage_billing(user_data,params):
     try:
         if (user_data['user_type'] == "C") or (user_data['user_type'] == "U" or user_data['user_type'] == "O"):
