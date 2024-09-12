@@ -183,9 +183,16 @@ async def update_device_schedule_settings(client_id,decodedev_eui,device_mode,su
 
         if find_devices is None or not find_devices:
             print("No devices found")
-            columns="device, client_id, device_type,device_mode, sunrise_hour, sunrise_min, sunset_hour, sunset_min, created_by, created_at"
-            row_data= f"'{decodedev_eui}', {client_id}, 'SL', '{device_mode}', '{sunrise_hour}', '{sunrise_min}', '{sunset_hour}', '{sunset_min}', {0}, '{current_datetime}'"
-            insdata=insert_data("st_sl_settings_scheduling", columns, row_data)
+            conditionsdev=f"device = '{decodedev_eui}' AND client_id = {client_id} "
+
+            find_devices_device_id=select_one_data("md_device", "device_id", conditionsdev,None)
+            
+
+            if find_devices_device_id is not None:
+                db_device_id=find_devices_device_id['device_id'] 
+                columns="device_id,device, client_id, device_type,device_mode, sunrise_hour, sunrise_min, sunset_hour, sunset_min, created_by, created_at"
+                row_data= f"{db_device_id},'{decodedev_eui}', {client_id}, 'SL', '{device_mode}', '{sunrise_hour}', '{sunrise_min}', '{sunset_hour}', '{sunset_min}', {0}, '{current_datetime}'"
+                insdata=insert_data("st_sl_settings_scheduling", columns, row_data)
         # else:
         #     if sunrise_hour != find_devices['sunrise_hour'] or sunrise_min != find_devices['sunrise_min'] or sunset_hour != find_devices['sunset_hour'] or sunset_min != find_devices['sunset_min']:
         #         print("Error inserting")
