@@ -131,7 +131,7 @@ async def testing2(request: Request,event: str):
         print("================================",paydata)
         # paydata=f"*R1, ,1,10,22,17,30,23,7,2034,16,07,33,ZZ#"
         
-        # *R1, ,datalogtimeMin,SRHR,SRMM,SSHR,SSMM,DD,MM,YYYY,HR,MM,SS,ZZ#
+        # *R1, ,datalogtimeMin,SRHR,SRMM,SSHR,SSMM,DD,MM,YYYY,HR,MM,SS,DM,ZZ#
 
         #     Ex:
         #     *R1, ,1,10,22,17,30,23,7,2034,16,07,33,ZZ#

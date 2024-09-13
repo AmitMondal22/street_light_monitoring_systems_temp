@@ -1,5 +1,4 @@
 from pydantic import BaseModel, Field, constr, validator
-from datetime import date
 
 class AddOrganization(BaseModel):
     client_id: int

@@ -5,8 +5,6 @@ from Library.DecimalEncoder import DecimalEncoder
 from Library import AlertLibrary
 import json
 from models import device_data_model
-# from utils.week_date import weekdays_date
-from datetime import datetime
 
 
 
