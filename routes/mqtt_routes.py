@@ -51,7 +51,7 @@ async def publish_message(message_data: MqttEnergyDeviceData):
     except Exception as e:
         return {"error": str(e)}
 
-@mqtt_routes.post("/publish_schedule/", dependencies=[Depends(mw_user_client)])
+@mqtt_routes.post("/publish_schedule", dependencies=[Depends(mw_user_client)])
 async def publish_message(request: Request, message_data: MqttPublishDeviceData):
     try:
         user_data=request.state.user_data

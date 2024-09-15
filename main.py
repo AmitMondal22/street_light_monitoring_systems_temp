@@ -9,7 +9,11 @@ import uvicorn
 
 
 
-app = FastAPI()
+app = FastAPI(
+    
+    redirect_slashes=False
+)
+
 
 
 # Set up CORS
