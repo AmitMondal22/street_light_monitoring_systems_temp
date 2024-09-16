@@ -20,6 +20,8 @@ app = FastAPI(
 origins = [
     # "http://192.168.29.210:8011",
     "http://localhost:8011",
+    "https://streetlight.iotblitz.com",
+    "http://streetlight.iotblitz.com",
     "*"
 ]
 
