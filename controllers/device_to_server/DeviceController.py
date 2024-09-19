@@ -161,13 +161,13 @@ async def device_schedule_settings(used_data,requestdata):
             await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
         else:
             if requestdata.device_switch is not None and requestdata.device_switch != "":
-                # *OPADO, ,0,XX#
+                # *OPADO, ,0,1,XX#
                 setvalue={"device_mode":requestdata.device_mode, "updated_at": current_datetime}
                 # conditions=""
                 print("Requestdata",setvalue , conditions)
                 update_data("st_sl_settings_scheduling",setvalue , conditions)
                 
-                paydata =f"*OPADO, ,{requestdata.device_switch},XX#"
+                paydata =f"*OPADO, ,{requestdata.device_switch},{requestdata.device_mode},XX#"
                 await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
                 print(paydata)
        

@@ -25,9 +25,6 @@ async def client_screen_settings_edit(user, params):
             print("heoolo")
             data=insert_data(table, columns, values)
             
-            
-            
-            
         data = select_one_data("st_view_organization", "*", f"client_id = {user['client_id']} AND organization_id = {params.organization_id}")
         return data
     except Exception as e:
