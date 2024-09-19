@@ -91,7 +91,7 @@ async def testing2(request: Request,event: str):
         # 0         1        2        3     4   5   6    7         8          9        10         11          12  13    14   15
     #    clientid,VOLTAGE,CURRENT,REALPOWER,PF,KWH,RUNHR,frequency,UPLOADFLAG,DOMODE,sensorflag,log_sec_ref,sr_h,sr_m,ss_h,ss_m
     #    1,        0.00,    0.00,   0.00,  0.00,0.00,0.50, 0.00,       1,         1,     0,        30,        18,  0,   16,  30
-    
+                                                                                    # light status
     
     #  ['0.000', '0.00', '0.00', '0.00', '0.00', '0.50', '0.00', '1', '1', '0', '30', '18', '0', '16', '30']
         
@@ -119,7 +119,7 @@ async def testing2(request: Request,event: str):
         # print(select,"////////////", condition)
         
         # select_one_data("md_device","device_id",f"client_id={client_id} AND device='{device}'")
-        await LoraApi.update_device_schedule_settings(data_list[0],decodedev_eui,data_list[10],data_list[12],data_list[13],data_list[14],data_list[15])
+        await LoraApi.update_device_schedule_settings(data_list[0],decodedev_eui,data_list[10],data_list[12],data_list[13],data_list[14],data_list[15],data_list[11])
         stdata = select_one_data("st_sl_settings_scheduling",select,condition)
         print("stdataMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM",stdata['sunrise_hour'])
         #  {'sunrise_hour': '10', 'sunrise_min': '29', 'sunset_hour': '17', 'sunset_min': '38', 'device': '0080e115002b54b0', 'device_id': 28}

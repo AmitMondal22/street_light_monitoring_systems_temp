@@ -172,7 +172,7 @@ async def webhooks_send_downlink_test_menual(dev_eui: str, payload: str):
         return False
     
 
-async def update_device_schedule_settings(client_id,decodedev_eui,device_mode,sunrise_hour,sunrise_min,sunset_hour,sunset_min):
+async def update_device_schedule_settings(client_id,decodedev_eui,device_mode,sunrise_hour,sunrise_min,sunset_hour,sunset_min,datalog_interval):
     try:
         current_datetime = get_current_datetime()
         select="st_sl_settings_id, device_id, device, client_id, sunrise_hour, sunrise_min, sunset_hour, sunset_min, created_by"
@@ -190,8 +190,8 @@ async def update_device_schedule_settings(client_id,decodedev_eui,device_mode,su
 
             if find_devices_device_id is not None:
                 db_device_id=find_devices_device_id['device_id'] 
-                columns="device_id,device, client_id, device_type,device_mode, sunrise_hour, sunrise_min, sunset_hour, sunset_min, created_by, created_at"
-                row_data= f"{db_device_id},'{decodedev_eui}', {client_id}, 'SL', '{device_mode}', '{sunrise_hour}', '{sunrise_min}', '{sunset_hour}', '{sunset_min}', {0}, '{current_datetime}'"
+                columns="device_id,device, client_id, device_type,device_mode, sunrise_hour, sunrise_min, sunset_hour, sunset_min,datalog_interval, created_by, created_at"
+                row_data= f"{db_device_id},'{decodedev_eui}', {client_id}, 'SL', '{device_mode}', '{sunrise_hour}', '{sunrise_min}', '{sunset_hour}', '{sunset_min}',{datalog_interval}, {0}, '{current_datetime}'"
                 insdata=insert_data("st_sl_settings_scheduling", columns, row_data)
         # else:
         #     if sunrise_hour != find_devices['sunrise_hour'] or sunrise_min != find_devices['sunrise_min'] or sunset_hour != find_devices['sunset_hour'] or sunset_min != find_devices['sunset_min']:
