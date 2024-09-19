@@ -705,7 +705,7 @@ async def client_screen_settings_edit(request: Request,params:ClientScreenSettin
         userdata=request.state.user_data
         data = await ClientSettingsController.client_screen_settings_edit(userdata,params)
         # requestlorawalapi
-        await LoraApi.send_downlink(userdata, params)
+        # await LoraApi.send_downlink(userdata, params)
         resdata = successResponse(data, message="Organization settings add and edit successfully")
         return Response(content=json.dumps(resdata,cls=DecimalEncoder), media_type="application/json", status_code=200)
     except ValueError as ve:
