@@ -134,6 +134,7 @@ async def webhooks_send_downlink_test(dev_eui: str, payload: str):
             }
         }
         delete= requests.delete(url, headers=headers)
+        time.sleep(1)
         response = requests.post(url, headers=headers, json=data)
         print(response.text)
         print(delete.text)
