@@ -170,8 +170,8 @@ async def device_schedule_settings(used_data,requestdata):
                 
                 paydata =f"*OPADO, ,{requestdata.device_switch},{requestdata.device_mode},XX#"
                 await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
-                time.sleep(0.5)
-                await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
+                # time.sleep(0.5)
+                # await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
                 print(paydata)
        
         return True
