@@ -1,6 +1,7 @@
 from db_model.MASTER_MODEL import select_data, insert_data,select_one_data,select_last_data,update_data
 from utils.date_time_format import get_current_datetime,get_time_time_firmat,get_hour_minute,get_current_datetime_string
 from utils.utils import increment_string
+import time
 
 from controllers.api import LoraApi
 
@@ -158,7 +159,7 @@ async def device_schedule_settings(used_data,requestdata):
             paydata =f"*R1, ,{requestdata.datalog_interval},{sunrise['hour']},{sunrise['min']},{sunset['hour']},{sunset['min']},{get_current_datetime_string()},{requestdata.device_mode},ZZ#"
             
             print(paydata)
-            await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
+            # await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
         else:
             if requestdata.device_switch is not None and requestdata.device_switch != "":
                 # *OPADO, ,0,1,XX#
@@ -168,6 +169,8 @@ async def device_schedule_settings(used_data,requestdata):
                 update_data("st_sl_settings_scheduling",setvalue , conditions)
                 
                 paydata =f"*OPADO, ,{requestdata.device_switch},{requestdata.device_mode},XX#"
+                await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
+                time.sleep(0.5)
                 await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
                 print(paydata)
        
