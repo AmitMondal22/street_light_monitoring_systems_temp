@@ -1,4 +1,4 @@
-from db_model.MASTER_MODEL import select_data,update_data,select_one_data,batch_insert_data,insert_data
+from db_model.MASTER_MODEL import select_data,update_data,select_one_data,batch_insert_data,insert_data,delete_data
 from utils.date_time_format import get_current_datetime, get_current_date_time_utc
 from utils.last12month import last_12_month
 from routes.mqtt_routes import subscribe_topics
@@ -437,6 +437,61 @@ async def get_device_schedule(userdata,params):
         table = "st_sl_settings_scheduling"
         print(table,select,condition)
         data = select_one_data(table, select, condition,order_by="st_sl_settings_id DESC")
+        return data
+    except Exception as e:
+        raise e
+    
+    
+    
+async def create_device_group(userdata,params):
+    try:
+        columndata="client_id, organization_id, user_id, chirpstack_application_id, group_name"
+        insdata=f"{userdata['client_id']}, {params.organization_id}, {params.user_id}, {params.application_id}, {params.group_name}"
+        data=insert_data("md_group",columndata,insdata)
+        return data
+    except Exception as e:
+        raise e
+    
+async def create_device_group_list(userdata,params):
+    try:
+        select="client_id, organization_id, user_id, chirpstack_application_id, group_name"
+        # select="device_id, device,  model, lat, lon, imei_no, last_maintenance, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') AS created_at, DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') AS updated_at"
+        condition=f"client_id={userdata['client_id']} AND organization_id ='{params.organization_id}'"
+        data = select_data("md_group", select, condition)
+        return data
+    except Exception as e:
+        raise e
+
+async def add_device_group_device(userdata,params):
+    try:
+        column="group_id, device_id, device"
+        
+        rows_data = []
+        for params_data in params:
+            row_data = {
+                "group_id": params_data.group_id,
+                "device_id": params_data.device_id,
+                "device": params_data.device
+            }
+            rows_data.append(row_data)        
+        batch_dataid=batch_insert_data("md_group_device", column, rows_data)
+        return batch_dataid
+    except Exception as e:
+        raise e
+
+async def list_device_group_device(userdata,params):
+    try:
+        select="a.group_id, a.device_id, a.device,b.group_name,chirpstack_application_id"
+        condition=f"a.group_id = b.group_id AND b.client_id={userdata['client_id']} AND b.organization_id ='{params.organization_id}' AND a.group_id = {params.group_id}"
+        data = select_data("md_group_device AS a, md_group AS b", select, condition)
+        return data
+    except Exception as e:
+        raise e
+    
+async def delete_device_group_devices(userdata,params):
+    try:
+        condition=f"device_group_id ={params.device_group_id} AND device_id ={params.device_id} AND group_id = {params.group_id}"
+        data=delete_data("md_group_device",condition)
         return data
     except Exception as e:
         raise e

@@ -9,7 +9,10 @@ from controllers.api import LoraApi
 
 from models.organization_model import AddOrganization, EditOrganization, DeleteOrganization,ListOrganization
 from models.manage_user_model import AddUser, EditUser,DeleteUser,UserDeviceAdd,UserDeviceEdit,UserDeviceDelete,ListUsers,UserInfo,ClientId,DeviceInfo
-from models.device_data_model import EnergyData,AddAlert,DeviceAdd,DeviceEdit,EditAlert,DeleteAlert,EnergyUsed, VoltageData,OrganizationSettings,OrganizationSettingsList,AddBill,EditOrganization,DeviceSchedule
+from models.device_data_model import EnergyData,AddAlert,DeviceAdd,DeviceEdit,EditAlert,DeleteAlert,EnergyUsed, VoltageData,OrganizationSettings,OrganizationSettingsList,AddBill,EditOrganization,DeviceSchedule,DeviceGroup,DeviceGroupList,DeviceGroupAddDevice,DeviceGroupDeviceList,DeviceGroupremoveDevice
+
+# ,DeviceGroup,DeviceGroupList
+
 from models.report_model import EnergyUsageBilling
 from models.client_settings import ClientScreenSettings, ClientScreenSettingsEdit
 
@@ -724,3 +727,75 @@ async def device_schedule(request: Request,params:DeviceSchedule):
         raise HTTPException(status_code=400, detail=str(ve))
     except Exception as e:
         raise HTTPException(status_code=500, detail="Internal server error")
+    
+    
+    
+    
+    
+# ===========================================================
+# ===========================================================
+@api_client_routes.post('/create_group', dependencies=[Depends(mw_user_client)])
+async def create_group(request: Request,params:DeviceGroup):
+    try:
+        userdata=request.state.user_data
+        data = await DeviceController.create_device_group(userdata,params)
+        resdata = successResponse(data, message="Device Group Create successfully")
+        return Response(content=json.dumps(resdata,cls=DecimalEncoder), media_type="application/json", status_code=200)
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Internal server error")
+    
+@api_client_routes.post('/create_group_list', dependencies=[Depends(mw_user_client)])
+async def create_group_list(request: Request,params:DeviceGroupList):
+    try:
+        userdata=request.state.user_data
+        data = await DeviceController.create_device_group_list(userdata,params)
+        resdata = successResponse(data, message="Device Group List successfully")
+        return Response(content=json.dumps(resdata,cls=DecimalEncoder), media_type="application/json", status_code=200)
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Internal server error")
+    
+    
+@api_client_routes.post('/add_device_group', dependencies=[Depends(mw_user_client)])
+async def add_device_group(request: Request,params:List[DeviceGroupAddDevice]):
+    try:
+        userdata=request.state.user_data
+        data = await DeviceController.add_device_group_device(userdata,params)
+        resdata = successResponse(data, message="Device Group List successfully")
+        return Response(content=json.dumps(resdata,cls=DecimalEncoder), media_type="application/json", status_code=200)
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Internal server error")
+    
+    
+@api_client_routes.post('/list_device_group_device', dependencies=[Depends(mw_user_client)])
+async def add_device_group(request: Request,params:DeviceGroupDeviceList):
+    try:
+        userdata=request.state.user_data
+        data = await DeviceController.list_device_group_device(userdata,params)
+        resdata = successResponse(data, message="Device Group List successfully")
+        return Response(content=json.dumps(resdata,cls=DecimalEncoder), media_type="application/json", status_code=200)
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Internal server error")
+    
+    
+@api_client_routes.post('/delete_device_group_device', dependencies=[Depends(mw_user_client)])
+async def add_device_group(request: Request,params:DeviceGroupremoveDevice):
+    try:
+        userdata=request.state.user_data
+        data = await DeviceController.delete_device_group_device(userdata,params)
+        resdata = successResponse(data, message="Device Group List successfully")
+        return Response(content=json.dumps(resdata,cls=DecimalEncoder), media_type="application/json", status_code=200)
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Internal server error")
+    
+    
+    

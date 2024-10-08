@@ -262,3 +262,26 @@ class DeviceSchedule(BaseModel):
     client_id: int
     device_id: int
     device: str
+    
+class DeviceGroup(BaseModel):
+    organization_id: int
+    application_id: int
+    group_name: str
+    user_id: int
+    
+class DeviceGroupList(BaseModel):
+    organization_id: int
+    
+class DeviceGroupAddDevice(BaseModel):
+    group_id: int
+    device_id: int
+    device: str
+
+class DeviceGroupDeviceList(BaseModel):
+    organization_id: int
+    group_id: int
+
+class DeviceGroupremoveDevice(BaseModel):
+    group_id: int
+    device_id: int
+    device_group_id: int
