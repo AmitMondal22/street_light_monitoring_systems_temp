@@ -446,7 +446,7 @@ async def get_device_schedule(userdata,params):
 async def create_device_group(userdata,params):
     try:
         columndata="client_id, organization_id, user_id, chirpstack_application_id, group_name"
-        insdata=f"{userdata['client_id']}, {params.organization_id}, {params.user_id}, {params.application_id}, {params.group_name}"
+        insdata=f"{userdata['client_id']}, {params.organization_id}, {params.user_id}, {params.application_id}, '{params.group_name}'"
         data=insert_data("md_group",columndata,insdata)
         return data
     except Exception as e:

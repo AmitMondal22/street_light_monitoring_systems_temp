@@ -787,15 +787,15 @@ async def add_device_group(request: Request,params:DeviceGroupDeviceList):
     
 @api_client_routes.post('/delete_device_group_device', dependencies=[Depends(mw_user_client)])
 async def add_device_group(request: Request,params:DeviceGroupremoveDevice):
-    try:
+    # try:
         userdata=request.state.user_data
-        data = await DeviceController.delete_device_group_device(userdata,params)
+        data = await DeviceController.delete_device_group_devices(userdata,params)
         resdata = successResponse(data, message="Device Group List successfully")
         return Response(content=json.dumps(resdata,cls=DecimalEncoder), media_type="application/json", status_code=200)
-    except ValueError as ve:
-        raise HTTPException(status_code=400, detail=str(ve))
-    except Exception as e:
-        raise HTTPException(status_code=500, detail="Internal server error")
+    # except ValueError as ve:
+    #     raise HTTPException(status_code=400, detail=str(ve))
+    # except Exception as e:
+    #     raise HTTPException(status_code=500, detail="Internal server error")
     
     
     
