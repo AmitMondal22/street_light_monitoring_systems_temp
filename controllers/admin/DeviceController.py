@@ -454,7 +454,7 @@ async def create_device_group(userdata,params):
     
 async def create_device_group_list(userdata,params):
     try:
-        select="client_id, organization_id, user_id, chirpstack_application_id, group_name"
+        select="group_id, client_id, organization_id, user_id, chirpstack_application_id, group_name"
         # select="device_id, device,  model, lat, lon, imei_no, last_maintenance, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') AS created_at, DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') AS updated_at"
         condition=f"client_id={userdata['client_id']} AND organization_id ='{params.organization_id}'"
         data = select_data("md_group", select, condition)
