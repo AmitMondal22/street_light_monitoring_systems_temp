@@ -29,6 +29,19 @@ class MqttPublishDeviceData(BaseModel):
     vrms: float
     irms: float
     device_switch: Optional[int] = None
+    
+class MqttGroupPublishDeviceData(BaseModel):
+    group_id: int
+    # device_id: int
+    # device: str
+    datalog_interval: int
+    device_type: str
+    device_mode: int
+    sunrise_time: str
+    sunset_time: str
+    vrms: float
+    irms: float
+    device_switch: Optional[int] = None
 
     # @field_validator('relay_close_time', 'timer_start_hours', 'timer_start_minutes', 'timer_stop_hours_1', 'timer_stop_minutes_1')
     # def validate_time_format(cls, value: str, info: FieldValidationInfo) -> str:

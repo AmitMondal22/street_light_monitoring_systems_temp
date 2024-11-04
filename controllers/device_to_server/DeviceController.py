@@ -177,3 +177,86 @@ async def device_schedule_settings(used_data,requestdata):
         return True
     except Exception as e:
         raise ValueError("Could not fetch data")
+
+
+async def device_data(requestdata):
+    try:
+        select="d.device_id,d.device"
+        condition = f"d.group_id = {requestdata.group_id}"
+        find_devices=select_data("md_group_device AS d", select, condition,None)
+        return find_devices
+    except Exception as e:
+        raise ValueError("Could not fetch data")
+    
+       
+
+
+async def group_device_schedule_settings(used_data,requestdata,device,device_id):
+    try:
+        current_datetime = get_current_datetime()
+        select="st_sl_settings_id, device_id, device, client_id, sunrise_hour, sunrise_min, sunset_hour, sunset_min, created_by"
+        conditions=f"device_id = {device_id} AND client_id = {used_data['client_id']} "
+        
+        find_devices=select_one_data("st_sl_settings_scheduling", select, conditions,None)
+        print(find_devices)
+        print(requestdata)
+        
+        
+        decodedev_eui=device
+        
+        print(requestdata.device_mode)
+        
+        if requestdata.device_mode == 0 or requestdata.device_mode == "0":
+            print(requestdata.device_mode)
+           
+            sunrise = get_hour_minute(requestdata.sunrise_time)
+            sunset = get_hour_minute(requestdata.sunset_time)
+        
+            if find_devices is None or not find_devices:
+                print("No devices found")
+                columns="device_id, device, client_id, device_type,device_mode, sunrise_hour, sunrise_min, sunset_hour, sunset_min,v_rms, irms,	datalog_interval, created_by, created_at"
+                # row_data= f"'{current_datetime}'"
+                row_data= f"{device_id}, '{device}', {used_data['client_id']}, '{requestdata.device_type}', '{requestdata.device_mode}', '{sunrise['hour']}', '{sunrise['min']}', '{sunset['hour']}', '{sunset['min']}','{requestdata.vrms}', '{requestdata.irms}',{requestdata.datalog_interval} {used_data['user_id']}, '{current_datetime}'"
+                insdata=insert_data("st_sl_settings_scheduling", columns, row_data)
+            else:
+                print("Error inserting")
+                setvalue={"device_type":requestdata.device_type,"device_mode":requestdata.device_mode, "sunrise_hour": sunrise['hour'], "sunrise_min": sunrise['min'], "sunset_hour": sunset['hour'], "sunset_min": sunset['min'],"v_rms":requestdata.vrms,"datalog_interval":requestdata.datalog_interval, "irms":requestdata.irms, "created_by": used_data['user_id'], "updated_at": current_datetime}
+                # conditions=""
+                print("Requestdata",setvalue , conditions)
+                insdata=update_data("st_sl_settings_scheduling",setvalue , conditions)
+                
+                
+                
+
+            
+            # paydata="*R1, ,1,10,22,17,30,23,7,2034,16,07,33,ZZ#"
+            #    *R1, ,datalogtimeMin,SRHR,SRMM,SSHR,SSMM,DD,MM,YYYY,HR,MM,SS,DEVICE_MODE,ZZ#
+
+            # Ex:
+            # *R1, ,1,10,22,17,30,23,7,2034,16,07,33,ZZ#
+            
+            #  //*R1, ,datalogtimeMin,SRHR,SRMM,SSHR,SSMM,DD,MM,YYYY,HR,MM,SS,domode,VRMS,IRMS,ZZ#
+            #   //**R1, ,1,10,32,17,46,21,08,2024,11,57,55,0,235.6,1.5,ZZ
+            
+            # paydata =f"*R1, ,{requestdata.datalog_interval},{sunrise['hour']},{sunrise['min']},{sunset['hour']},{sunset['min']},{get_current_datetime_string()},{requestdata.device_mode},{requestdata.vrms},{requestdata.irms},ZZ#"
+            paydata =f"*R1, ,{requestdata.datalog_interval},{sunrise['hour']},{sunrise['min']},{sunset['hour']},{sunset['min']},{get_current_datetime_string()},{requestdata.device_mode},ZZ#"
+            
+            print(paydata)
+            # await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
+        else:
+            if requestdata.device_switch is not None and requestdata.device_switch != "":
+                # *OPADO, ,0,1,XX#
+                setvalue={"device_mode":requestdata.device_mode, "updated_at": current_datetime}
+                # conditions=""
+                print("Requestdata",setvalue , conditions)
+                update_data("st_sl_settings_scheduling",setvalue , conditions)
+                
+                paydata =f"*OPADO, ,{requestdata.device_switch},{requestdata.device_mode},XX#"
+                await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
+                # time.sleep(0.5)
+                # await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
+                print(paydata)
+       
+        return True
+    except Exception as e:
+        raise ValueError("Could not fetch data")

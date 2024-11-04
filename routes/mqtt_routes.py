@@ -11,7 +11,7 @@ from controllers.device_to_server import DeviceController
 from utils.response import errorResponse, successResponse
 import json
 
-from models.mqtt_model import MqttEnergyDeviceData,MqttPublishDeviceData
+from models.mqtt_model import MqttEnergyDeviceData,MqttPublishDeviceData,MqttGroupPublishDeviceData
 
 from hooks.update_event_hooks import update_topics
 
@@ -63,6 +63,34 @@ async def publish_message(request: Request, message_data: MqttPublishDeviceData)
         #SCHEDULING/{message_data.device_type}/{user_data['client_id']}/{message_data.device}
         resdata = successResponse(data, message="Message published successfully")
         return Response(content=json.dumps(resdata), media_type="application/json", status_code=200)
+    except ValueError as ve:
+        # If there's a ValueError, return a 400 Bad Request with the error message
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as e:
+        # For any other unexpected error, return a 500 Internal Server Error
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+
+
+
+@mqtt_routes.post("/publish_group_schedule", dependencies=[Depends(mw_user_client)])
+async def publish_message(request: Request, message_data: MqttGroupPublishDeviceData):
+    try:
+        user_data=request.state.user_data
+        deviceData=await DeviceController.device_data(message_data)
+
+        print("Publishing message",deviceData)
+        for item in deviceData:
+            try:
+               data = await DeviceController.device_schedule_settings(user_data, message_data,item['device'],item['device_id'])
+               print("Data",data)
+            except Exception as e:
+                print(e)
+        print("Publishing message",deviceData)
+        
+            # await DeviceController.group_device_schedule_settings(user_data, message_data,item['device'],item['device_id'])
+        # resdata = successResponse(data, message="Message published successfully")
+        return Response(content=json.dumps(True), media_type="application/json", status_code=200)
     except ValueError as ve:
         # If there's a ValueError, return a 400 Bad Request with the error message
         raise HTTPException(status_code=400, detail=str(ve))
