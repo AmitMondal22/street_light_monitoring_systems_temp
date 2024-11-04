@@ -481,7 +481,7 @@ async def add_device_group_device(userdata,params):
 
 async def list_device_group_device(userdata,params):
     try:
-        select="a.group_id, a.device_id, a.device,b.group_name,chirpstack_application_id"
+        select="a.device_group_id, a.group_id, a.device_id, a.device,b.group_name,chirpstack_application_id"
         condition=f"a.group_id = b.group_id AND b.client_id={userdata['client_id']} AND b.organization_id ='{params.organization_id}' AND a.group_id = {params.group_id}"
         data = select_data("md_group_device AS a, md_group AS b", select, condition)
         return data
