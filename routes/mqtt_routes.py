@@ -78,11 +78,13 @@ async def publish_message(request: Request, message_data: MqttGroupPublishDevice
     try:
         user_data=request.state.user_data
         deviceData=await DeviceController.device_data(message_data)
+        
+        update = await DeviceController.add_update_group(user_data, message_data)
 
         print("Publishing message",deviceData)
         for item in deviceData:
             try:
-               data = await DeviceController.device_schedule_settings(user_data, message_data,item['device'],item['device_id'])
+               data = await DeviceController.device_group_schedule_settings(user_data, message_data,item['device'],item['device_id'])
                print("Data",data)
             except Exception as e:
                 print(e)
