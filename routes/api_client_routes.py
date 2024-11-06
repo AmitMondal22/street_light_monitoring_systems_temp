@@ -9,7 +9,7 @@ from controllers.api import LoraApi
 
 from models.organization_model import AddOrganization, EditOrganization, DeleteOrganization,ListOrganization
 from models.manage_user_model import AddUser, EditUser,DeleteUser,UserDeviceAdd,UserDeviceEdit,UserDeviceDelete,ListUsers,UserInfo,ClientId,DeviceInfo
-from models.device_data_model import EnergyData,AddAlert,DeviceAdd,DeviceEdit,EditAlert,DeleteAlert,EnergyUsed, VoltageData,OrganizationSettings,OrganizationSettingsList,AddBill,EditOrganization,DeviceSchedule,DeviceGroup,DeviceGroupList,DeviceGroupAddDevice,DeviceGroupDeviceList,DeviceGroupremoveDevice
+from models.device_data_model import EnergyData,AddAlert,DeviceAdd,DeviceEdit,EditAlert,DeleteAlert,EnergyUsed, VoltageData,OrganizationSettings,OrganizationSettingsList,AddBill,EditOrganization,DeviceSchedule,GroupDeviceSchedule,DeviceGroup,DeviceGroupList,DeviceGroupAddDevice,DeviceGroupDeviceList,DeviceGroupremoveDevice
 
 # ,DeviceGroup,DeviceGroupList
 
@@ -722,6 +722,19 @@ async def device_schedule(request: Request,params:DeviceSchedule):
         userdata=request.state.user_data
         data = await DeviceController.get_device_schedule(userdata,params)
         resdata = successResponse(data, message="Device Schedule successfully")
+        return Response(content=json.dumps(resdata,cls=DecimalEncoder), media_type="application/json", status_code=200)
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Internal server error")
+    
+    
+@api_client_routes.post('/group_device_schedule', dependencies=[Depends(mw_user_client)])
+async def device_schedule(request: Request,params:GroupDeviceSchedule):
+    try:
+        userdata=request.state.user_data
+        data = await DeviceController.get_device_schedule(userdata,params)
+        resdata = successResponse(data, message="group Device Schedule successfully")
         return Response(content=json.dumps(resdata,cls=DecimalEncoder), media_type="application/json", status_code=200)
     except ValueError as ve:
         raise HTTPException(status_code=400, detail=str(ve))
