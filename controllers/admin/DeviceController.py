@@ -431,15 +431,15 @@ async def edit_organization_info(client_id,user_id,params):
         raise e
 
 async def get_device_schedule(userdata,params):
-    try:
+    # try:
         condition = f"client_id = {userdata['client_id']} AND group_id = {params.group_id}"
         select = "st_sl_group_settings_id, group_id, client_id, device_type, device_mode, sunrise_hour, sunrise_min, sunset_hour, sunset_min,sunset_min, v_rms as vrms, irms,datalog_interval, created_by"
         table = "st_sl_group_settings_scheduling"
         print(table,select,condition)
         data = select_one_data(table, select, condition,order_by="st_sl_group_settings_id DESC")
         return data
-    except Exception as e:
-        raise e
+    # except Exception as e:
+    #     raise e
     
     
     
