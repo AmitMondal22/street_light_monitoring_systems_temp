@@ -733,7 +733,7 @@ async def device_schedule(request: Request,params:DeviceSchedule):
 async def device_schedule(request: Request,params:GroupDeviceSchedule):
     try:
         userdata=request.state.user_data
-        data = await DeviceController.get_device_schedule(userdata,params)
+        data = await DeviceController.get__group_device_schedule(userdata,params)
         resdata = successResponse(data, message="group Device Schedule successfully")
         return Response(content=json.dumps(resdata,cls=DecimalEncoder), media_type="application/json", status_code=200)
     except ValueError as ve:
