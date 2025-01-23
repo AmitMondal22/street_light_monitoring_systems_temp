@@ -111,7 +111,7 @@ async def user_device_list(data):
 async def device_schedule_settings(used_data,requestdata):
     try:
         current_datetime = get_current_datetime()
-        select="st_sl_settings_id, device_id, device, client_id, sunrise_hour, sunrise_min, sunset_hour, sunset_min, created_by"
+        select="st_sl_settings_id, device_id, device"
         conditions=f"device_id = {requestdata.device_id} AND client_id = {used_data['client_id']} "
         
         find_devices=select_one_data("st_sl_settings_scheduling", select, conditions,None)
@@ -131,13 +131,13 @@ async def device_schedule_settings(used_data,requestdata):
         
             if find_devices is None or not find_devices:
                 print("No devices found")
-                columns="device_id, device, client_id, device_type,device_mode, sunrise_hour, sunrise_min, sunset_hour, sunset_min,v_rms, irms,	datalog_interval, created_by, created_at"
+                columns="device_id, device, client_id, device_type,device_mode, sunrise_hour, sunrise_min, sunset_hour, sunset_min,dimming,v_rms, irms,	datalog_interval, created_by, created_at"
                 # row_data= f"'{current_datetime}'"
-                row_data= f"{requestdata.device_id}, '{requestdata.device}', {used_data['client_id']}, '{requestdata.device_type}', '{requestdata.device_mode}', '{sunrise['hour']}', '{sunrise['min']}', '{sunset['hour']}', '{sunset['min']}','{requestdata.vrms}', '{requestdata.irms}',{requestdata.datalog_interval} {used_data['user_id']}, '{current_datetime}'"
+                row_data= f"{requestdata.device_id}, '{requestdata.device}', {used_data['client_id']}, '{requestdata.device_type}', '{requestdata.device_mode}', '{sunrise['hour']}', '{sunrise['min']}', '{sunset['hour']}', '{sunset['min']}',{requestdata.dimming},'{requestdata.vrms}', '{requestdata.irms}',{requestdata.datalog_interval} {used_data['user_id']}, '{current_datetime}'"
                 insdata=insert_data("st_sl_settings_scheduling", columns, row_data)
             else:
                 print("Error inserting")
-                setvalue={"device_type":requestdata.device_type,"device_mode":requestdata.device_mode, "sunrise_hour": sunrise['hour'], "sunrise_min": sunrise['min'], "sunset_hour": sunset['hour'], "sunset_min": sunset['min'],"v_rms":requestdata.vrms,"datalog_interval":requestdata.datalog_interval, "irms":requestdata.irms, "created_by": used_data['user_id'], "updated_at": current_datetime}
+                setvalue={"device_type":requestdata.device_type,"device_mode":requestdata.device_mode, "sunrise_hour": sunrise['hour'], "sunrise_min": sunrise['min'], "sunset_hour": sunset['hour'], "sunset_min": sunset['min'],"dimming":requestdata.dimming, "v_rms":requestdata.vrms,"datalog_interval":requestdata.datalog_interval, "irms":requestdata.irms, "created_by": used_data['user_id'], "updated_at": current_datetime}
                 # conditions=""
                 print("Requestdata",setvalue , conditions)
                 insdata=update_data("st_sl_settings_scheduling",setvalue , conditions)
@@ -156,14 +156,14 @@ async def device_schedule_settings(used_data,requestdata):
             #   //**R1, ,1,10,32,17,46,21,08,2024,11,57,55,0,235.6,1.5,ZZ
             
             # paydata =f"*R1, ,{requestdata.datalog_interval},{sunrise['hour']},{sunrise['min']},{sunset['hour']},{sunset['min']},{get_current_datetime_string()},{requestdata.device_mode},{requestdata.vrms},{requestdata.irms},ZZ#"
-            paydata =f"*R1, ,{requestdata.datalog_interval},{sunrise['hour']},{sunrise['min']},{sunset['hour']},{sunset['min']},{get_current_datetime_string()},{requestdata.device_mode},ZZ#"
+            paydata =f"*R1, ,{requestdata.datalog_interval},{sunrise['hour']},{sunrise['min']},{sunset['hour']},{sunset['min']},{get_current_datetime_string()},{requestdata.device_mode},{requestdata.dimming},ZZ#"
             
             print(paydata)
             # await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
         else:
             if requestdata.device_switch is not None and requestdata.device_switch != "":
                 # *OPADO, ,0,1,XX#
-                setvalue={"device_mode":requestdata.device_mode, "updated_at": current_datetime}
+                setvalue={"device_mode":requestdata.device_mode,"dimming":requestdata.dimming, "updated_at": current_datetime}
                 # conditions=""
                 print("Requestdata",setvalue , conditions)
                 update_data("st_sl_settings_scheduling",setvalue , conditions)
@@ -183,7 +183,7 @@ async def device_schedule_settings(used_data,requestdata):
 async def device_group_schedule_settings(used_data,requestdata,device,device_id):
     try:
         current_datetime = get_current_datetime()
-        select="st_sl_settings_id, device_id, device, client_id, sunrise_hour, sunrise_min, sunset_hour, sunset_min, created_by"
+        select="st_sl_settings_id, device_id"
         conditions=f"device_id = {device_id} AND client_id = {used_data['client_id']} "
         
         find_devices=select_one_data("st_sl_settings_scheduling", select, conditions,None)
@@ -203,13 +203,13 @@ async def device_group_schedule_settings(used_data,requestdata,device,device_id)
         
             if find_devices is None or not find_devices:
                 print("No devices found")
-                columns="device_id, device, client_id, device_type,device_mode, sunrise_hour, sunrise_min, sunset_hour, sunset_min,v_rms, irms,	datalog_interval, created_by, created_at"
+                columns="device_id, device, client_id, device_type,device_mode, sunrise_hour, sunrise_min, sunset_hour, sunset_min,dimming,v_rms, irms,	datalog_interval, created_by, created_at"
                 # row_data= f"'{current_datetime}'"
-                row_data= f"{device_id}, '{device}', {used_data['client_id']}, '{requestdata.device_type}', '{requestdata.device_mode}', '{sunrise['hour']}', '{sunrise['min']}', '{sunset['hour']}', '{sunset['min']}','{requestdata.vrms}', '{requestdata.irms}',{requestdata.datalog_interval} {used_data['user_id']}, '{current_datetime}'"
+                row_data= f"{device_id}, '{device}', {used_data['client_id']}, '{requestdata.device_type}', '{requestdata.device_mode}', '{sunrise['hour']}', '{sunrise['min']}', '{sunset['hour']}', '{sunset['min']}',{requestdata.dimming},'{requestdata.vrms}', '{requestdata.irms}',{requestdata.datalog_interval} {used_data['user_id']}, '{current_datetime}'"
                 insdata=insert_data("st_sl_settings_scheduling", columns, row_data)
             else:
                 print("Error inserting")
-                setvalue={"device_type":requestdata.device_type,"device_mode":requestdata.device_mode, "sunrise_hour": sunrise['hour'], "sunrise_min": sunrise['min'], "sunset_hour": sunset['hour'], "sunset_min": sunset['min'],"v_rms":requestdata.vrms,"datalog_interval":requestdata.datalog_interval, "irms":requestdata.irms, "created_by": used_data['user_id'], "updated_at": current_datetime}
+                setvalue={"device_type":requestdata.device_type,"device_mode":requestdata.device_mode, "sunrise_hour": sunrise['hour'], "sunrise_min": sunrise['min'], "sunset_hour": sunset['hour'], "sunset_min": sunset['min'], "dimming":requestdata.dimming, "v_rms":requestdata.vrms,"datalog_interval":requestdata.datalog_interval, "irms":requestdata.irms, "created_by": used_data['user_id'], "updated_at": current_datetime}
                 # conditions=""
                 print("Requestdata",setvalue , conditions)
                 insdata=update_data("st_sl_settings_scheduling",setvalue , conditions)
@@ -228,14 +228,14 @@ async def device_group_schedule_settings(used_data,requestdata,device,device_id)
             #   //**R1, ,1,10,32,17,46,21,08,2024,11,57,55,0,235.6,1.5,ZZ
             
             # paydata =f"*R1, ,{requestdata.datalog_interval},{sunrise['hour']},{sunrise['min']},{sunset['hour']},{sunset['min']},{get_current_datetime_string()},{requestdata.device_mode},{requestdata.vrms},{requestdata.irms},ZZ#"
-            paydata =f"*R1, ,{requestdata.datalog_interval},{sunrise['hour']},{sunrise['min']},{sunset['hour']},{sunset['min']},{get_current_datetime_string()},{requestdata.device_mode},ZZ#"
+            paydata =f"*R1, ,{requestdata.datalog_interval},{sunrise['hour']},{sunrise['min']},{sunset['hour']},{sunset['min']},{get_current_datetime_string()},{requestdata.device_mode},{requestdata.dimming},ZZ#"
             
             print(paydata)
             # await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
         else:
             if requestdata.device_switch is not None and requestdata.device_switch != "":
                 # *OPADO, ,0,1,XX#
-                setvalue={"device_mode":requestdata.device_mode, "updated_at": current_datetime}
+                setvalue={"device_mode":requestdata.device_mode,"dimming":requestdata.dimming, "updated_at": current_datetime}
                 # conditions=""
                 print("Requestdata",setvalue , conditions)
                 update_data("st_sl_settings_scheduling",setvalue , conditions)
@@ -253,7 +253,7 @@ async def device_group_schedule_settings(used_data,requestdata,device,device_id)
 async def add_update_group(used_data,requestdata):
     try:
         current_datetime = get_current_datetime()
-        select="st_sl_group_settings_id, client_id,group_id, sunrise_hour, sunrise_min, sunset_hour, sunset_min, created_by"
+        select="st_sl_group_settings_id"
         conditions=f"group_id = {requestdata.group_id} AND client_id = {used_data['client_id']} "
         
         
@@ -271,13 +271,13 @@ async def add_update_group(used_data,requestdata):
         
             if find_devices is None or not find_devices:
                 print("No devices found")
-                columns="client_id, group_id, device_type,device_mode, sunrise_hour, sunrise_min, sunset_hour, sunset_min,v_rms, irms,	datalog_interval, created_by, created_at"
+                columns="client_id, group_id, device_type,device_mode, sunrise_hour, sunrise_min, sunset_hour, sunset_min,dimming,v_rms, irms,	datalog_interval, created_by, created_at"
                 # row_data= f"'{current_datetime}'"
-                row_data= f"{used_data['client_id']}, {requestdata.group_id}, '{requestdata.device_type}', '{requestdata.device_mode}', '{sunrise['hour']}', '{sunrise['min']}', '{sunset['hour']}', '{sunset['min']}','{requestdata.vrms}', '{requestdata.irms}',{requestdata.datalog_interval} {used_data['user_id']}, '{current_datetime}'"
+                row_data= f"{used_data['client_id']}, {requestdata.group_id}, '{requestdata.device_type}', '{requestdata.device_mode}', '{sunrise['hour']}', '{sunrise['min']}', '{sunset['hour']}', '{sunset['min']}',{requestdata.dimming},'{requestdata.vrms}', '{requestdata.irms}',{requestdata.datalog_interval} {used_data['user_id']}, '{current_datetime}'"
                 insdata=insert_data("st_sl_group_settings_scheduling", columns, row_data)
             else:
                 print("Error inserting")
-                setvalue={"device_type":requestdata.device_type,"device_mode":requestdata.device_mode, "sunrise_hour": sunrise['hour'], "sunrise_min": sunrise['min'], "sunset_hour": sunset['hour'], "sunset_min": sunset['min'],"v_rms":requestdata.vrms,"datalog_interval":requestdata.datalog_interval, "irms":requestdata.irms, "created_by": used_data['user_id'], "updated_at": current_datetime}
+                setvalue={"device_type":requestdata.device_type,"device_mode":requestdata.device_mode, "sunrise_hour": sunrise['hour'], "sunrise_min": sunrise['min'], "sunset_hour": sunset['hour'], "sunset_min": sunset['min'],"dimming":requestdata.dimming,"v_rms":requestdata.vrms,"datalog_interval":requestdata.datalog_interval, "irms":requestdata.irms, "created_by": used_data['user_id'], "updated_at": current_datetime}
                 # conditions=""
                 print("Requestdata",setvalue , conditions)
                 insdata=update_data("st_sl_group_settings_scheduling",setvalue , conditions)
@@ -290,7 +290,7 @@ async def add_update_group(used_data,requestdata):
         else:
             if requestdata.device_switch is not None and requestdata.device_switch != "":
                 # *OPADO, ,0,1,XX#
-                setvalue={"device_mode":requestdata.device_mode, "updated_at": current_datetime}
+                setvalue={"device_mode":requestdata.device_mode,"dimming":requestdata.dimming, "updated_at": current_datetime}
                 # conditions=""
                 print("Requestdata",setvalue , conditions)
                 update_data("st_sl_group_settings_scheduling",setvalue , conditions)
@@ -321,7 +321,7 @@ async def device_data(requestdata):
 async def group_device_schedule_settings(used_data,requestdata,device,device_id):
     try:
         current_datetime = get_current_datetime()
-        select="st_sl_settings_id, device_id, device, client_id, sunrise_hour, sunrise_min, sunset_hour, sunset_min, created_by"
+        select="st_sl_settings_id, device_id, device"
         conditions=f"device_id = {device_id} AND client_id = {used_data['client_id']} "
         
         find_devices=select_one_data("st_sl_settings_scheduling", select, conditions,None)
@@ -341,13 +341,13 @@ async def group_device_schedule_settings(used_data,requestdata,device,device_id)
         
             if find_devices is None or not find_devices:
                 print("No devices found")
-                columns="device_id, device, client_id, device_type,device_mode, sunrise_hour, sunrise_min, sunset_hour, sunset_min,v_rms, irms,	datalog_interval, created_by, created_at"
+                columns="device_id, device, client_id, device_type,device_mode, sunrise_hour, sunrise_min, sunset_hour, sunset_min,dimming, v_rms, irms,	datalog_interval, created_by, created_at"
                 # row_data= f"'{current_datetime}'"
-                row_data= f"{device_id}, '{device}', {used_data['client_id']}, '{requestdata.device_type}', '{requestdata.device_mode}', '{sunrise['hour']}', '{sunrise['min']}', '{sunset['hour']}', '{sunset['min']}','{requestdata.vrms}', '{requestdata.irms}',{requestdata.datalog_interval} {used_data['user_id']}, '{current_datetime}'"
+                row_data= f"{device_id}, '{device}', {used_data['client_id']}, '{requestdata.device_type}', '{requestdata.device_mode}', '{sunrise['hour']}', '{sunrise['min']}', '{sunset['hour']}', '{sunset['min']}',{requestdata.dimming}'{requestdata.vrms}', '{requestdata.irms}',{requestdata.datalog_interval} {used_data['user_id']}, '{current_datetime}'"
                 insdata=insert_data("st_sl_settings_scheduling", columns, row_data)
             else:
                 print("Error inserting")
-                setvalue={"device_type":requestdata.device_type,"device_mode":requestdata.device_mode, "sunrise_hour": sunrise['hour'], "sunrise_min": sunrise['min'], "sunset_hour": sunset['hour'], "sunset_min": sunset['min'],"v_rms":requestdata.vrms,"datalog_interval":requestdata.datalog_interval, "irms":requestdata.irms, "created_by": used_data['user_id'], "updated_at": current_datetime}
+                setvalue={"device_type":requestdata.device_type,"device_mode":requestdata.device_mode, "sunrise_hour": sunrise['hour'], "sunrise_min": sunrise['min'], "sunset_hour": sunset['hour'], "sunset_min": sunset['min'],"dimming":requestdata.dimming,"v_rms":requestdata.vrms,"datalog_interval":requestdata.datalog_interval, "irms":requestdata.irms, "created_by": used_data['user_id'], "updated_at": current_datetime}
                 # conditions=""
                 print("Requestdata",setvalue , conditions)
                 insdata=update_data("st_sl_settings_scheduling",setvalue , conditions)
@@ -366,14 +366,14 @@ async def group_device_schedule_settings(used_data,requestdata,device,device_id)
             #   //**R1, ,1,10,32,17,46,21,08,2024,11,57,55,0,235.6,1.5,ZZ
             
             # paydata =f"*R1, ,{requestdata.datalog_interval},{sunrise['hour']},{sunrise['min']},{sunset['hour']},{sunset['min']},{get_current_datetime_string()},{requestdata.device_mode},{requestdata.vrms},{requestdata.irms},ZZ#"
-            paydata =f"*R1, ,{requestdata.datalog_interval},{sunrise['hour']},{sunrise['min']},{sunset['hour']},{sunset['min']},{get_current_datetime_string()},{requestdata.device_mode},ZZ#"
+            paydata =f"*R1, ,{requestdata.datalog_interval},{sunrise['hour']},{sunrise['min']},{sunset['hour']},{sunset['min']},{get_current_datetime_string()},{requestdata.device_mode},{requestdata.dimming},ZZ#"
             
             print(paydata)
             # await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
         else:
             if requestdata.device_switch is not None and requestdata.device_switch != "":
                 # *OPADO, ,0,1,XX#
-                setvalue={"device_mode":requestdata.device_mode, "updated_at": current_datetime}
+                setvalue={"device_mode":requestdata.device_mode,"dimming":requestdata.dimming, "updated_at": current_datetime}
                 # conditions=""
                 print("Requestdata",setvalue , conditions)
                 update_data("st_sl_settings_scheduling",setvalue , conditions)

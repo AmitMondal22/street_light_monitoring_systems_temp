@@ -28,6 +28,7 @@ class MqttPublishDeviceData(BaseModel):
     sunset_time: str
     vrms: float
     irms: float
+    dimming: int
     device_switch: Optional[int] = None
     
 class MqttGroupPublishDeviceData(BaseModel):
@@ -39,6 +40,7 @@ class MqttGroupPublishDeviceData(BaseModel):
     device_mode: int
     sunrise_time: str
     sunset_time: str
+    dimming: int
     vrms: float
     irms: float
     device_switch: Optional[int] = None
