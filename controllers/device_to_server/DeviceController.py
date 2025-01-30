@@ -260,20 +260,23 @@ async def add_update_group(used_data,requestdata):
         find_devices=select_one_data("st_sl_group_settings_scheduling", select, conditions,None)
 
         decodedev_eui=requestdata.group_id
+        print(">>>>>>>>>>>>>",find_devices)
         
-        print(requestdata.device_mode)
+        print(">>>>>>>",requestdata.device_mode)
+        print("ZZZZXX",requestdata.device_mode)
+        print("ZZZZXX",requestdata.sunrise_time)
+        sunrise = get_hour_minute(requestdata.sunrise_time)
+        sunset = get_hour_minute(requestdata.sunset_time)
+        print("RRRRRRRRRRRRRRRR")
         
         if requestdata.device_mode == 0 or requestdata.device_mode == "0":
-            print(requestdata.device_mode)
            
-            sunrise = get_hour_minute(requestdata.sunrise_time)
-            sunset = get_hour_minute(requestdata.sunset_time)
         
             if find_devices is None or not find_devices:
                 print("No devices found")
-                columns="client_id, group_id, device_type,device_mode, sunrise_hour, sunrise_min, sunset_hour, sunset_min,dimming,v_rms, irms,	datalog_interval, created_by, created_at"
+                columns="client_id, group_id, device_type,device_mode, sunrise_hour, sunrise_min, sunset_hour, sunset_min,dimming,v_rms, irms, datalog_interval, created_by, created_at"
                 # row_data= f"'{current_datetime}'"
-                row_data= f"{used_data['client_id']}, {requestdata.group_id}, '{requestdata.device_type}', '{requestdata.device_mode}', '{sunrise['hour']}', '{sunrise['min']}', '{sunset['hour']}', '{sunset['min']}',{requestdata.dimming},'{requestdata.vrms}', '{requestdata.irms}',{requestdata.datalog_interval} {used_data['user_id']}, '{current_datetime}'"
+                row_data= f"{used_data['client_id']}, {requestdata.group_id}, '{requestdata.device_type}', '{requestdata.device_mode}', '{sunrise['hour']}', '{sunrise['min']}', '{sunset['hour']}', '{sunset['min']}',{requestdata.dimming},'{requestdata.vrms}', '{requestdata.irms}',{requestdata.datalog_interval}, {used_data['user_id']}, '{current_datetime}'"
                 insdata=insert_data("st_sl_group_settings_scheduling", columns, row_data)
             else:
                 print("Error inserting")
@@ -282,23 +285,29 @@ async def add_update_group(used_data,requestdata):
                 print("Requestdata",setvalue , conditions)
                 insdata=update_data("st_sl_group_settings_scheduling",setvalue , conditions)
                 
-
             # paydata =f"*R1, ,{requestdata.datalog_interval},{sunrise['hour']},{sunrise['min']},{sunset['hour']},{sunset['min']},{get_current_datetime_string()},{requestdata.device_mode},ZZ#"
             
             # print(paydata)
            
         else:
-            if requestdata.device_switch is not None and requestdata.device_switch != "":
-                # *OPADO, ,0,1,XX#
-                setvalue={"device_mode":requestdata.device_mode,"dimming":requestdata.dimming, "updated_at": current_datetime}
-                # conditions=""
-                print("Requestdata",setvalue , conditions)
-                update_data("st_sl_group_settings_scheduling",setvalue , conditions)
+            if find_devices is None or not find_devices:
+                print("No devices found manual")
+                columns="client_id, group_id, device_type,device_mode,sunrise_hour, sunrise_min, sunset_hour, sunset_min,dimming, v_rms, irms,datalog_interval, created_by, created_at"
+                # row_data= f"'{current_datetime}'"
+                row_data= f"{used_data['client_id']}, {requestdata.group_id}, '{requestdata.device_type}', '{requestdata.device_mode}', '{sunrise['hour']}', '{sunrise['min']}', '{sunset['hour']}', '{sunset['min']}',{requestdata.dimming},'{requestdata.vrms}', '{requestdata.irms}',{requestdata.datalog_interval}, {used_data['user_id']}, '{current_datetime}'"
+                insdata=insert_data("st_sl_group_settings_scheduling", columns, row_data)
+            else:
+                if requestdata.device_switch is not None and requestdata.device_switch != "":
+                    # *OPADO, ,0,1,XX#
+                    setvalue={"device_mode":requestdata.device_mode,"dimming":requestdata.dimming, "updated_at": current_datetime}
+                    # conditions=""
+                    print("Requestdata",setvalue , conditions)
+                    update_data("st_sl_group_settings_scheduling",setvalue , conditions)
+                    
+                    # paydata =f"*OPADO, ,{requestdata.device_switch},{requestdata.device_mode},XX#"
+                    # await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
                 
-                # paydata =f"*OPADO, ,{requestdata.device_switch},{requestdata.device_mode},XX#"
-                # await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
-              
-                # print(paydata)
+                    # print(paydata)
        
         return True
             
