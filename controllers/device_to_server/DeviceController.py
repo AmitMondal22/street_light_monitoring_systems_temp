@@ -242,11 +242,11 @@ async def device_group_schedule_settings(used_data,requestdata,device,device_id)
                 update_data("st_sl_settings_scheduling",setvalue , conditions)
                 
                 paydata =f"*OPADO, ,{requestdata.device_switch},{requestdata.device_mode},XX#"
-                await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
+                # await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
                 # time.sleep(0.5)
                 # await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
                 print(paydata)
-       
+        await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
         return True
     except Exception as e:
         raise ValueError("Could not fetch data")
@@ -389,11 +389,11 @@ async def group_device_schedule_settings(used_data,requestdata,device,device_id)
                 update_data("st_sl_settings_scheduling",setvalue , conditions)
                 
                 paydata =f"*OPADO, ,{requestdata.device_switch},{requestdata.device_mode},XX#"
-                await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
+                # await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
                 # time.sleep(0.5)
                 # await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
                 print(paydata)
-       
+        await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
         return True
     except Exception as e:
         raise ValueError("Could not fetch data")
