@@ -123,7 +123,7 @@ async def device_schedule_settings(used_data,requestdata):
         
         print(requestdata.device_mode)
         
-        if requestdata.device_mode == 0 or requestdata.device_mode == "0":
+        if requestdata.device_mode == 0 or requestdata.device_mode == "0" or requestdata.device_mode == 2 or requestdata.device_mode == "2":
             print(requestdata.device_mode)
            
             sunrise = get_hour_minute(requestdata.sunrise_time)
@@ -169,11 +169,12 @@ async def device_schedule_settings(used_data,requestdata):
                 update_data("st_sl_settings_scheduling",setvalue , conditions)
                 
                 paydata =f"*OPADO, ,{requestdata.device_switch},{requestdata.device_mode},XX#"
-                await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
                 # time.sleep(0.5)
+                # await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
                 # await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
                 print(paydata)
        
+        await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
         return True
     except Exception as e:
         raise ValueError("Could not fetch data")
@@ -195,7 +196,7 @@ async def device_group_schedule_settings(used_data,requestdata,device,device_id)
         
         print(requestdata.device_mode)
         
-        if requestdata.device_mode == 0 or requestdata.device_mode == "0":
+        if requestdata.device_mode == 0 or requestdata.device_mode == "0" or requestdata.device_mode == 2 or requestdata.device_mode == "2":
             print(requestdata.device_mode)
            
             sunrise = get_hour_minute(requestdata.sunrise_time)
@@ -269,7 +270,7 @@ async def add_update_group(used_data,requestdata):
         sunset = get_hour_minute(requestdata.sunset_time)
         print("RRRRRRRRRRRRRRRR")
         
-        if requestdata.device_mode == 0 or requestdata.device_mode == "0":
+        if requestdata.device_mode == 0 or requestdata.device_mode == "0" or requestdata.device_mode == 2 or requestdata.device_mode == "2":
            
         
             if find_devices is None or not find_devices:
@@ -342,7 +343,7 @@ async def group_device_schedule_settings(used_data,requestdata,device,device_id)
         
         print(requestdata.device_mode)
         
-        if requestdata.device_mode == 0 or requestdata.device_mode == "0":
+        if requestdata.device_mode == 0 or requestdata.device_mode == "0" or requestdata.device_mode == 2 or requestdata.device_mode == "2":
             print(requestdata.device_mode)
            
             sunrise = get_hour_minute(requestdata.sunrise_time)
