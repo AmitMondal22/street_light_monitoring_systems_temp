@@ -135,7 +135,7 @@ async def testing2(request: Request,event: str):
 
         #     Ex:
         #     *R1, ,1,10,22,17,30,23,7,2034,16,07,33,ZZ#
-        paydata="*DATA, ,YY#"
+        paydata=f"*DATA, ,{get_current_datetime_string()},YY#"
         await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
        
         

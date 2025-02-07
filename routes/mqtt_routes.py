@@ -85,8 +85,8 @@ async def publish_message(request: Request, message_data: MqttGroupPublishDevice
         for item in deviceData:
             try:
                data = await DeviceController.device_group_schedule_settings(user_data, message_data,item['device'],item['device_id'])
-               data = await DeviceController.device_group_schedule_settings(user_data, message_data,item['device'],item['device_id'])
-               data = await DeviceController.device_group_schedule_settings(user_data, message_data,item['device'],item['device_id'])
+            #    data = await DeviceController.device_group_schedule_settings(user_data, message_data,item['device'],item['device_id'])
+            #    data = await DeviceController.device_group_schedule_settings(user_data, message_data,item['device'],item['device_id'])
                print("Data",data)
             except Exception as e:
                 print(e)
@@ -104,5 +104,5 @@ async def publish_message(request: Request, message_data: MqttGroupPublishDevice
         # If there's a ValueError, return a 400 Bad Request with the error message
         raise HTTPException(status_code=400, detail=str(ve))
     except Exception as e:
-        # For any other unexpected error, return a 500 Internal Server Error
+        # For any other unexpected error, return a 500 Internal Server Error2wq 
         raise HTTPException(status_code=500, detail="Internal server error")
