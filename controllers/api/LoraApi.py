@@ -194,12 +194,13 @@ async def update_device_schedule_settings(client_id,decodedev_eui,device_mode,su
                 columns="device_id,device, client_id, device_type,device_mode, sunrise_hour, sunrise_min, sunset_hour, sunset_min,datalog_interval,dimming, created_by, created_at"
                 row_data= f"{db_device_id},'{decodedev_eui}', {client_id}, 'SL', '{device_mode}', '{sunrise_hour}', '{sunrise_min}', '{sunset_hour}', '{sunset_min}',{datalog_interval},{dimming}, {0}, '{current_datetime}'"
                 insdata=insert_data("st_sl_settings_scheduling", columns, row_data)
-        # else:
-        #     if sunrise_hour != find_devices['sunrise_hour'] or sunrise_min != find_devices['sunrise_min'] or sunset_hour != find_devices['sunset_hour'] or sunset_min != find_devices['sunset_min']:
-        #         print("Error inserting")
-        #         setvalue={"sunrise_hour": sunrise_hour, "sunrise_min": sunrise_min, "sunset_hour": sunset_hour, "sunset_min": sunset_min, "updated_at": current_datetime}
-        #         print("Requestdata",setvalue , conditions)
-        #         insdata=update_data("st_sl_settings_scheduling",setvalue , conditions)
+        else:
+            if device_mode ==2 or device_mode =='2':
+                if sunrise_hour != find_devices['sunrise_hour'] or sunrise_min != find_devices['sunrise_min'] or sunset_hour != find_devices['sunset_hour'] or sunset_min != find_devices['sunset_min']:
+                    print("Error inserting")
+                    setvalue={"device_mode": device_mode,"sunrise_hour": sunrise_hour, "sunrise_min": sunrise_min, "sunset_hour": sunset_hour, "sunset_min": sunset_min, "updated_at": current_datetime}
+                    print("Requestdata",setvalue , conditions)
+                    insdata=update_data("st_sl_settings_scheduling",setvalue , conditions)
 
         return True
     except Exception as e:

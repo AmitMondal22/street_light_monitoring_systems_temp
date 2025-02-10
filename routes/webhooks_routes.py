@@ -113,6 +113,7 @@ async def testing2(request: Request,event: str):
         )
         
         print("device_dataaaaaaaaaaaaaaaaaaaaaaaaaaaaa",data_list,device_data)
+        # ['1', '240.82', '0.08', '0.71', '0.04', '105.7852', '105.79', '0.00', '1', '2', '0', '2', '6', '55', '18', '13', '79']
         
             # select="sunrise_hour, sunrise_min, sunset_hour, sunset_min,device,device_id,device_mode,dimming,v_rms, irms,datalog_interval"
             # condition = f"device='{decodedev_eui}'"
