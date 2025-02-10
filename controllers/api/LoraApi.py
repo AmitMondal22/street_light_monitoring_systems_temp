@@ -196,7 +196,7 @@ async def update_device_schedule_settings(client_id,decodedev_eui,device_mode,su
                 insdata=insert_data("st_sl_settings_scheduling", columns, row_data)
         else:
             print("ERROR ERRORERRORERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR")
-            if device_mode ==2 or device_mode =='2':
+            if device_mode == 2 or device_mode =='2':
                 print("ERROR ERRORERRORERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR")
                 if sunrise_hour != find_devices['sunrise_hour'] or sunrise_min != find_devices['sunrise_min'] or sunset_hour != find_devices['sunset_hour'] or sunset_min != find_devices['sunset_min']:
                     print("ERROR ERRORERRORERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR")

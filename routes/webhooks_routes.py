@@ -120,7 +120,7 @@ async def testing2(request: Request,event: str):
         # print(select,"////////////", condition)
         
         # select_one_data("md_device","device_id",f"client_id={client_id} AND device='{device}'")
-        await LoraApi.update_device_schedule_settings(data_list[0],decodedev_eui,data_list[10],data_list[12],data_list[13],data_list[14],data_list[15],data_list[11],data_list[16])
+        await LoraApi.update_device_schedule_settings(data_list[0],decodedev_eui,data_list[9],data_list[12],data_list[13],data_list[14],data_list[15],data_list[11],data_list[16])
             # stdata = select_one_data("st_sl_settings_scheduling",select,condition)
             # print("stdataMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM",stdata['sunrise_hour'])
         #  {'sunrise_hour': '10', 'sunrise_min': '29', 'sunset_hour': '17', 'sunset_min': '38', 'device': '0080e115002b54b0', 'device_id': 28}
