@@ -115,8 +115,15 @@ async def device_schedule_settings(used_data,requestdata):
         conditions=f"device_id = {requestdata.device_id} AND client_id = {used_data['client_id']} "
         
         find_devices=select_one_data("st_sl_settings_scheduling", select, conditions,None)
-        print(find_devices)
-        print(requestdata)
+        
+        
+        select_device_info="device_type"
+        conditions_device_info=f"device_id = {requestdata.device_id} "
+        
+        find_devices_device_info=select_one_data("md_device", select_device_info, conditions_device_info,None)
+        
+        
+       
         
         
         decodedev_eui=requestdata.device
@@ -174,8 +181,17 @@ async def device_schedule_settings(used_data,requestdata):
                 # await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
                 print(paydata)
        
-        await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
-        return True
+        if find_devices_device_info['device_type'] == 'MQTT':
+            print(paydata)
+                # mqtt_client.publish(f"SCHEDULING/{message_data.device_type}/{user_data['client_id']}/{message_data.device}", message_data.json(), qos=0)
+                # print(f"SCHEDULING/{message_data.device_type}/{user_data['client_id']}/{message_data.device}")
+                # *scheduling,123,21321,65456,545.132#
+                #scheduling/EN/1/ABCDE01003
+                #SCHEDULING/{message_data.device_type}/{user_data['client_id']}/{message_data.device}
+            # await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
+        else:
+            await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
+        return {"device_type":find_devices_device_info['device_type'], "paydata_data":paydata}
     except Exception as e:
         raise ValueError("Could not fetch data")
     
