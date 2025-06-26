@@ -5,9 +5,9 @@ from utils.response import createDbResponse
 
 async def mqtt_topic_name():
     try:
-         # slms/{message_data.ib_id}/{message_data.device}
+        # slms/{message_data.ib_id}/{message_data.device}
         # query=f"select CONCAT('slms/', client_id, '/', device) AS concatenated_string from md_device"
-        query=f"select CONCAT(client_id, '/', device) AS concatenated_string from md_device"
+        query=f"select CONCAT(client_id, '/', device) AS concatenated_string from md_device WHERE device_type = 'MQTT'"
         conne = connect()
         cursor = conne.cursor()
         cursor.execute(query)

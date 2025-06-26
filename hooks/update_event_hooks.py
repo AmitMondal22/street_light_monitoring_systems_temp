@@ -5,7 +5,7 @@ async def update_topics():
     data = await mqtt_topic_name()
 
     # Generate SLMS topic names
-    slms_topics = [("slms/" + data[i]['concatenated_string'], 0) for i in range(len(data))]
+    slms_topics = [("/SLMS/" + data[i]['concatenated_string'], 0) for i in range(len(data))]
 
     
 

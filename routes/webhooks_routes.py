@@ -89,7 +89,7 @@ async def testing2(request: Request,event: str):
         decodeuplink_data=base64.b64decode(uplink_data).decode('utf-8')  
         data_list = decodeuplink_data.split(',')
         # 0         1        2        3     4   5   6    7         8          9        10         11          12  13    14   15
-    #    clientid,VOLTAGE,CURRENT,REALPOWER,PF,KWH,RUNHR,frequency,UPLOADFLAG,DOMODE,sensorflag,log_sec_ref,sr_h,sr_m,ss_h,ss_m
+    #    clientid,VOLTAGE,CURRENT,REALPOWER,PF,KWH,RUNHR,frequency,UPLOADFLAG,DOMODE,sensorflag,log_sec_ref,sr_h,sr_m,ss_h,ss_m,dimming
     #    1,        0.00,    0.00,   0.00,  0.00,0.00,0.50, 0.00,       1,         1,     0,        30,        18,  0,   16,  30
                                                                                     # light status
     
@@ -147,6 +147,53 @@ async def testing2(request: Request,event: str):
         return {"status":"success"}
     # except Exception as e:
     #     raise e
+    
+    
+async def mqttdata_sl_data(data_list,client_id,decodedev_eui):
+    # event =  await request.json()
+    
+    # 0         1        2        3     4   5   6    7         8          9        10         11          12  13    14   15
+    #    clientid,VOLTAGE,CURRENT,REALPOWER,PF,KWH,RUNHR,frequency,UPLOADFLAG,DOMODE,sensorflag,log_sec_ref,sr_h,sr_m,ss_h,ss_m
+    #    1,        0.00,    0.00,   0.00,  0.00,0.00,0.50, 0.00,       1,         1,     0,        30,        18,  0,   16,  30
+                                                                                    # light status
+
+    #  ['0.000', '0.00', '0.00', '0.00', '0.00', '0.50', '0.00', '1', '1', '0', '30', '18', '0', '16', '30']
+    
+    # device_data = device_data_model.StreetLightDeviceData(
+    #     CLIENT_ID = data_list[0],
+    #     UID=decodedev_eui,
+    #     TW=rssi,  # TW is not provided in the data_list, so assign a default or calculated value
+    #     VOLTAGE=float(data_list[1]),
+    #     CURRENT=float(data_list[2]),
+    #     REALPOWER=float(data_list[3]),
+    #     PF=float(data_list[4]),
+    #     KWH=float(data_list[5]),
+    #     RUNHR=float(data_list[6]),
+    #     FREQ=float(data_list[7]),
+    #     UPLOADFLAG=int(data_list[8]),
+    #     DOMODE=int(data_list[9]),
+    #     SENSORFLAG=int(data_list[10])
+    # )
+    
+    device_data = device_data_model.StreetLightDeviceData(
+        CLIENT_ID = client_id,
+        UID=decodedev_eui,
+        TW=float(data_list.TW),  # TW is not provided in the data_list, so assign a default or calculated value
+        VOLTAGE=float(data_list.VOLTAGE),
+        CURRENT=float(data_list.CURRENT),
+        REALPOWER=float(data_list.REALPOWER),
+        PF=float(data_list.PF),
+        KWH=float(data_list.KWH),
+        RUNHR=float(data_list.RUNHR),
+        FREQ=float(data_list.FREQ),
+        UPLOADFLAG=int(data_list.UPLOADFLAG),
+        DOMODE=int(data_list.DOMODE),
+        SENSORFLAG=int(data_list.SENSORFLAG)
+    )
+
+    await LoraApi.update_device_schedule_settings(client_id, decodedev_eui, data_list.DOMODE, data_list.SR_H, data_list.SR_M, data_list.SS_H, data_list.SS_M,data_list.SENSORFLAG, data_list.dimming)
+    await EnergyController.get_energy_data(device_data,client_id,decodedev_eui)
+    return {"status":"success"}
 
 @webhooks_routes.post("/testing22")
 @webhooks_routes.get("/testing22")

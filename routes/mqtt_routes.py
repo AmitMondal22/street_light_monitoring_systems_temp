@@ -17,7 +17,7 @@ from hooks.update_event_hooks import update_topics
 
 mqtt_routes = APIRouter()
 
-mqtt_client = MqttLibraryClass("techavoiot.co.in", 1883)
+mqtt_client = MqttLibraryClass("techavoiot.co.in", 1883,None,None)
 # Connect to the MQTT broker
 mqtt_client.connect()
 
