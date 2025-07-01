@@ -9,7 +9,7 @@ async def list_device(client_id):
     try:
         select="device_id, device,device_type,meter_type"
         # select="device_id, device,  model, lat, lon, imei_no, last_maintenance, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') AS created_at, DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') AS updated_at"
-        condition=f"client_id={client_id} AND device_type='SL'"
+        condition=f"client_id={client_id}"
         data = select_data("md_device", select, condition)
         return data
     except Exception as e:
@@ -21,7 +21,7 @@ async def user_device_list(client_id, user_id, organization_id):
     try:
         select="d.device_id, d.device, d.model, d.lat, d.lon,d.device_type, d.last_maintenance, DATE_FORMAT(d.created_at, '%Y-%m-%d %H:%i:%s') AS created_at, DATE_FORMAT(d.updated_at, '%Y-%m-%d %H:%i:%s') AS updated_at"
         
-        condition = f"d.device_id = mud.device_id AND d.client_id = mud.client_id AND mud.client_id = {client_id} AND mud.user_id = {user_id} AND mud.organization_id = {organization_id} AND d.device_type='SL'"
+        condition = f"d.device_id = mud.device_id AND d.client_id = mud.client_id AND mud.client_id = {client_id} AND mud.user_id = {user_id} AND mud.organization_id = {organization_id}"
         find_devices=select_data("md_device AS d, md_manage_user_device AS mud", select, condition,order_by="d.device_id ASC")
         print("find_devices>>>>>>>>>>>>>>>>>",find_devices)
         return find_devices
@@ -32,7 +32,7 @@ async def user_device_list(client_id, user_id, organization_id):
 
 async def device_info(params,userdata):
     try:
-        condition = f"client_id={userdata['client_id']} AND device_id = {params.device_id} AND device_type='SL'"
+        condition = f"client_id={userdata['client_id']} AND device_id = {params.device_id}"
         select="device_id, client_id, device, device_name, model, lat, lon, last_maintenance,device_type,meter_type, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') AS created_at, DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') AS updated_at"
         data = select_one_data("md_device",select, condition,order_by="device_id DESC")
 
@@ -90,7 +90,7 @@ async def edit_device(params):
 
 async def manage_list_device(params):
     try:
-        condition = f"a.client_id = {params.client_id} AND a.device_type='SL'"
+        condition = f"a.client_id = {params.client_id}"
         
         select="a.device_id, a.client_id, a.device, a.device_name, a.model, a.lat, a.lon, a.device_type,a.meter_type,a.last_maintenance, DATE_FORMAT(a.created_at, '%Y-%m-%d') AS device_created_at,DATE_FORMAT(a.updated_at, '%Y-%m-%d %H:%i:%s') AS device_updated_at, b.energy_data_id, b.device_id AS b_device_id, b.voltage, b.current, b.realpower, b.pf, b.kwh, b.runhr, b.frequency, b.domode, b.sensor_flag, b.upload_flag,  DATE_FORMAT(b.date, '%Y-%m-%d') AS date, TIME_FORMAT(b.time, '%H:%i:%s') AS time, DATE_FORMAT(b.created_at, '%Y-%m-%d %H:%i:%s') AS energy_data_created_at, DATE_FORMAT(b.updated_at, '%Y-%m-%d %H:%i:%s') AS energy_data_updated_at"
         
