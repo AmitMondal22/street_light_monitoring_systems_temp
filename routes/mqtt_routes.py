@@ -56,10 +56,17 @@ async def publish_message(request: Request, message_data: MqttPublishDeviceData)
     try:
         user_data=request.state.user_data
         data= await DeviceController.device_schedule_settings(user_data, message_data)
-        print("KKKKKKKKKKKKK",data['device_type'])
-        if data['device_type'] == 'MQTT':
-            mqtt_client.publish(f"/SL/SCHEDULING/{message_data.device}", data['paydata_data'], qos=0)
-            print(f"/SL/SCHEDULING/{message_data.device}", data['paydata_data'])
+        print("KKKKKKKKKKKKK",data['device_type']['device_type'])
+        if data['device_type']['device_type'] == 'MQTT':
+            if message_data.device_mode == 0 or message_data.device_mode == "0" or message_data.device_mode == 2 or message_data.device_mode == "2":
+                paydaya=data['paydata_data']
+                paydaya = paydaya.replace('ZZ#', f"{data['device_type']['lat']},{data['device_type']['lon']},ZZ#")
+                
+                mqtt_client.publish(f"/SL/SCHEDULING/{message_data.device}", paydaya, qos=0)
+                print(f"/SL/SCHEDULING/{message_data.device}", paydaya)
+            else:
+                mqtt_client.publish(f"/SL/SCHEDULING/{message_data.device}", data['paydata_data'], qos=0)
+                print(f"/SL/SCHEDULING/{message_data.device}", data['paydata_data'])
         resdata = successResponse(data, message="Message published successfully")
         return Response(content=json.dumps(resdata), media_type="application/json", status_code=200)
     except ValueError as ve:

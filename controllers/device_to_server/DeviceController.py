@@ -117,7 +117,7 @@ async def device_schedule_settings(used_data,requestdata):
         find_devices=select_one_data("st_sl_settings_scheduling", select, conditions,None)
         
         
-        select_device_info="device_type"
+        select_device_info="device_type, lat, lon"
         conditions_device_info=f"device_id = {requestdata.device_id} "
         
         find_devices_device_info=select_one_data("md_device", select_device_info, conditions_device_info,None)
@@ -191,7 +191,7 @@ async def device_schedule_settings(used_data,requestdata):
             # await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
         else:
             await LoraApi.webhooks_send_downlink_test(decodedev_eui, paydata)
-        return {"device_type":find_devices_device_info['device_type'], "paydata_data":paydata}
+        return {"device_type":find_devices_device_info, "paydata_data":paydata}
     except Exception as e:
         raise ValueError("Could not fetch data")
     
