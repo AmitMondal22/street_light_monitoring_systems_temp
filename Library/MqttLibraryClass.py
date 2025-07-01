@@ -33,6 +33,7 @@ class MqttLibraryClass:
             # reqdata=DotDictLibrary(json.loads(msg.payload))
             # if parts[0] == "ums":
             reqdata=DotDictLibrary(json.loads(msg.payload.decode('utf-8')))
+            # reqdata=DotDictLibrary(msg.payload.decode('utf-8'))
             print("/////////",reqdata.TW)
             
             asyncio.run(webhooks_routes.mqttdata_sl_data(reqdata,parts[2],parts[3]))
