@@ -26,7 +26,7 @@ class MqttLibraryClass:
             client.subscribe(topic, qos=qos)
 
     def on_message(self, client, userdata, msg):
-        # try:
+        try:
             print(f"Message received on topic {msg.topic}")
             topic_name=msg.topic
             parts = topic_name.split('/')
@@ -37,8 +37,8 @@ class MqttLibraryClass:
             print("/////////",reqdata.TW)
             
             asyncio.run(webhooks_routes.mqttdata_sl_data(reqdata,parts[2],parts[3]))
-        # except Exception as e:
-        #     print("Error in on_message",e)
+        except Exception as e:
+            print("Error in on_message",e)
     
 
     def connect(self):
