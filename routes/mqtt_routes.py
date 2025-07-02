@@ -58,7 +58,7 @@ async def publish_message(request: Request, message_data: MqttPublishDeviceData)
         data= await DeviceController.device_schedule_settings(user_data, message_data)
         print("KKKKKKKKKKKKK",data['device_type']['device_type'])
         if data['device_type']['device_type'] == 'MQTT':
-            if message_data.device_mode == 0 or message_data.device_mode == "0" or message_data.device_mode == 2 or message_data.device_mode == "2":
+            if message_data.device_mode == 2 or message_data.device_mode == "2":
                 paydaya=data['paydata_data']
                 paydaya = paydaya.replace('ZZ#', f"{data['device_type']['lat']},{data['device_type']['lon']},ZZ#")
                 
