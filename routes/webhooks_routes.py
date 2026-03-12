@@ -181,7 +181,8 @@ async def mqttdata_sl_data(data_list,client_id,decodedev_eui):
         TW=float(data_list.TW),  # TW is not provided in the data_list, so assign a default or calculated value
         VOLTAGE=float(data_list.VOLTAGE),
         CURRENT=float(data_list.CURRENT),
-        REALPOWER=float(data_list.REALPOWER),
+        # REALPOWER=float(data_list.REALPOWER),
+        REALPOWER=float((data_list.VOLTAGE*data_list.CURRENT)*data_list.PF),
         PF=float(data_list.PF),
         KWH=float(data_list.KWH),
         RUNHR=float(data_list.RUNHR),
