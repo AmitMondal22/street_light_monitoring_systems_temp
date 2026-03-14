@@ -182,7 +182,7 @@ async def mqttdata_sl_data(data_list,client_id,decodedev_eui):
         VOLTAGE=float(data_list.VOLTAGE),
         CURRENT=float(data_list.CURRENT),
         # REALPOWER=float(data_list.REALPOWER),
-        REALPOWER=float((data_list.VOLTAGE*data_list.CURRENT)*data_list.PF),
+        REALPOWER=float(((data_list.VOLTAGE*data_list.CURRENT)*(1 if data_list.VOLTAGE >= 50 else 0))),
         PF=float(data_list.PF),
         KWH=float(data_list.KWH),
         RUNHR=float(data_list.RUNHR),
