@@ -175,17 +175,20 @@ async def mqttdata_sl_data(data_list,client_id,decodedev_eui):
     #     SENSORFLAG=int(data_list[10])
     # )
     
+    real_power_watt = float(data_list.VOLTAGE) * float(data_list.CURRENT) * float(data_list.PF)
     device_data = device_data_model.StreetLightDeviceData(
         CLIENT_ID = client_id,
         UID=decodedev_eui,
         TW=float(data_list.TW),  # TW is not provided in the data_list, so assign a default or calculated value
         VOLTAGE=float(data_list.VOLTAGE),
         CURRENT=float(data_list.CURRENT),
-        # REALPOWER=float(data_list.REALPOWER),
-        REALPOWER=float(((data_list.VOLTAGE*data_list.CURRENT)*(1 if data_list.VOLTAGE >= 50 else 0))),
+        REALPOWER=float(data_list.REALPOWER),
+        # REALPOWER=float(((data_list.VOLTAGE*data_list.CURRENT)*(1 if data_list.VOLTAGE >= 50 else 0))),
+        # REALPOWER=float(((data_list.VOLTAGE*data_list.CURRENT)*(1 if data_list.VOLTAGE >= 50 else 0))),
         # PF=float(data_list.PF),
         PF=float((1 if data_list.VOLTAGE >= 50 else 0)),
-        KWH=float(data_list.KWH),
+        # KWH=float(data_list.KWH),
+        KWH=float((real_power_watt* 30)/3600000),
         RUNHR=float(data_list.RUNHR),
         FREQ=float(data_list.FREQ),
         UPLOADFLAG=int(data_list.UPLOADFLAG),
